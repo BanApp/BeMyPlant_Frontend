@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">BeMyPlant</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="d_day_format">D + </string>
+    <string name="d_day">67</string>
+    <string name="Plant_name">뽀삐</string>
+    <string name="health_format">Health</string>
+    <string name="health">Good</string>
+    <string name="title_activity_setting">SettingActivity</string>
     <string name="main_name">🪴\nBE MY\nPLANT!</string>
     <string name="sub_name">Be My Plant!</string>
     <string name="id">ID</string>
