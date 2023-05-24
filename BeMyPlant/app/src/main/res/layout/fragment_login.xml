@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.LoginFragment">
+    <!--텍스트: 로그인-->
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
+
+    <!--텍스트: BeMyPlant!-->
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:text="@string/sub_name"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <!--텍스트(ID) + 아이디 입력창 -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="353dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
+            android:text="@string/id"
+            android:textColor="@color/black"
+            android:labelFor="@+id/id_input"
+            android:textSize="28dp" />
+
+        <EditText
+            android:id="@+id/id_input"
+            android:layout_width="353dp"
+            android:layout_height="45dp"
+            android:background="@drawable/button_white2" />
+
+    </LinearLayout>
+
+    <!--텍스트(PW) + 비밀번호 입력창 -->
+
+    <!--시작버튼 -->
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="353dp"
+        android:layout_height="125dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.022">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
+            android:labelFor="@+id/pw_input"
+            android:text="@string/pw"
+            android:textColor="@color/black"
+            android:textSize="28dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/pw_input"
+                android:layout_width="353dp"
+                android:layout_height="45dp"
+                android:background="@drawable/button_white2" />
+
+            <android.widget.Button
+                android:layout_width="32dp"
+                android:layout_height="23dp"
+                android:layout_alignBottom="@+id/pw_input"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="310dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginBottom="11dp"
+                android:contentDescription="visible"
+                android:background="@drawable/visible"
+                android:backgroundTint="@color/charcoal" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.widget.Button
+        android:id="@+id/button2"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_green"
+        android:text="@string/start"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.68" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
