@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.imageSelectFragment">
+    tools:context=".fragment.iSFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -22,9 +22,9 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_medium"
+            android:fontFamily="@font/notosans_bold"
             android:gravity="left"
-            android:text="@string/Plant_name"
+            android:text="뽀삐를🪴"
             android:textColor="@color/green_1"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_medium"
+            android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:text="선택해 보아요!"
             android:textColor="@color/black"

@@ -13,10 +13,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [imageSelectFragment.newInstance] factory method to
+ * Use the [iSFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class imageSelectFragment : Fragment() {
+class iSFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -32,7 +32,7 @@ class imageSelectFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_select, container, false)
+        return inflater.inflate(R.layout.fragment_i_s, container, false)
     }
 
     companion object {
@@ -46,7 +46,7 @@ class imageSelectFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic fun newInstance(param1: String, param2: String) =
-                imageSelectFragment().apply {
+                iSFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, param1)
                         putString(ARG_PARAM2, param2)

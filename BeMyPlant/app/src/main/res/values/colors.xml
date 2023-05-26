@@ -9,7 +9,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name = "green_1">#0B7328</color>
-    <color name = "gray">#D9D9D9</color>
-    <color name = "charcoal">#5a5a5a</color>
+    <color name="green_1">#0B7328</color>
+    <color name="gray">#D9D9D9</color>
+    <color name="charcoal">#5a5a5a</color>
+    <color name="coral">#FF8585</color>
+    <color name="blue">#68A6D2</color>
+    <color name="yellow">#FFD748</color>"
 </resources>

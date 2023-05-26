@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.sRFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_bold"
+        android:text="준비된 센서를\n등록해 볼까요? "
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        />
+
+    <android.widget.Button
+        android:id="@+id/Button1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="20sp"
+        android:background="@drawable/button_url1"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:padding="0sp"
+        android:text="광도\n센서"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.278" />
+
+
+    <android.widget.Button
+        android:id="@+id/Button2"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@drawable/button_url2"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:padding="0sp"
+        android:text="토양\n센서"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toEndOf="@+id/Button1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.27" />
+
+    <android.widget.Button
+        android:id="@+id/Button3"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@drawable/button_url3"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:padding="0sp"
+        android:text="온습도\n센서"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Button2"
+        app:layout_constraintVertical_bias="0.145" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_medium"
+        android:gravity="left"
+        android:text="LED 불이 들어오는지 확인해주세요😉\n불이 들어온다면, 센서 등록 완료 ! "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Button3"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <android.widget.Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/button_green"
+        android:fontFamily="@font/notosans_medium"
+        android:gravity="center"
+        android:text="@string/finish"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.471" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
