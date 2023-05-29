@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.SignFragment1">
+    tools:context=".fragment.s2Fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <!--회원가입-->
     <TextView
 
-        android:id="@+id/textView4"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:text="@string/sign"
         android:textColor="@color/black"
-        android:textSize="40dp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.108"
@@ -26,8 +26,12 @@
         app:layout_constraintVertical_bias="0.02" />
     <!--1-2순서-->
 
+    <!--ID-->
+    <!--비밀번호-->
+    <!--비밀번호확인-->
+
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayout1"
         android:layout_width="410dp"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
@@ -37,11 +41,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.08">
+        app:layout_constraintTop_toBottomOf="@+id/textView1"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/sign_oral1"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/sign_oral1"
@@ -50,7 +54,7 @@
             android:text="1"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.234"
@@ -64,21 +68,20 @@
             android:layout_height="wrap_content"
             android:background="@drawable/sing_line1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sign_oral2"
-            app:layout_constraintStart_toEndOf="@+id/sign_oral1"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.135" />
-
         <TextView
-            android:id="@+id/sign_oral2"
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/sign_oral2"
+            android:background="@drawable/sign_oral1"
             android:fontFamily="@font/notosans_medium"
             android:gravity="center"
             android:text="2"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,27 +91,27 @@
             app:layout_constraintVertical_bias="0.135" />
 
     </LinearLayout>
-    <!--이름-->
+
     <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
+        android:layout_width="360sp"
+        android:layout_height="110sp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.131">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
             android:fontFamily="@font/notosans_bold"
-            android:text="@string/user_name"
+            android:text="@string/id"
             android:textColor="@color/black"
-            android:textSize="24dp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
@@ -117,12 +120,13 @@
             app:layout_constraintVertical_bias="0.259" />
 
         <EditText
-            android:id="@+id/user_name"
-            android:layout_width="353dp"
-            android:layout_height="50dp"
+            android:id="@+id/editText1"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/green_1"
+            android:fontFamily="@font/notosans_medium"
             android:gravity="center"
-            android:hint="활동명을 입력해주세요"
+            android:hint="고유한 ID를 입력해주세요."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.551"
@@ -130,27 +134,90 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             app:layout_constraintVertical_bias="0.001" />
     </LinearLayout>
-    <!--핸드폰번호-->
+
     <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:layout_width="360sp"
+        android:layout_height="110sp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:layout_constraintVertical_bias="0.156">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.131">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
+            android:labelFor="@+id/pw2"
+            android:text="비밀번호 확인"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.085"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.259" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="353dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/green_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.551"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.001" />
+
+            <android.widget.Button
+                android:layout_width="24dp"
+                android:layout_height="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="324dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="13dp"
+                android:background="@drawable/visible"
+                android:backgroundTint="@color/charcoal"
+                android:contentDescription="visible_pw2" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="360sp"
+        android:layout_height="110sp"
+        android:layout_marginTop="45dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_bold"
-            android:text="@string/user_telephone"
+            android:labelFor="@+id/pw"
+            android:text="@string/pw"
             android:textColor="@color/black"
-            android:textSize="24dp"
-            android:labelFor="@+id/user_telephone"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
@@ -158,34 +225,54 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.259" />
 
-        <EditText
-            android:id="@+id/user_telephone"
-            android:layout_width="353dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/green_1"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.551"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintVertical_bias="0.001" />
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="353dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/green_1"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.551"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.001" />
+
+            <android.widget.Button
+                android:layout_width="24dp"
+                android:layout_height="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="324dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="13dp"
+                android:background="@drawable/visible"
+                android:backgroundTint="@color/charcoal"
+                android:contentDescription="visible_pw" />
+
+        </RelativeLayout>
+
     </LinearLayout>
-
-    <!--다음버튼-->
     <android.widget.Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="@string/next"
+        android:text="@string/finish"
         android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
         app:layout_constraintVertical_bias="0.912" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

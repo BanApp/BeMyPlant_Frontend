@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation1"
+    app:startDestination="@id/mainFragment2">
+    <fragment
+        android:id="@+id/mainFragment2"
+        android:name="com.example.bemyplant.fragment.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment2_to_loginFragment3"
+            app:destination="@id/loginFragment3" />
+        <action
+            android:id="@+id/action_mainFragment2_to_s1Fragment"
+            app:destination="@id/s1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment3"
+        android:name="com.example.bemyplant.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/iSFragment2"
+        android:name="com.example.bemyplant.fragment.iSFragment"
+        android:label="fragment_i_s"
+        tools:layout="@layout/fragment_i_s" >
+        <action
+            android:id="@+id/action_iSFragment2_to_sRFragment"
+            app:destination="@id/sRFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sRFragment"
+        android:name="com.example.bemyplant.fragment.sRFragment"
+        android:label="fragment_s_r"
+        tools:layout="@layout/fragment_s_r" >
+        <action
+            android:id="@+id/action_sRFragment_to_bCFragment2"
+            app:destination="@id/bCFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/bCFragment2"
+        android:name="com.example.bemyplant.fragment.bCFragment"
+        android:label="fragment_b_c"
+        tools:layout="@layout/fragment_b_c" >
+        <action
+            android:id="@+id/action_bCFragment2_to_bSFragment2"
+            app:destination="@id/bSFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/bSFragment2"
+        android:name="com.example.bemyplant.fragment.bSFragment"
+        android:label="fragment_b_s"
+        tools:layout="@layout/fragment_b_s" >
+        <action
+            android:id="@+id/action_bSFragment2_to_bS2Fragment2"
+            app:destination="@id/bS2Fragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/bS2Fragment2"
+        android:name="com.example.bemyplant.fragment.bS2Fragment"
+        android:label="fragment_b_s2"
+        tools:layout="@layout/fragment_b_s2" >
+        <action
+            android:id="@+id/action_bS2Fragment2_to_bS3Fragment2"
+            app:destination="@id/bS3Fragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/bS3Fragment2"
+        android:name="com.example.bemyplant.fragment.bS3Fragment"
+        android:label="fragment_b_s3"
+        tools:layout="@layout/fragment_b_s3" >
+        <action
+            android:id="@+id/action_bS3Fragment2_to_bRFragment"
+            app:destination="@id/bRFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/s1Fragment"
+        android:name="com.example.bemyplant.fragment.s1Fragment"
+        android:label="fragment_s1"
+        tools:layout="@layout/fragment_s1" >
+        <action
+            android:id="@+id/action_s1Fragment_to_s2Fragment"
+            app:destination="@id/s2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/s2Fragment"
+        android:name="com.example.bemyplant.fragment.s2Fragment"
+        android:label="fragment_s2"
+        tools:layout="@layout/fragment_s2" >
+        <action
+            android:id="@+id/action_s2Fragment_to_pRFragment"
+            app:destination="@id/pRFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bRFragment"
+        android:name="com.example.bemyplant.fragment.bRFragment"
+        android:label="fragment_b_r"
+        tools:layout="@layout/fragment_b_r" />
+    <fragment
+        android:id="@+id/pRFragment"
+        android:name="com.example.bemyplant.fragment.pRFragment"
+        android:label="fragment_p_r"
+        tools:layout="@layout/fragment_p_r" >
+        <action
+            android:id="@+id/action_pRFragment_to_iSFragment2"
+            app:destination="@id/iSFragment2" />
+    </fragment>
+</navigation>
