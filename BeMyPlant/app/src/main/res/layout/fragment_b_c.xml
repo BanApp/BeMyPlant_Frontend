@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_medium"
-        android:text="1. 블루투스 권한을 허용해 주세요!\n \n2. 블루투스 설정창 -> 페어링을 진행해주세요!"
+        android:text="1. 블루투스 권한을 허용해 주세요!\n \n2. 블루투스 설정창 → 페어링을 진행해주세요!"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
