@@ -24,12 +24,12 @@ class DiaryActivity : ComponentActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.menu_home -> {
+/*                R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
                     val homeIntent = Intent(this@DiaryActivity, MainActivitytemp::class.java)
                     startActivity(homeIntent)
                     true
-                }
+                }*/
 
                 R.id.menu_setting -> {
                     // "setting" 메뉴 클릭 시 SettingActivity로 이동
