@@ -180,6 +180,7 @@
                 app:layout_constraintVertical_bias="0.001" />
 
             <android.widget.Button
+                android:id="@+id/button2"
                 android:layout_width="24dp"
                 android:layout_height="15dp"
                 android:layout_alignParentStart="true"
@@ -243,6 +244,7 @@
                 app:layout_constraintVertical_bias="0.001" />
 
             <android.widget.Button
+                android:id="@+id/button1"
                 android:layout_width="24dp"
                 android:layout_height="15dp"
                 android:layout_alignParentStart="true"
@@ -260,6 +262,7 @@
 
     </LinearLayout>
     <android.widget.Button
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"

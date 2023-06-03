@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_temp)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.menu_bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.menu_home

@@ -93,6 +93,7 @@
     </LinearLayout>
 
     <android.widget.Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"

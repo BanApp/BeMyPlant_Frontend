@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 
 class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +24,7 @@ class ChatActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
-                    val homeIntent = Intent(this@ChatActivity, MainActivity::class.java)
+                    val homeIntent = Intent(this@ChatActivity, MainActivitytemp::class.java)
                     startActivity(homeIntent)
                     true
                 }

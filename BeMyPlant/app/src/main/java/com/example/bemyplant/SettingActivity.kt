@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 
 class SettingActivity : ComponentActivity() {
 
@@ -26,7 +25,7 @@ class SettingActivity : ComponentActivity() {
             when (item.itemId) {
                 R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
-                    val homeIntent = Intent(this@SettingActivity, MainActivity::class.java)
+                    val homeIntent = Intent(this@SettingActivity, MainActivitytemp::class.java)
                     startActivity(homeIntent)
                     true
                 }
