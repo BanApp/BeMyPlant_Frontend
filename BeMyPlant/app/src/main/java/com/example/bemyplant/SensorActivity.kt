@@ -1,4 +1,4 @@
-package com.example.plantver2
+package com.example.bemyplant
 
 import android.annotation.SuppressLint
 import android.content.Intent
