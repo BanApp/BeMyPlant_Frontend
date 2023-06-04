@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/gridWidth"
+    android:layout_height="@dimen/gridHeight"
+    android:layout_margin="@dimen/gridMargin"
+    android:id="@+id/RelativeLayout_calendar_cell">
+
+
+    <TextView
+        android:id="@+id/dayText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/notosans_regular"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="#000000"
+        android:textSize="@dimen/textSize" />
+
+</RelativeLayout>
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:id="@+id/linearLayout_calendar_cell">
+
+    <TextView
+        android:id="@+id/dayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_light"
+        android:text="1"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+
+</LinearLayout>
+-->
+
+

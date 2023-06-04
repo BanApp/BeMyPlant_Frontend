@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    tools:context=".DiaryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_diaryNew_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="30dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_img">
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/notosans_bold"
+                android:text="POST"
+                android:textColor="#000000"
+                android:textSize="22dp"></TextView>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_diaryNew_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right|center">
+
+                <ImageButton
+                    android:id="@+id/imageButton_diaryNew_photo"
+                    android:paddingRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/photo_add_button">
+                </ImageButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editText_diaryNew_diaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="다이어리 title "
+            android:textColorHint="@color/hint_gray"
+            android:background="@null"
+            android:textColor="#000000"
+            android:fontFamily="@font/notosans_bold"
+            android:textSize="20dp">
+        </EditText>
+
+        <ImageView
+            android:id="@+id/imageView_diaryNew_plant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/example_photo">
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="2023/04/24"
+                android:textColor="#000000"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="20dp">
+            </TextView>
+
+            <EditText
+                android:id="@+id/editText_diaryNew_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="맑음"
+                android:textColorHint="@color/hint_gray"
+                android:background="@null"
+                android:layout_gravity="right"
+                android:textColor="#000000"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="20dp">
+            </EditText>
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/editText_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="다이어리 내용을 입력해주세요!"
+            android:textColorHint="@color/hint_gray"
+            android:fontFamily="@font/notosans_regular"
+            android:maxLength="1000"
+            android:textSize="@dimen/diary_text_size">
+        </EditText>
+    </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/imageButton_diaryNew_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/complete"></ImageButton>
+
+</LinearLayout>

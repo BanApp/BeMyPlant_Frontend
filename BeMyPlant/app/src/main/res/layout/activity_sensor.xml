@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SensorActivity">
+
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="30dp"
+
+        android:useDefaultMargins="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_diaryView_complete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.28"
+        tools:layout_editor_absoluteX="0dp">
+
+        <Button
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/border_pink"
+            android:fontFamily="@font/notosans_bold"
+            android:gravity="center"
+            android:text="온도\n31℃"
+            android:textColor="#000000"
+            android:textSize="22dp"></Button>
+
+        <Button
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/border_purple"
+            android:fontFamily="@font/notosans_bold"
+            android:gravity="center"
+            android:text="습도\n15%"
+            android:textColor="#000000"
+            android:textSize="22dp"></Button>
+
+        <Button
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/border_yellow"
+            android:fontFamily="@font/notosans_bold"
+            android:gravity="center"
+            android:text="광도\n31℃"
+            android:textColor="#000000"
+            android:textSize="22dp"></Button>
+
+        <Button
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/border_blue"
+            android:fontFamily="@font/notosans_bold"
+            android:gravity="center"
+            android:text="토양습도\n40℃"
+            android:textColor="#000000"
+            android:textSize="20dp"></Button>
+
+    </GridLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton_diaryView_complete"
+        android:layout_width="401dp"
+        android:layout_height="22dp"
+        android:layout_gravity="bottom|center"
+        android:background="@android:color/transparent"
+        android:src="@drawable/complete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.928"></ImageButton>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_bold"
+        android:text="센서 데이터"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chart가 보여질 곳"
+        android:textAlignment="center"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_diaryView_complete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+    <ImageButton
+        android:id="@+id/imageButton_sensor_regen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="452dp"
+        android:background="@android:color/transparent"
+        android:paddingRight="10dp"
+        android:src="@drawable/autorenew"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13"></ImageButton>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
