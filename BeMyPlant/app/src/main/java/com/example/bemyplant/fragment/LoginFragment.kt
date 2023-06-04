@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentLoginBinding
+import android.content.Context
+import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +27,8 @@ class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private var userId: String = "123"
+    private var userPw: String = "456"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,8 +36,6 @@ class LoginFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,13 +46,28 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val inputId = view.findViewById<android.widget.EditText>(R.id.editText1)
+        val inputPw = view.findViewById<android.widget.EditText>(R.id.editText2)
         val button1 = binding.button2
-        button1.setOnClickListener{
+        val sharedPref = requireActivity().getSharedPreferences("my_pref", Context.MODE_PRIVATE)
+        userId = sharedPref.getString("userInputId", "123") ?: "123"
+        userPw = sharedPref.getString("userInputPw","4567") ?: "4567"
+        button1.setOnClickListener {
+            val userInputId = inputId.text.toString()
+            val userInputPw = inputPw.text.toString()
             val intent = Intent(requireActivity(), MainActivity::class.java)
+            if ((userInputId==userId) && (userInputPw==userPw)){
             requireActivity().startActivity(intent)
+            showToast(requireContext(), "로그인되었습니다")
+            }else{
+                showToast(requireContext(),"아이디 또는 비밀번호가 일치하지 않습니다")
+            }
         }
     }
-    companion object {
+    private fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+        companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
