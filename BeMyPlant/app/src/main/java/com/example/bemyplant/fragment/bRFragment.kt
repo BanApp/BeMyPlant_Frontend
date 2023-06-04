@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.bemyplant.MJ_MainActivity
+import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBRBinding
 
@@ -38,7 +38,7 @@ class bRFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val button1 = binding.imageButton1
         button1.setOnClickListener{
-            val intent = Intent(requireActivity(), MJ_MainActivity::class.java)
+            val intent = Intent(requireActivity(), MainActivity::class.java)
             requireActivity().startActivity(intent)
         }
     }
