@@ -123,7 +123,7 @@
 
     <android.widget.Button
         android:id="@+id/button2"
-        android:layout_width="110dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@drawable/button_green"
         android:text="@string/start"
