@@ -1,4 +1,4 @@
-package com.example.plantver2
+package com.example.bemyplant
 
 class Day {
     var day: String? = null
