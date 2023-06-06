@@ -19,16 +19,9 @@ import com.example.bemyplant.databinding.FragmentS2Binding
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.network.RetrofitService
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [s2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class s2Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -41,7 +34,8 @@ class s2Fragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
+/*
+* 입력받은*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,7 +78,7 @@ class s2Fragment : Fragment() {
                 if (response.isSuccessful) {
                     // 회원 가입 성공
                     withContext(Dispatchers.Main) {
-                        showToast(requireContext(), "회원가입 완료")
+                        showToast(requireContext(), "회원가입이 완료되었습니다")
                         findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
                     }
                 } else {
@@ -103,15 +97,6 @@ class s2Fragment : Fragment() {
         }
     }
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SignFragment2.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             s2Fragment().apply {
