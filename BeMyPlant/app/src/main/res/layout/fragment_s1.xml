@@ -122,7 +122,7 @@
             android:layout_height="50dp"
             android:backgroundTint="@color/green_1"
             android:gravity="center"
-            android:hint="활동명을 입력해주세요"
+            android:hint="사용자 이름을 입력해주세요."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.551"

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBRBinding
@@ -38,8 +39,7 @@ class bRFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val button1 = binding.imageButton1
         button1.setOnClickListener{
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            requireActivity().startActivity(intent)
+            findNavController().navigate(R.id.action_bRFragment_to_loginFragment3)
         }
     }
 

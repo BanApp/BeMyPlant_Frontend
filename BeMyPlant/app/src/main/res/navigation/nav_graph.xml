@@ -97,7 +97,11 @@
         android:id="@+id/bRFragment"
         android:name="com.example.bemyplant.fragment.bRFragment"
         android:label="fragment_b_r"
-        tools:layout="@layout/fragment_b_r" />
+        tools:layout="@layout/fragment_b_r" >
+        <action
+            android:id="@+id/action_bRFragment_to_loginFragment3"
+            app:destination="@id/loginFragment3" />
+    </fragment>
     <fragment
         android:id="@+id/pRFragment"
         android:name="com.example.bemyplant.fragment.pRFragment"

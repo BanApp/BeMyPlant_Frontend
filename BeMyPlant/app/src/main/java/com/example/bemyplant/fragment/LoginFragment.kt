@@ -27,8 +27,9 @@ class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var userId: String = "123"
-    private var userPw: String = "456"
+    /*저장된 값 userId, userPw*/
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,37 +47,21 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val inputId = view.findViewById<android.widget.EditText>(R.id.editText1)
-        val inputPw = view.findViewById<android.widget.EditText>(R.id.editText2)
-        val button1 = binding.button2
-        val sharedPref = requireActivity().getSharedPreferences("my_pref", Context.MODE_PRIVATE)
-        userId = sharedPref.getString("userInputId", "123") ?: "123"
-        userPw = sharedPref.getString("userInputPw","4567") ?: "4567"
-        button1.setOnClickListener {
-            val userInputId = inputId.text.toString()
-            val userInputPw = inputPw.text.toString()
+
+
+        binding.button2.setOnClickListener {
+            val inputId = binding.editText1.text.toString()
+            val inputPw = binding.editText2.text.toString()
             val intent = Intent(requireActivity(), MainActivity::class.java)
-            if ((userInputId==userId) && (userInputPw==userPw)){
             requireActivity().startActivity(intent)
             showToast(requireContext(), "로그인되었습니다")
-            }else{
-                showToast(requireContext(),"아이디 또는 비밀번호가 일치하지 않습니다")
-            }
+
         }
     }
     private fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
         companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LoginFragment().apply {
