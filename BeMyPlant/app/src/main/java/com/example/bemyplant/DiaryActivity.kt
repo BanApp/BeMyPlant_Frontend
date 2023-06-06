@@ -22,14 +22,6 @@ class DiaryActivity : AppCompatActivity(){//, CalendarAdapter.ItemClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_diary)
 
-        //navController = findNavController(R.id.nav_host_fragment)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
 
     }
-
-    /*override fun onItemClick(view: View?, day: String?, isInMonth: Boolean) {
-        TODO("Not yet implemented")
-    }*/
-
 }

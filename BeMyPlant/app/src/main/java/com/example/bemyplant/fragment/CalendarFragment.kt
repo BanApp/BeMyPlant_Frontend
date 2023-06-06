@@ -46,19 +46,19 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
-                    val homeIntent = Intent(requireContext(), MainActivity::class.java)
+                    val homeIntent = Intent(activity, MainActivity::class.java)
                     startActivity(homeIntent)
                     true
                 }
 
                 R.id.menu_setting -> {
-                    val boardIntent = Intent(requireContext(), SettingActivity::class.java)
+                    val boardIntent = Intent(activity, SettingActivity::class.java)
                     startActivity(boardIntent)
                     true
                 }
 
                 R.id.menu_chat -> {
-                    val chatIntent = Intent(requireContext(), ChatActivity::class.java)
+                    val chatIntent = Intent(activity, ChatActivity::class.java)
                     startActivity(chatIntent)
                     true
                 }

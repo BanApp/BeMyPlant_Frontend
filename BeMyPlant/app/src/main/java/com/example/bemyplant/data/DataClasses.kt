@@ -5,21 +5,27 @@ data class LoginData(
     val username: String,
     val password: String
 )
+data class LoginResponse(
+    /*val status: String,
+    val message: String,*/
+    val token: String
+)
 data class SignUpData(
     val username: String,
     val password: String,
     val phones: String,
     val r_name: String,
-    val date: Date,
+    val cre_date: String,
     val activated: Int = 1
 )
-data class LoginResponse(
-    val status: String,
-    val message: String,
-    val token: String
-)
 data class SignUpResponse(
-    val status: String,
-    val message: String,
-    val userId: String
+    val username: String,
+    val r_name: String,
+    val phones: String,
+    val cre_date: String,
+    val authorityDtoSet:  List<AuthorityDto>
+)
+
+data class AuthorityDto(
+    val authorityName: String
 )

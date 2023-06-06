@@ -1,23 +1,23 @@
 package com.example.bemyplant.fragment
 
-import java.util.Date
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentS2Binding
 import com.example.bemyplant.data.SignUpData
+import com.example.bemyplant.databinding.FragmentS2Binding
 import com.example.bemyplant.network.RetrofitService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 class s2Fragment : Fragment() {
@@ -33,6 +33,14 @@ class s2Fragment : Fragment() {
     ): View? {
         binding.button3.setOnClickListener {
             val signUpData = getSignUpData()
+            /*showToast(requireContext(), signUpData.username)
+            showToast(requireContext(), signUpData.password)
+
+            showToast(requireContext(), signUpData.phones)
+            showToast(requireContext(), signUpData.r_name)
+            showToast(requireContext(), signUpData.cre_date)
+*/
+
             val pw2 = binding.editText3.text.toString()
             if (signUpData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력해주세요.")
@@ -58,7 +66,9 @@ class s2Fragment : Fragment() {
         val phones = arguments?.getString("phones").toString()
         val date = Date()
 
-        return SignUpData(username, pw, phones, r_name, date, 1)
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val dateStr: String = format.format(date)
+        return SignUpData(username, pw, phones, r_name, dateStr, 1)
     }
     private fun signUp(signUpData: SignUpData){
         CoroutineScope(Dispatchers.IO).launch {
@@ -75,7 +85,9 @@ class s2Fragment : Fragment() {
                 } else {
                     // 회원 가입 실패
                     withContext(Dispatchers.Main) {
+
                         showToast(requireContext(), "회원가입 실패")
+                        showToast(requireContext(), response.errorBody()!!.string())
                     }
                 }
             } catch (e: Exception) {
