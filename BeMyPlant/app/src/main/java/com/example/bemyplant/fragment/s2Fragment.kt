@@ -19,20 +19,11 @@ import com.example.bemyplant.databinding.FragmentS2Binding
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.network.RetrofitService
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class s2Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     val binding by lazy{FragmentS2Binding.inflate((layoutInflater))}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 /*
 * 입력받은*/
@@ -96,14 +87,5 @@ class s2Fragment : Fragment() {
 
         }
     }
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            s2Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

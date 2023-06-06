@@ -23,18 +23,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class s1Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     val binding by lazy{FragmentS1Binding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,7 +41,7 @@ class s1Fragment : Fragment() {
             } else if (phones== ""){
                 showToast(requireContext(),"핸드폰 번호를 입력해주세요")
             } else {
-            findNavController().navigate(R.id.action_s1Fragment_to_s2Fragment,bundle)
+                findNavController().navigate(R.id.action_s1Fragment_to_s2Fragment,bundle)
 
             }
         }
