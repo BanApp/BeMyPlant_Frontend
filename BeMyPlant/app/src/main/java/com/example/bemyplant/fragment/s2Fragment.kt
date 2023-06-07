@@ -33,13 +33,6 @@ class s2Fragment : Fragment() {
     ): View? {
         binding.button3.setOnClickListener {
             val signUpData = getSignUpData()
-            /*showToast(requireContext(), signUpData.username)
-            showToast(requireContext(), signUpData.password)
-
-            showToast(requireContext(), signUpData.phones)
-            showToast(requireContext(), signUpData.r_name)
-            showToast(requireContext(), signUpData.cre_date)
-*/
 
             val pw2 = binding.editText3.text.toString()
             if (signUpData.username.isEmpty()){
