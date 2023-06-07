@@ -24,7 +24,7 @@ _실무중심 산학협력 프로젝트 1 (캡스톤) 팀 프로젝트_
     <td height="140px" align="center"> <a href="https://github.com/BanApp"><img src="https://avatars.githubusercontent.com/u/93313445?s=460&v=4" width="140px" /><br/></a></td>
     <td height="140px" align="center"> <a href="https://github.com/1006lem"><img src="https://avatars.githubusercontent.com/u/68532437?v=4" width="140px" /><br/></a></td>
     <td height="140px" align="center"> <a href="https://github.com/jeonghyeon22"><img src="https://avatars.githubusercontent.com/u/89896026?v=4" width="140px" /><br/></a></td>
-    <td height="140px" align="center"> <a href="https://github.com/Minjeongc"><img src="https://avatars.githubusercontent.com/u/102506190?s=460&v=4" width="140px" /><br/></a></td>
+    <td height="140px" align="center"> <a href="https://github.com/Minjeongc"><img src="https://avatars.githubusercontent.com/u/87174310?v=4" width="140px" /><br/></a></td>
   </tr>
   <tr>
       <td align="center">👦🏻 정민준 (팀장: 백엔드, ML)</td>
