@@ -75,10 +75,10 @@
         android:src="@drawable/complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.928"></ImageButton>
+        app:layout_constraintVertical_bias="0.93"></ImageButton>
 
     <TextView
         android:id="@+id/textView"
@@ -97,18 +97,29 @@
 
     </TextView>
 
-    <TextView
-        android:id="@+id/chart"
-        android:layout_width="wrap_content"
+
+    <com.github.mikephil.charting.charts.LineChart
         android:layout_height="wrap_content"
-        android:text="chart가 보여질 곳"
-        android:textAlignment="center"
-        android:textSize="50dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/chart"
         app:layout_constraintBottom_toTopOf="@+id/imageButton_diaryView_complete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"/>
+
+<!--    &lt;!&ndash;<TextView-->
+<!--        android:id="@+id/chart"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="chart가 보여질 곳"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="50dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/imageButton_diaryView_complete"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.4"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />&ndash;&gt;-->
 
     <ImageButton
         android:id="@+id/imageButton_sensor_regen"

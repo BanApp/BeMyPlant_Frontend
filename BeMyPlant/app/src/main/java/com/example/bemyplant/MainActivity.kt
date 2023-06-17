@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
 
             when (item.itemId) {
                 R.id.menu_home -> {
-                    print("들어옴")
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
                     val homeIntent = Intent(this@MainActivity, MainActivity::class.java)
                     startActivity(homeIntent)
@@ -46,7 +45,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 R.id.menu_setting -> {
-                    print("들어옴")
                     // "setting" 메뉴 클릭 시 SettingActivity로 이동
                     val boardIntent = Intent(this@MainActivity, SettingActivity::class.java)
                     startActivity(boardIntent)
@@ -54,7 +52,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 R.id.menu_chat -> {
-                    print("들어옴")
                     // "채팅" 메뉴 클릭 시 ChatActivity로 이동
                     val chatIntent = Intent(this@MainActivity, ChatActivity::class.java)
                     startActivity(chatIntent)
@@ -62,7 +59,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 R.id.menu_diary -> {
-                    print("들어옴")
                     // "일기" 메뉴 클릭 시 DiaryActivity로 이동
                     val diaryIntent = Intent(this@MainActivity, DiaryActivity::class.java)
                     startActivity(diaryIntent)
