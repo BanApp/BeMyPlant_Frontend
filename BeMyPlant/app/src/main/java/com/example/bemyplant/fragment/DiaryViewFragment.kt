@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -38,6 +39,21 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         navController= Navigation.findNavController(view)
+
+        val bundle = arguments
+        if (bundle != null && bundle.containsKey("selectedDay")) {
+            val selectedDay = bundle.getParcelable<Day>("selectedDay")
+
+            val formattedDate = String.format(
+                "%04d/%02d/%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
+            )
+
+            // 클릭된 셀의 Day 정보(날짜 정보)를 화면에 작성
+            val diaryDateTextView: TextView = view.findViewById(R.id.textView_diaryView_day)
+            diaryDateTextView.text = formattedDate
+        }
+
+
 
         val completeImageView: ImageView = view.findViewById(R.id.imageButton_diaryView_complete)
         completeImageView.setOnClickListener(this)

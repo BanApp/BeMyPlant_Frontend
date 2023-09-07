@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -37,6 +38,19 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view:View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
 
+        val bundle = arguments
+        if (bundle != null && bundle.containsKey("selectedDay")) {
+            val selectedDay = bundle.getParcelable<Day>("selectedDay")
+
+            val formattedDate = String.format(
+                "%04d-%02d-%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
+            )
+
+            // 클릭된 셀의 Day 정보(날짜 정보)를 화면에 작성
+            val diaryDateTextView: TextView = view.findViewById(R.id.TextView_diaryNew_day)
+            diaryDateTextView.text = formattedDate
+        }
+
         navController= Navigation.findNavController(view)
 
         val completeImageButton: ImageButton = view.findViewById(R.id.imageButton_diaryNew_complete)
@@ -51,8 +65,13 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?){
         when(v?.id){
             R.id.imageButton_diaryNew_complete -> {
+                val selectedDay = arguments?.getParcelable<Day>("selectedDay")
+                val selectedDate = String.format(
+                    "%04d-%02d-%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
+                )
                 val actionId = R.id.action_diaryNewFragment_to_diaryViewFragment
-                navController.navigate(actionId)
+                var action = DiaryNewFragmentDirections.actionDiaryNewFragmentToDiaryViewFragment(selectedDate)
+                navController.navigate(action)
             }
             R.id.imageButton_diaryNew_photo -> {
                 val actionId = R.id.action_diaryNewFragment_to_diaryPhotoFragment

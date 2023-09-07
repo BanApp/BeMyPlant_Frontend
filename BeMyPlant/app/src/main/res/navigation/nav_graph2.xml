@@ -22,6 +22,9 @@
         android:name="com.example.bemyplant.fragment.DiaryViewFragment"
         android:label="fragment_diary_view"
         tools:layout="@layout/fragment_diary_view" >
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
         <action
             android:id="@+id/action_diaryViewFragment_to_diaryEditFragment"
             app:destination="@id/diaryEditFragment" />
@@ -34,6 +37,9 @@
         android:name="com.example.bemyplant.fragment.DiaryEditFragment"
         android:label="fragment_diary_edit"
         tools:layout="@layout/fragment_diary_edit" >
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
         <action
             android:id="@+id/action_diaryEditFragment_to_diaryPhotoFragment"
             app:destination="@id/diaryPhotoFragment" />

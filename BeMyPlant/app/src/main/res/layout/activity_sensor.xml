@@ -11,20 +11,19 @@
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-
         android:alignmentMode="alignMargins"
         android:columnCount="2"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="30dp"
-
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton_diaryView_complete"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.28"
         tools:layout_editor_absoluteX="0dp">
 
-        <Button
+        <TextView
+            android:id="@+id/textView_sensor_temperature"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_pink"
@@ -32,9 +31,10 @@
             android:gravity="center"
             android:text="온도\n31℃"
             android:textColor="#000000"
-            android:textSize="22dp"></Button>
+            android:textSize="22dp"></TextView>
 
-        <Button
+        <TextView
+            android:id="@+id/textView_button_sensor_humidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_purple"
@@ -42,43 +42,45 @@
             android:gravity="center"
             android:text="습도\n15%"
             android:textColor="#000000"
-            android:textSize="22dp"></Button>
+            android:textSize="22dp"></TextView>
 
-        <Button
+        <TextView
+            android:id="@+id/textView_button_sensor_light"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_yellow"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
-            android:text="광도\n31℃"
+            android:text="조도\n31LUX"
             android:textColor="#000000"
-            android:textSize="22dp"></Button>
+            android:textSize="22dp"></TextView>
 
-        <Button
+        <TextView
+            android:id="@+id/textView_button_sensor_soilHumidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_blue"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
-            android:text="토양습도\n40℃"
+            android:text="토양습도\n4%"
             android:textColor="#000000"
-            android:textSize="20dp"></Button>
+            android:textSize="20dp"></TextView>
 
     </GridLayout>
 
     <ImageButton
         android:id="@+id/imageButton_diaryView_complete"
-        android:layout_width="401dp"
-        android:layout_height="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:background="@android:color/transparent"
         android:src="@drawable/complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.93"></ImageButton>
+        app:layout_constraintVertical_bias="0.978"></ImageButton>
 
     <TextView
         android:id="@+id/textView"
@@ -99,27 +101,14 @@
 
 
     <com.github.mikephil.charting.charts.LineChart
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/chart"
+        android:id="@+id/chart_sensor_sensorChart"
+        android:layout_width="350dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toTopOf="@+id/imageButton_diaryView_complete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"/>
 
-<!--    &lt;!&ndash;<TextView-->
-<!--        android:id="@+id/chart"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="chart가 보여질 곳"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="50dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/imageButton_diaryView_complete"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.4"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />&ndash;&gt;-->
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
     <ImageButton
         android:id="@+id/imageButton_sensor_regen"
