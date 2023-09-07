@@ -74,8 +74,7 @@
         <ImageView
             android:id="@+id/imageView_diaryNew_plant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/example_photo">
+            android:layout_height="wrap_content">
         </ImageView>
 
         <LinearLayout
@@ -84,10 +83,10 @@
             android:orientation="horizontal"
             >
             <TextView
+                android:id="@+id/TextView_diaryNew_day"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="2023/04/24"
                 android:textColor="#000000"
                 android:fontFamily="@font/notosans_bold"
                 android:textSize="20dp">

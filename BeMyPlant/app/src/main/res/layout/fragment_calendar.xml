@@ -17,7 +17,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/prevMonth"
+                android:id="@+id/prevMonthImageView"
                 android:src="@drawable/arrow_left"
                 android:layout_width="0dp"
                 android:layout_marginLeft="3dp"
@@ -37,7 +37,7 @@
                 android:gravity="center"/>
 
             <ImageView
-                android:id="@+id/nextMonth"
+                android:id="@+id/nextMonthImageView"
                 android:src="@drawable/arrow_right"
                 android:layout_width="0dp"
                 android:layout_marginLeft="3dp"

@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -13,5 +13,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "BeMyPlant"
+// rootProject.buildFileName = 'build.gradle.kts'  // 이 부분을 주석 처리하거나 삭제합니다.
+
 include ':app'

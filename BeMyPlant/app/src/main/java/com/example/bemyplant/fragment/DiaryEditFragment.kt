@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -37,6 +38,19 @@ class DiaryEditFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view:View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
 
+        val bundle = arguments
+        if (bundle != null && bundle.containsKey("selectedDay")) {
+            val selectedDay = bundle.getParcelable<Day>("selectedDay")
+
+            val formattedDate = String.format(
+                "%04d-%02d-%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
+            )
+
+            // 클릭된 셀의 Day 정보(날짜 정보)를 화면에 작성
+            val diaryDateTextView: TextView = view.findViewById(R.id.TextView_diaryNew_day)
+            diaryDateTextView.text = formattedDate
+        }
+
         navController= Navigation.findNavController(view)
 
         val completeImageButton: ImageButton = view.findViewById(R.id.imageButton_diaryEdit_complete)
@@ -55,8 +69,17 @@ class DiaryEditFragment : Fragment(), View.OnClickListener {
                 navController.navigate(actionId)
             }
             R.id.imageButton_diaryEdit_complete -> {
+                // 날짜 정보도 같이 넘김
+                val selectedDay = arguments?.getParcelable<Day>("selectedDay")
+                val selectedDate = String.format(
+                    "%04d-%02d-%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
+                )
+
+                // Pass the selected date as an argument to the diaryViewFragment
                 val actionId = R.id.action_diaryEditFragment_to_diaryViewFragment
-                navController.navigate(actionId)
+                var action = DiaryEditFragmentDirections.actionDiaryEditFragmentToDiaryViewFragment(selectedDate)
+                navController.navigate(action)
+
 
             }
 
