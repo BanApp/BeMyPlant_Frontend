@@ -37,10 +37,10 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding.button1.setOnClickListener{
+        binding.loginButton.setOnClickListener{
             findNavController().navigate(R.id.action_mainFragment2_to_loginFragment3)
         }
-        binding.button2.setOnClickListener {
+        binding.signButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment2_to_s1Fragment)
         }
         return binding.root

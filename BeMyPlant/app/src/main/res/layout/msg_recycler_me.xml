@@ -26,5 +26,5 @@
         android:padding="8dp"
         android:text="메세지 내용"
         android:textSize="15sp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 </LinearLayout>

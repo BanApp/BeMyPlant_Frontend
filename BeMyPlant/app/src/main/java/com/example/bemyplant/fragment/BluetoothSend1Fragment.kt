@@ -36,7 +36,7 @@ class BluetoothSend1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button1.setOnClickListener {
+        binding.finishButton.setOnClickListener {
             findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
         }
         // Inflate the layout for this fragment
