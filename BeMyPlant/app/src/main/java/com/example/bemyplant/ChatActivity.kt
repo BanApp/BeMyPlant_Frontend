@@ -6,11 +6,35 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-
+import android.widget.Button
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import com.example.bemyplant.data.ChatMsg
+import com.example.bemyplant.adapter.MessageAdapter
 class ChatActivity : AppCompatActivity() {
+    private lateinit var messageEditText: EditText
+    private lateinit var sendButton: Button
+    private lateinit var messageAdapterMe: MessageAdapter
+    private lateinit var messageAdapterOther: MessageAdapter
+    private val itemListMe = ArrayList<ChatMsg>()
+    private val itemListOther = ArrayList<ChatMsg>()
+    private val currentUser = "jo" //임시값
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+        // 현재시간
+        fun getTime():String{
+            val now = System.currentTimeMillis()
+            val date = Date(now)
+            val dateFormat = SimpleDateFormat("hh:mm",Locale.getDefault())
+            return dateFormat.format(date)
+
+
+        }
 
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
@@ -52,6 +76,36 @@ class ChatActivity : AppCompatActivity() {
                 }
 
                 else -> false
+            }
+        }
+        messageEditText = findViewById(R.id.messageEditText)
+        sendButton = findViewById(R.id.sendButton)
+
+        val recyclerViewMe = findViewById<RecyclerView>(R.id.recycler_view_me)
+        val recyclerViewOther = findViewById<RecyclerView>(R.id.recycler_view_other)
+
+        messageAdapterMe = MessageAdapter(itemListMe, currentUser)
+        messageAdapterOther = MessageAdapter(itemListOther, currentUser)
+
+        recyclerViewMe.adapter = messageAdapterMe
+        recyclerViewOther.adapter = messageAdapterOther
+
+        recyclerViewMe.layoutManager = LinearLayoutManager(this)
+        recyclerViewOther.layoutManager = LinearLayoutManager(this)
+
+        sendButton.setOnClickListener {
+            val message = messageEditText.text.toString()
+            if (message.isNotEmpty()) {
+                if (currentUser == "jo") {
+                    itemListMe.add(ChatMsg(message, currentUser, getTime()))
+                    messageAdapterMe.notifyDataSetChanged()
+                    recyclerViewMe.scrollToPosition(itemListMe.size - 1)
+                } else {
+                    itemListOther.add(ChatMsg(message, "otherUserId", getTime()))
+                    messageAdapterOther.notifyDataSetChanged()
+                    recyclerViewOther.scrollToPosition(itemListOther.size - 1)
+                }
+                messageEditText.text.clear()
             }
         }
     }
