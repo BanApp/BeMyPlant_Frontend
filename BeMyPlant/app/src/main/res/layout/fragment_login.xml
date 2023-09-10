@@ -7,14 +7,14 @@
     tools:context=".fragment.LoginFragment">
     <!--텍스트: 로그인-->
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/loginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:text="@string/login"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="54sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,37 +22,32 @@
         app:layout_constraintVertical_bias="0.024" />
 
     <!--텍스트: BeMyPlant!-->
-
-    <!--텍스트(ID) + 아이디 입력창 -->
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="211dp"
-        android:layout_height="130dp"
+        android:id="@+id/appNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:text="@string/sub_name"
         android:textColor="@color/black"
-        android:textSize="32sp"
+        android:textSize="44sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/loginText"
         app:layout_constraintVertical_bias="0.0" />
 
-    <!--텍스트(PW) + 비밀번호 입력창 -->
 
-    <!--시작버튼 -->
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="353dp"
+        android:id="@+id/userId"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/appNameText"
+        app:layout_constraintVertical_bias="0.06">
 
 
         <TextView
@@ -62,26 +57,26 @@
             android:labelFor="@+id/id_input"
             android:text="@string/id"
             android:textColor="@color/black"
-            android:textSize="28sp" />
+            android:textSize="32sp" />
 
         <EditText
-            android:id="@+id/editText1"
-            android:layout_width="353dp"
-            android:layout_height="45dp"
+            android:id="@+id/userIdInput"
+            android:layout_width="400dp"
+            android:layout_height="55dp"
             android:background="@drawable/button_white2" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="353dp"
-        android:layout_height="125dp"
+        android:id="@+id/userPw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-        app:layout_constraintVertical_bias="0.022">
+        app:layout_constraintTop_toBottomOf="@+id/userId"
+        app:layout_constraintVertical_bias="0.085">
 
 
         <TextView
@@ -91,51 +86,44 @@
             android:labelFor="@+id/pw_input"
             android:text="@string/pw"
             android:textColor="@color/black"
-            android:textSize="28sp" />
+            android:textSize="32sp" />
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/editText2"
-                android:layout_width="353dp"
-                android:layout_height="45dp"
+                android:id="@+id/userPwInput"
+                android:layout_width="400dp"
+                android:layout_height="55dp"
                 android:background="@drawable/button_white2" />
 
             <android.widget.Button
-                android:layout_width="32dp"
-                android:layout_height="23dp"
-                android:layout_alignBottom="@+id/editText2"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="310dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="11dp"
-                android:layout_marginBottom="11dp"
-                android:contentDescription="visible"
+                android:id="@+id/visibleButton"
+                android:layout_width="35dp"
+                android:layout_height="27dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/visible"
-                android:id="@+id/button1"
-                android:backgroundTint="@color/charcoal" />
-        </RelativeLayout>
+                android:backgroundTint="@color/charcoal"
+                android:contentDescription="visible" />
+        </FrameLayout>
     </LinearLayout>
 
     <android.widget.Button
-        android:id="@+id/button2"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:id="@+id/startButton"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
         android:background="@drawable/button_green"
+        android:gravity="center"
         android:text="@string/start"
         android:textColor="@color/white"
-        android:textSize="18sp"
-        android:gravity="center"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintTop_toBottomOf="@+id/userPw"
+        app:layout_constraintVertical_bias="0.6" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

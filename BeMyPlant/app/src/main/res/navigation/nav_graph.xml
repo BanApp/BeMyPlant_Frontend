@@ -34,14 +34,14 @@
         android:id="@+id/sRFragment"
         android:name="com.example.bemyplant.fragment.SensorRegisterFragment"
         android:label="fragment_s_r"
-        tools:layout="@layout/fragment_sensor_reigster" >
+        tools:layout="@layout/fragment_sensor_register" >
         <action
             android:id="@+id/action_sRFragment_to_bCFragment2"
             app:destination="@id/bCFragment2" />
     </fragment>
     <fragment
         android:id="@+id/bCFragment2"
-        android:name="com.example.bemyplant.fragment.BuletoothConnectFragment"
+        android:name="com.example.bemyplant.fragment.BluetoothConnectFragment"
         android:label="fragment_b_c"
         tools:layout="@layout/fragment_bluetooth_connect" >
         <action
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/bS3Fragment2"
-        android:name="com.example.bemyplant.fragment.BluetoohtSend3Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend3Fragment"
         android:label="fragment_b_s3"
         tools:layout="@layout/fragment_bluetooth_send3" >
         <action

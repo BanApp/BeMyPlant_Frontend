@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentBSBinding
+import com.example.bemyplant.databinding.FragmentBluetoothSend1Binding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,7 +23,7 @@ class BluetoothSend1Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val binding by lazy{FragmentBSBinding.inflate(layoutInflater)}
+    val binding by lazy{FragmentBluetoothSend1Binding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

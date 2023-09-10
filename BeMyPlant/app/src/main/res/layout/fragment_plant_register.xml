@@ -4,85 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.PlantRegisterFragment">
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="@string/register_plant"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.171"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.058" />
+    tools:context=".fragment.PlantRegisterRFragment">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/helloText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/notosans_medium"
-        android:text="@string/register_plant_sub1"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/notosans_bold"
+        android:text="@string/register_plant"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="44sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.255"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.039" />
-
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView1"
-        android:layout_width="329dp"
-        android:layout_height="40dp"
-        android:background="@drawable/button_white"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.451"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
+        android:id="@+id/plantSpecies"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView1"
-        app:layout_constraintVertical_bias="0.149">
+        app:layout_constraintTop_toBottomOf="@+id/helloText"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.85">
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:id="@+id/plantSpeciesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/notosans_medium"
+            android:text="@string/register_plant_sub1"
+            android:textColor="@color/black"
+            android:textSize="28sp" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/plantSpeciesSearch"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/button_white"
+            app:iconifiedByDefault="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/plantName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plantSpecies"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.85">
+
+        <TextView
+            android:id="@+id/plantNameText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_medium"
+            android:labelFor="@id/plantNameInput"
             android:text="@string/register_plant_sub2"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:labelFor="@id/editText1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.291"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
-            app:layout_constraintVertical_bias="0.177" />
+            android:textSize="28sp"
+            android:layout_marginTop="32sp"
+            />
 
         <android.widget.EditText
-            android:id="@+id/editText1"
-            android:layout_width="329sp"
-            android:layout_height="40sp"
-            android:width="200sp"
-            android:height="300sp"
+            android:id="@+id/plantNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
             android:background="@drawable/button_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,21 +97,21 @@
     </LinearLayout>
 
     <android.widget.Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/finishButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"
-        android:textColor="@color/white"
         android:fontFamily="@font/notosans_medium"
-        android:textSize="18sp"
         android:gravity="center"
         android:text="@string/finish"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintDimensionRatio="2.3:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-        app:layout_constraintVertical_bias="0.912" />
+        app:layout_constraintTop_toBottomOf="@+id/plantName"
+        app:layout_constraintVertical_bias="0.6" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

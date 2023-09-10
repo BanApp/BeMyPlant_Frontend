@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentPRBinding
+import com.example.bemyplant.databinding.FragmentPlantRegisterBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +25,7 @@ class PlantRegisterFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val binding by lazy{FragmentPRBinding.inflate(layoutInflater)}
+    val binding by lazy{FragmentPlantRegisterBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,7 +39,7 @@ class PlantRegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         showToast(requireContext(),"회원가입 완료")
-        binding.button1.setOnClickListener {
+        binding.finishButton.setOnClickListener {
             findNavController().navigate(R.id.action_pRFragment_to_iSFragment2)
         }
         // Inflate the layout for this fragment

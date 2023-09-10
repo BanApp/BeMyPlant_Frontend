@@ -7,89 +7,69 @@
     tools:context=".fragment.ImageSelectFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/imageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/notosans_bold"
+        android:text="뽀삐를🪴\n선택해 보아요! "
+        android:textColor="@color/black"
+        android:textSize="44sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05">
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:gravity="left"
-            android:text="뽀삐를🪴"
-            android:textColor="@color/green_1"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.113" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:gravity="center"
-            android:text="선택해 보아요!"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.113" />
-    </LinearLayout>
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.widget.ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="128dp"
-        android:layout_height="131dp"
+        android:id="@+id/flowerButton1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/flower"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="flowerButton1"
+        app:layout_constraintDimensionRatio="1:1.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintTop_toBottomOf="@+id/imageText"
+        app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="128sp"
-        android:layout_height="131sp"
+        android:id="@+id/flowerButton2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="140dp"
         android:background="@drawable/flower2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="flowerButton2"
+        app:layout_constraintDimensionRatio="1:1.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toEndOf="@+id/imageButton1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageText"
+        app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/finishButton"
+        android:layout_width="176dp"
+        android:layout_height="86dp"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
         android:text="@string/finish"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2.3:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-        app:layout_constraintVertical_bias="0.795" />
+        app:layout_constraintTop_toBottomOf="@+id/flowerButton1"
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentSRBinding
+import com.example.bemyplant.databinding.FragmentSensorRegisterBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,14 +16,14 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SensorRegisterFragment.newInstance] factory method to
+ * Use the [SensorRegisterRFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SensorRegisterFragment : Fragment() {
+class SensorRegisterRFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val binding by lazy{FragmentSRBinding.inflate(layoutInflater)}
+    val binding by lazy{FragmentSensorRegisterBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,7 +36,7 @@ class SensorRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button4.setOnClickListener {
+        binding.finishButton.setOnClickListener {
             findNavController().navigate(R.id.action_sRFragment_to_bCFragment2)
         }
         return binding.root
@@ -55,7 +55,7 @@ class SensorRegisterFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SensorRegisterFragment().apply {
+            SensorRegisterRFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

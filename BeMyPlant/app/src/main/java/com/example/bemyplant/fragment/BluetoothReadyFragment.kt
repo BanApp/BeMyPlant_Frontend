@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentBRBinding
+import com.example.bemyplant.databinding.FragmentBluetoothReadyBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -15,7 +15,7 @@ private const val ARG_PARAM2 = "param2"
 class BluetoothReadyFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var binding: FragmentBRBinding
+    private lateinit var binding: FragmentBluetoothReadyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +29,13 @@ class BluetoothReadyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBRBinding.inflate(inflater, container, false)
+        binding = FragmentBluetoothReadyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button1 = binding.imageButton1
-        button1.setOnClickListener{
+        binding.plantButton.setOnClickListener{
             findNavController().navigate(R.id.action_bRFragment_to_loginFragment3)
         }
     }
