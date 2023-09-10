@@ -19,10 +19,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [s1Fragment.newInstance] factory method to
+ * Use the [SignUp1Fragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class s1Fragment : Fragment() {
+class SignUp1Fragment : Fragment() {
     val binding by lazy{FragmentS1Binding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

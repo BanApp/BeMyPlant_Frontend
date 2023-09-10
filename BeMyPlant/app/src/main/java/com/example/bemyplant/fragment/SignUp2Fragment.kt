@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-class s2Fragment : Fragment() {
+class SignUp2Fragment : Fragment() {
     val binding by lazy{FragmentS2Binding.inflate((layoutInflater))}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

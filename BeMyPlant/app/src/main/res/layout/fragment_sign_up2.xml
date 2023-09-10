@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.s2Fragment">
+    tools:context=".fragment.SignUp2Fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <!--회원가입-->

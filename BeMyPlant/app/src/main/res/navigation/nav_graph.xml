@@ -23,90 +23,90 @@
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/iSFragment2"
-        android:name="com.example.bemyplant.fragment.iSFragment"
+        android:name="com.example.bemyplant.fragment.ImageSelectFragment"
         android:label="fragment_i_s"
-        tools:layout="@layout/fragment_i_s" >
+        tools:layout="@layout/fragment_image_select" >
         <action
             android:id="@+id/action_iSFragment2_to_sRFragment"
             app:destination="@id/sRFragment" />
     </fragment>
     <fragment
         android:id="@+id/sRFragment"
-        android:name="com.example.bemyplant.fragment.sRFragment"
+        android:name="com.example.bemyplant.fragment.SensorRegisterFragment"
         android:label="fragment_s_r"
-        tools:layout="@layout/fragment_s_r" >
+        tools:layout="@layout/fragment_sensor_reigster" >
         <action
             android:id="@+id/action_sRFragment_to_bCFragment2"
             app:destination="@id/bCFragment2" />
     </fragment>
     <fragment
         android:id="@+id/bCFragment2"
-        android:name="com.example.bemyplant.fragment.bCFragment"
+        android:name="com.example.bemyplant.fragment.BuletoothConnectFragment"
         android:label="fragment_b_c"
-        tools:layout="@layout/fragment_b_c" >
+        tools:layout="@layout/fragment_bluetooth_connect" >
         <action
             android:id="@+id/action_bCFragment2_to_bSFragment2"
             app:destination="@id/bSFragment2" />
     </fragment>
     <fragment
         android:id="@+id/bSFragment2"
-        android:name="com.example.bemyplant.fragment.bSFragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend1Fragment"
         android:label="fragment_b_s"
-        tools:layout="@layout/fragment_b_s" >
+        tools:layout="@layout/fragment_bluetooth_send1" >
         <action
             android:id="@+id/action_bSFragment2_to_bS2Fragment2"
             app:destination="@id/bS2Fragment2" />
     </fragment>
     <fragment
         android:id="@+id/bS2Fragment2"
-        android:name="com.example.bemyplant.fragment.bS2Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend2Fragment"
         android:label="fragment_b_s2"
-        tools:layout="@layout/fragment_b_s2" >
+        tools:layout="@layout/fragment_bluetooth_send2" >
         <action
             android:id="@+id/action_bS2Fragment2_to_bS3Fragment2"
             app:destination="@id/bS3Fragment2" />
     </fragment>
     <fragment
         android:id="@+id/bS3Fragment2"
-        android:name="com.example.bemyplant.fragment.bS3Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoohtSend3Fragment"
         android:label="fragment_b_s3"
-        tools:layout="@layout/fragment_b_s3" >
+        tools:layout="@layout/fragment_bluetooth_send3" >
         <action
             android:id="@+id/action_bS3Fragment2_to_bRFragment"
             app:destination="@id/bRFragment" />
     </fragment>
     <fragment
         android:id="@+id/s1Fragment"
-        android:name="com.example.bemyplant.fragment.s1Fragment"
+        android:name="com.example.bemyplant.fragment.SignUp1Fragment"
         android:label="fragment_s1"
-        tools:layout="@layout/fragment_s1" >
+        tools:layout="@layout/fragment_sign_up1" >
         <action
             android:id="@+id/action_s1Fragment_to_s2Fragment"
             app:destination="@id/s2Fragment" />
     </fragment>
     <fragment
         android:id="@+id/s2Fragment"
-        android:name="com.example.bemyplant.fragment.s2Fragment"
+        android:name="com.example.bemyplant.fragment.SignUp2Fragment"
         android:label="fragment_s2"
-        tools:layout="@layout/fragment_s2" >
+        tools:layout="@layout/fragment_sign_up2" >
         <action
             android:id="@+id/action_s2Fragment_to_pRFragment"
             app:destination="@id/pRFragment" />
     </fragment>
     <fragment
         android:id="@+id/bRFragment"
-        android:name="com.example.bemyplant.fragment.bRFragment"
+        android:name="com.example.bemyplant.fragment.BluetoothReadyFragment"
         android:label="fragment_b_r"
-        tools:layout="@layout/fragment_b_r" >
+        tools:layout="@layout/fragment_bluetooth_ready" >
         <action
             android:id="@+id/action_bRFragment_to_loginFragment3"
             app:destination="@id/loginFragment3" />
     </fragment>
     <fragment
         android:id="@+id/pRFragment"
-        android:name="com.example.bemyplant.fragment.pRFragment"
+        android:name="com.example.bemyplant.fragment.PlantRegisterFragment"
         android:label="fragment_p_r"
-        tools:layout="@layout/fragment_p_r" >
+        tools:layout="@layout/fragment_plant_register" >
         <action
             android:id="@+id/action_pRFragment_to_iSFragment2"
             app:destination="@id/iSFragment2" />

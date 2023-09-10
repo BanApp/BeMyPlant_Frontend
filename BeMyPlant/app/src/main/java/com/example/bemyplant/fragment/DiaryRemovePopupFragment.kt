@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentSRBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,14 +14,14 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [sRFragment.newInstance] factory method to
+ * Use the [DiaryRemovePopupFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class sRFragment : Fragment() {
+class DiaryRemovePopupFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val binding by lazy{FragmentSRBinding.inflate(layoutInflater)}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,11 +34,8 @@ class sRFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button4.setOnClickListener {
-            findNavController().navigate(R.id.action_sRFragment_to_bCFragment2)
-        }
-        return binding.root
         // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_diary_remove_popup, container, false)
     }
 
     companion object {
@@ -50,12 +45,12 @@ class sRFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment sRFragment.
+         * @return A new instance of fragment dRPFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            sRFragment().apply {
+            DiaryRemovePopupFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
