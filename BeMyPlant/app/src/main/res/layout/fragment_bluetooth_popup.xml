@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="220dp"
+    android:layout_width="220sp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".fragment.bPFragment">
+    tools:context=".fragment.BluetoothPopupFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
-        android:text="게시글을\n삭제하시겠습니까?"
+        android:text="블루투스 권한을\n허용하시겠습니까?"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:padding="1dp"

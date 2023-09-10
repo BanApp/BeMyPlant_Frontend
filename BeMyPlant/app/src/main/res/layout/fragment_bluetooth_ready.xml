@@ -4,36 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.bRFragment">
+    tools:context=".fragment.BluetoothReadyFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/buttonClickText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:text="모든 준비가 되었다면,\n버튼을 클릭해주세요!"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="32sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.269" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <android.widget.ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="230sp"
-        android:layout_height="230sp"
+        android:id="@+id/plantButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/button_plant"
         android:contentDescription="bluetooth"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonClickText"
+        app:layout_constraintVertical_bias="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

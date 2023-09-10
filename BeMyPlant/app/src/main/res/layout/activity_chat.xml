@@ -9,6 +9,65 @@
     tools:context=".MainActivity">
 
 
+    <!-- 첫 번째 리사이클러뷰 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_me"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:layout_gravity="top"
+        android:layout_weight="1"
+        android:padding="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view_other"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/msg_recycler_me" />
+
+    <!-- 두 번째 리사이클러뷰 -->
+
+    <!-- 메시지 입력창 및 버튼 -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_other"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:padding="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/inputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view_me"
+        tools:listitem="@layout/msg_recycler_other" />
+
+    <android.widget.LinearLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation_main_menu">
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="메시지를 입력하세요"
+            />
+
+        <android.widget.Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전송"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+    </android.widget.LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_main_menu"
         android:layout_width="409dp"
@@ -22,22 +81,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu" />
 
-
-    <TextView
-        android:id="@+id/plantName"
-        android:layout_width="277dp"
-        android:layout_height="119dp"
-        android:gravity="center"
-        android:text="CHAT"
-        android:textColor="#000000"
-        android:textSize="96sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.486" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

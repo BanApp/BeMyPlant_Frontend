@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.databinding.FragmentS2Binding
+import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +20,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-class s2Fragment : Fragment() {
-    val binding by lazy{FragmentS2Binding.inflate((layoutInflater))}
+class SignUp2Fragment : Fragment() {
+    val binding by lazy{FragmentSignUp2Binding.inflate((layoutInflater))}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,10 +31,10 @@ class s2Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button3.setOnClickListener {
+        binding.finishButton.setOnClickListener {
             val signUpData = getSignUpData()
 
-            val pw2 = binding.editText3.text.toString()
+            val pw2 = binding.userPwConfirmInput.text.toString()
             if (signUpData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력해주세요.")
             } else if (signUpData.password.isEmpty()){
@@ -53,8 +53,8 @@ class s2Fragment : Fragment() {
     private val retrofitService = RetrofitService().apiService
 
     private fun getSignUpData(): SignUpData {
-        val username = binding.editText1.text.toString()
-        val pw = binding.editText2.text.toString()
+        val username = binding.userIdInput.text.toString()
+        val pw = binding.userPwInput.text.toString()
         val r_name = arguments?.getString("r_name").toString()
         val phones = arguments?.getString("phones").toString()
         val date = Date()

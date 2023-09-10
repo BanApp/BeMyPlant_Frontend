@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/msg_recycler_me"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:gravity="end"
+    android:paddingRight="10dp"
+    android:padding="5dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/sendTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:baselineAligned="false"
+        android:padding="2dp"
+        android:text="@{android.text.format.DateFormat.format('HH:mm:ss', viewModel.message.sendTime)}"
+        android:textSize="8sp"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/messageContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="메세지 내용"
+        android:textSize="15sp"
+        android:visibility="visible" />
+</LinearLayout>

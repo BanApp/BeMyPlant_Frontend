@@ -4,105 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.bSFragment">
+    tools:context=".fragment.BluetoothSend1Fragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:text="정보를✍\n입력해주세요!"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="44sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:id="@+id/wifiEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/green_1"
         android:fontFamily="@font/notosans_bold"
         android:text="Wifi ssid"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        app:layout_constraintWidth_percent="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
+        app:layout_constraintVertical_bias="0.08" />
 
     <EditText
-        android:id="@+id/editText2"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:id="@+id/wifiPwEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/green_1"
         android:fontFamily="@font/notosans_bold"
         android:text="Wifi 비밀번호"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        app:layout_constraintWidth_percent="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText1"
+        app:layout_constraintTop_toBottomOf="@+id/wifiEdit"
         app:layout_constraintVertical_bias="0.08" />
 
     <EditText
-        android:id="@+id/editText3"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:id="@+id/userIdEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/green_1"
         android:fontFamily="@font/notosans_bold"
         android:text="사용자 ID"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        app:layout_constraintWidth_percent="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2"
+        app:layout_constraintTop_toBottomOf="@+id/wifiPwEdit"
         app:layout_constraintVertical_bias="0.08" />
 
     <EditText
-        android:id="@+id/editText4"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:id="@+id/userPwEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/green_1"
         android:text="사용자 비밀번호"
         android:textColor="@color/black"
         android:fontFamily="@font/notosans_bold"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        app:layout_constraintWidth_percent="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/userIdEdit"
         app:layout_constraintVertical_bias="0.08" />
 
     <android.widget.Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/finishButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
         android:text="@string/finish"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        app:layout_constraintDimensionRatio="2.3:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4"
-        app:layout_constraintVertical_bias="0.89" />
+        app:layout_constraintTop_toBottomOf="@+id/userPwEdit"
+        app:layout_constraintVertical_bias="0.6" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

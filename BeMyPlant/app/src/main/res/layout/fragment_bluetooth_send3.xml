@@ -4,36 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.bS3Fragment">
+    tools:context=".fragment.BluetoothSend3Fragment">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:text="전송 완료!"
         android:textColor="@color/black"
-        android:textSize="48sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.widget.Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/finishButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="@string/next"
+        android:text="@string/finish"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        app:layout_constraintDimensionRatio="2.3:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.748" />
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

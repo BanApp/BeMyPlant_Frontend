@@ -4,68 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.bCFragment">
+    tools:context=".fragment.BluetoothConnectFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/connectText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:text="아두이노와 핸드폰을\n블루투스로 연결해볼까요?"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="40sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.widget.ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="200sp"
-        android:layout_height="200sp"
+        android:id="@+id/bluetoothButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bluetooth"
         android:contentDescription="bluetooth"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintTop_toBottomOf="@+id/connectText"
+        app:layout_constraintVertical_bias="0.173"
+        app:layout_constraintWidth_percent="0.55" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/seqText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_medium"
         android:text="1. 블루투스 권한을 허용해 주세요!\n \n2. 블루투스 설정창 → 페어링을 진행해주세요!"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton1"
+        app:layout_constraintTop_toBottomOf="@+id/bluetoothButton"
         app:layout_constraintVertical_bias="0.248" />
+
     <android.widget.Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/finishButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="36dp"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
         android:text="@string/finish"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2.3:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/seqText"
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

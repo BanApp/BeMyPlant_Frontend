@@ -7,24 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentBCBinding
-import com.example.bemyplant.databinding.FragmentBS3Binding
+import com.example.bemyplant.databinding.FragmentBluetoothReadyBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [bS3Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class bS3Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
+class BluetoothReadyFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    val binding by lazy{ FragmentBS3Binding.inflate(layoutInflater)}
+    private lateinit var binding: FragmentBluetoothReadyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,26 +29,21 @@ class bS3Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button1.setOnClickListener {
-            findNavController().navigate(R.id.action_bS3Fragment2_to_bRFragment)
-        }
-        // Inflate the layout for this fragment
+        binding = FragmentBluetoothReadyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.plantButton.setOnClickListener{
+            findNavController().navigate(R.id.action_bRFragment_to_loginFragment3)
+        }
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment bS3Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            bS3Fragment().apply {
+            BluetoothReadyFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

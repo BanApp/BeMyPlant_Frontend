@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.bS2Fragment">
+    tools:context=".fragment.BluetoothSend2Fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:text="데이터 전송\n중입니다..."
         android:textColor="@color/black"
-        android:textSize="48sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
