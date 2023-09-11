@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentS1Binding
+import com.example.bemyplant.databinding.FragmentSignUp1Binding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,7 +23,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SignUp1Fragment : Fragment() {
-    val binding by lazy{FragmentS1Binding.inflate(layoutInflater)}
+    val binding by lazy{FragmentSignUp1Binding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,10 +31,10 @@ class SignUp1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.button1.setOnClickListener {
+        binding.nextButton.setOnClickListener {
             /*사용자이름 및 핸드폰 번호*/
-            val r_name = binding.editText1.text.toString()
-            val phones = binding.editText2.text.toString()
+            val r_name = binding.userNameInput.text.toString()
+            val phones = binding.userPhoneInput.text.toString()
             val bundle = bundleOf("r_name" to r_name, "phones" to phones)
             if (r_name == "" ){
                 showToast(requireContext(),"사용자 이름을 입력해주세요")

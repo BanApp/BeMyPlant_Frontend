@@ -6,15 +6,39 @@ import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.ImageButton
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import android.widget.FrameLayout
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.example.bemyplant.fragment.FlowerIdFragment
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //-----------식물 클릭시, 신분증 나오는 부분
+        val flowerButton = findViewById<ImageButton>(R.id.flowerButton)
+        val flowerIdFrame = findViewById<FrameLayout>(R.id.flowerIdFrame)
 
+        flowerButton.setOnClickListener{
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val fragment: Fragment = FlowerIdFragment()
+            fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+            flowerIdFrame.bringToFront()
+
+
+
+        }
 
         //------------------------센서
         val linearLayout = findViewById<LinearLayout>(R.id.linearLayout_main_health)

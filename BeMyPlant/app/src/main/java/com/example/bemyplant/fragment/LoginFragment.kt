@@ -53,7 +53,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button2.setOnClickListener {
+        binding.startButton.setOnClickListener {
             val loginData = getLoginData()
             if (loginData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력하세요")
@@ -71,8 +71,8 @@ class LoginFragment : Fragment() {
     }
     private val retrofitService = RetrofitService().apiService
     private fun getLoginData(): LoginData {
-        val username = binding.editText1.text.toString()
-        val password = binding.editText2.text.toString()
+        val username = binding.userIdInput.text.toString()
+        val password = binding.userPwInput.text.toString()
 
         return LoginData(username, password)
     }
