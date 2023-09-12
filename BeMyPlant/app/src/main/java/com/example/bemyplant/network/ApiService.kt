@@ -9,6 +9,7 @@ import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ApiService {
@@ -23,9 +24,11 @@ interface ApiService {
 
     @GET("api/get-sensor-data")
     //suspend fun getSensorData(@Query("num") num: Int): Response<SensorsData>
-    suspend fun getSensorData(@Query("num") num: Int): Response<ArrayList<SensorData>>
+    suspend fun getSensorData(@Query("num") num: Int, @Header("Authorization") token: String?): Response<ArrayList<SensorData>>
 
+    // TODO: 사용자 계정 정보 call하는 API 작성 @GET("api/user")
 
+    // TODO: 사용자 계정 정보 삭제하는 API 작성 @DELETE("api/withdrawl")
     @GET("garden/gardenDtl")
     //suspend fun getSensorData(@Query("num") num: Int): Response<SensorsData>
     suspend fun getGardenDetail(@Query("apiKey") apiKey: String,@Query("cntntsNo") cntntsNo: String): Response<GardenResponse>
