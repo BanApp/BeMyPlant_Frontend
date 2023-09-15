@@ -36,23 +36,38 @@ import kotlin.math.abs
 
 
 class SensorActivity : AppCompatActivity() {
-    private lateinit var binding : ActivitySensorBinding
+    //private lateinit var binding : ActivitySensorBinding
     private val retrofitService = RetrofitService().apiService
-    private val regenButton: ImageButton = findViewById(R.id.imageButton_sensor_regen)
-    private val temper: TextView = findViewById(R.id.textView_sensor_temperature)
-    private val humid: TextView = findViewById(R.id.textView_button_sensor_humidity)
-    private val light: TextView = findViewById(R.id.textView_button_sensor_light)
-    private val soilHumid: TextView =
-        findViewById(R.id.textView_button_sensor_soilHumidity)
+    private lateinit var regenButton: ImageButton
+    private lateinit var temper: TextView
+    private lateinit var humid: TextView
+    private lateinit var light: TextView
+    private lateinit var soilHumid: TextView
+    private lateinit var completeButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sensor)
+
+        regenButton = findViewById(R.id.imageButton_sensor_regen)
+        temper =findViewById(R.id.textView_sensor_temperature)
+        humid = findViewById(R.id.textView_sensor_humidity)
+        light = findViewById(R.id.textView_sensor_light)
+        soilHumid = findViewById(R.id.textView_sensor_soilHumidity)
+
+        completeButton = findViewById(R.id.imageButton_sensor_complete)
+
+        // 완료 버튼 클릭 시 메인 화면으로 이동
+        completeButton.setOnClickListener{
+            val homeIntent = Intent(this@SensorActivity, MainActivity::class.java)
+            startActivity(homeIntent)
+        }
         // regen 버튼 클릭 시 센서 정보 갱신
         regenButton.setOnClickListener {
             setNewSensorData()
             //getHealthInfo()로 health data n개 추출 -> drawChart()로 그래프 그리기
         }
+
 
         // 1. get sensor data & set textView
         setNewSensorData()
@@ -122,24 +137,28 @@ class SensorActivity : AppCompatActivity() {
 
     }
 
-    public fun getHealthInfo() {
+   /* public fun getHealthInfo() {
         // TODO: 2. health, graph 정보 -> rest api call하는 function 작성 (백엔드 호출 )
     }
-
+*/
 
     // setNewSensorData function calls sensor API & set textViews(temper, humid, light, soilHumid).
     private fun setNewSensorData() {
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val Tag: String = "sensor"
+        Log.d(Tag, "token: $token")
+
+        // 토큰 부재 시 초기화면(MJ_main)으로 전환
+        if (token.isNullOrEmpty()){
+            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+        }
         CoroutineScope(Dispatchers.IO).launch {
-            val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
-            val token = sharedPreferences.getString("token", null)
+            val response = retrofitService.getSensorData(1, "Bearer " + token)
+            val Tag: String = "sensor"
+            Log.d(Tag, "sensor raw-response: $response")
 
-            // 토큰 부재 시 초기화면(MJ_main)으로 전환
-            if (token.isNullOrEmpty()){
-                val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
-                startActivity(homeIntent)
-            }
-
-            val response = retrofitService.getSensorData(1, token)
             if (response.isSuccessful) {
                 val sensorDataList = response.body()
                 // 1. date값
@@ -147,10 +166,26 @@ class SensorActivity : AppCompatActivity() {
                 if (!sensorDataList.isNullOrEmpty()) {
                     val mostRecentData = sensorDataList.firstOrNull()
 
-                    temper.text = mostRecentData?.airTemp.toString()
-                    humid.text = mostRecentData?.airHumid.toString()
-                    light.text = mostRecentData?.lightIntensity.toString()
-                    soilHumid.text = mostRecentData?.soilHumid.toString()
+                    Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+                    Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+                    Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+                    Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
+
+                    runOnUiThread {
+                        humid.text = "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
+                        light.text =
+                            "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
+                        soilHumid.text =
+                            "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+                        temper.text = "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
+
+                        // 화면 갱신
+                        humid.invalidate()
+                        light.invalidate()
+                        soilHumid.invalidate()
+                        temper.invalidate()
+                    }
+
 
                 }
             }
