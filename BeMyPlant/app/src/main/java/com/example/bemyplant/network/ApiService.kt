@@ -1,10 +1,14 @@
 package com.example.bemyplant.network
+import com.example.bemyplant.data.ChatRequest
+import com.example.bemyplant.data.ChatResponse
 import com.example.bemyplant.data.GardenResponse
 import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.data.SensorData
 import com.example.bemyplant.data.LoginResponse
 import com.example.bemyplant.data.SignUpResponse
+import com.example.bemyplant.data.UserData
+import com.example.bemyplant.data.withdrawlResponse
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Body
@@ -22,13 +26,22 @@ interface ApiService {
     @POST("api/signup")
     suspend fun signUp(@Body signUpData: SignUpData): Response<SignUpResponse>
 
+    @POST("api/chatbot")
+    suspend fun chat(@Body chatRequest: ChatRequest, @Header("Authorization") token: String?): Response<ChatResponse>
+
     @GET("api/get-sensor-data")
     //suspend fun getSensorData(@Query("num") num: Int): Response<SensorsData>
     suspend fun getSensorData(@Query("num") num: Int, @Header("Authorization") token: String?): Response<ArrayList<SensorData>>
 
-    // TODO: 사용자 계정 정보 call하는 API 작성 @GET("api/user")
 
-    // TODO: 사용자 계정 정보 삭제하는 API 작성 @DELETE("api/withdrawl")
+    @GET("api/user")
+    suspend fun getUserData(@Header("Authorization") token: String?): Response<UserData>
+
+
+    @GET("api/withdrawl")
+    suspend fun deleteAccount(@Header("Authorization") token: String?): Response<withdrawlResponse>
+
+
     @GET("garden/gardenDtl")
     //suspend fun getSensorData(@Query("num") num: Int): Response<SensorsData>
     suspend fun getGardenDetail(@Query("apiKey") apiKey: String,@Query("cntntsNo") cntntsNo: String): Response<GardenResponse>

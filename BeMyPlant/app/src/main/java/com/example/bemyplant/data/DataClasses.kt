@@ -28,6 +28,15 @@ data class AuthorityDto(
     val authorityName: String
 )
 
+data class UserData(
+    // TODO: UserDate (getUser에 대한 response) 채울 것
+    val username: String //예시
+)
+
+data class withdrawlResponse(
+    // TODO: withdrawlResponse (withdrawl에 대한 response) 채울 것
+    val tf: Boolean //예시
+)
 
 data class SensorData(
     val id: String,
@@ -38,6 +47,16 @@ data class SensorData(
     val status: Boolean,
     val date: String
 )
+
+
+data class ChatRequest(
+    val input_text: String
+)
+
+data class ChatResponse(
+    val response: String 
+)
+
 
 data class GardenResponse(
     val cntntsNo: String, //컨텐츠 번호
