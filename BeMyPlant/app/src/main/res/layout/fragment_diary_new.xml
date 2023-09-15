@@ -59,66 +59,86 @@
 
         </LinearLayout>
 
+
         <EditText
             android:id="@+id/editText_diaryNew_diaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="다이어리 title "
-            android:textColorHint="@color/hint_gray"
             android:background="@null"
-            android:textColor="#000000"
             android:fontFamily="@font/notosans_bold"
-            android:textSize="20dp">
-        </EditText>
+            android:hint="다이어리 title "
+            android:textColor="#000000"
+            android:textColorHint="@color/hint_gray"
+            android:textSize="20dp"></EditText>
 
         <ImageView
             android:id="@+id/imageView_diaryNew_plant"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
         </ImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/TextView_diaryNew_day"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
+                android:layout_weight="1"
                 android:fontFamily="@font/notosans_bold"
-                android:textSize="20dp">
-            </TextView>
+                android:textColor="#000000"
+                android:textSize="20dp"></TextView>
 
-            <EditText
+            <Spinner
+                android:id="@+id/Spinner_diaryNew_weather"
+                android:entries="@array/spinner_array"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:layout_marginStart="10dp"
+                style="@style/SpinnerStyle"
+                android:spinnerDropDownItemStyle="@style/SpinnerDropDownItemStyle" />
+            />
+            <!--<EditText
                 android:id="@+id/editText_diaryNew_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="맑음"
-                android:textColorHint="@color/hint_gray"
-                android:background="@null"
                 android:layout_gravity="right"
-                android:textColor="#000000"
+                android:background="@null"
                 android:fontFamily="@font/notosans_bold"
-                android:textSize="20dp">
-            </EditText>
+                android:hint="맑음"
+                android:textColor="#000000"
+                android:textColorHint="@color/hint_gray"
+                android:textSize="20dp"></EditText>-->
 
         </LinearLayout>
 
-
-        <EditText
-            android:id="@+id/editText_"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="다이어리 내용을 입력해주세요!"
-            android:textColorHint="@color/hint_gray"
-            android:fontFamily="@font/notosans_regular"
-            android:maxLength="1000"
-            android:textSize="@dimen/diary_text_size">
-        </EditText>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/editText_diaryNew_diaryContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/notosans_regular"
+                    android:hint="다이어리 내용을 입력해주세요!"
+                    android:maxLength="1000"
+                    android:textColorHint="@color/hint_gray"
+                    android:textSize="@dimen/diary_text_size"></EditText>
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 

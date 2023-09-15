@@ -39,6 +39,7 @@ class CalendarAdapter(
 
         // 해당 날짜에 맞는 이미지 설정
         val date = "${day.year}-${String.format("%02d", day.month)}-${String.format("%02d", day.day)}"
+        // TODO: (정현) 다이어리 DB 조회
         val imageResId = dateImageMap[date] // 해당 날짜에 맞는 이미지 ID를 가져옴
 
         if (imageResId != null) {

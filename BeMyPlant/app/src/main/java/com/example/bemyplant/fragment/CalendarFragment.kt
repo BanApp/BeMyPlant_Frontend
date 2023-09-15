@@ -265,6 +265,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
     }
 */
     override fun onItemClick(view: View?, day: Day) {
+        // TODO: (정현) 다이어리 DB 조회
         // 날짜 클릭 시 다이어리 확인 or 작성
         val date =
             "${day.year}-${String.format("%02d", day.month)}-${String.format("%02d", day.day)}"
