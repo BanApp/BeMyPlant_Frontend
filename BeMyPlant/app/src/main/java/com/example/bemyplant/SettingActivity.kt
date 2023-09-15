@@ -2,12 +2,22 @@ package com.example.bemyplant
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.example.bemyplant.fragment.DeletePlantPopupFragment
+import com.example.bemyplant.fragment.PushAlarmFragment
+import com.example.bemyplant.fragment.WithdrawlPopupFragment
 
-class SettingActivity : ComponentActivity() {
+class SettingActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,5 +65,48 @@ class SettingActivity : ComponentActivity() {
                 else -> false
             }
         }
+
+        val withdrawlButton = findViewById<Button>(R.id.withdrawalButton)
+        val deleteButton = findViewById<Button>(R.id.deleteButton)
+        val alarmButton=findViewById<Button>(R.id.alarmButton)
+        val popupFrame = findViewById<FrameLayout>(R.id.popupFrame)
+
+        //---회원탈퇴
+        withdrawlButton.setOnClickListener{
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val fragment: Fragment = WithdrawlPopupFragment()
+            fragmentTransaction.add(R.id.popupFrame, fragment)
+
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+            popupFrame.bringToFront()
+
+        }
+        //---삭제버튼
+        deleteButton.setOnClickListener{
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val fragment: Fragment = DeletePlantPopupFragment()
+            fragmentTransaction.add(R.id.popupFrame, fragment)
+
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+            popupFrame.bringToFront()
+
+        }
+        //----푸시알림버튼
+        alarmButton.setOnClickListener{
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val fragment: Fragment = PushAlarmFragment()
+            fragmentTransaction.add(R.id.popupFrame, fragment)
+
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+            popupFrame.bringToFront()
+
+        }
+
     }
 }
