@@ -28,15 +28,18 @@ data class AuthorityDto(
     val authorityName: String
 )
 
+/*data class withdrawalResponse(
+    val message: String
+)*/
+
 data class UserData(
-    // TODO: UserDate (getUser에 대한 response) 채울 것
-    val username: String //예시
+    val username: String,
+    val r_name: String,
+    val phones: String,
+    val cre_date: String,
+    val authorityDtoSet:  List<AuthorityDto>
 )
 
-data class withdrawlResponse(
-    // TODO: withdrawlResponse (withdrawl에 대한 response) 채울 것
-    val tf: Boolean //예시
-)
 
 data class SensorData(
     val id: String,
