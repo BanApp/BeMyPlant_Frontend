@@ -118,17 +118,21 @@
 
         </LinearLayout>
 
-
-        <EditText
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/example_diary_contents"
-            android:textSize="@dimen/diary_text_size"
-            android:maxLength = "1000"
-            android:background="@null"
-            android:fontFamily="@font/notosans_regular">
+            android:layout_height="match_parent">
 
-        </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/example_diary_contents"
+                android:textSize="@dimen/diary_text_size"
+                android:maxLength = "1000"
+                android:background="@null"
+                android:fontFamily="@font/notosans_regular">
+
+            </EditText>
+        </ScrollView>
     </LinearLayout>
 
 
