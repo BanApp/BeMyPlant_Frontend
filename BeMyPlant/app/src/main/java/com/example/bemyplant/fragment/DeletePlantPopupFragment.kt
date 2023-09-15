@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.bemyplant.R
-
+import android.widget.Button
+import com.example.bemyplant.MainActivity
+import android.content.Intent
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -34,8 +36,25 @@ class DeletePlantPopupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_delete_plant_popup, container, false)
+        val rootview = inflater.inflate(R.layout.fragment_delete_plant_popup, container, false)
+        val yesButton = rootview.findViewById<Button>(R.id.yesButton)
+        yesButton.setOnClickListener {
+            // 이미지 변경
+            val deletePlant = R.drawable.delete_plant
+            val bundle = Bundle()
+            bundle.putInt("newPlantImageResId", deletePlant)
+
+            // 화면 이동
+            val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
+            mainActivityIntent.putExtras(bundle)
+            startActivity(mainActivityIntent)
+        }
+        return rootview
+    }
+
+    private fun navigateToMainActivity() {
+        val mainActivityIntent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(mainActivityIntent)
     }
 
     companion object {

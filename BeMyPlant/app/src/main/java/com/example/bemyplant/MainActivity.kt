@@ -14,30 +14,53 @@ import android.widget.FrameLayout
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bemyplant.fragment.FlowerIdFragment
+import com.example.bemyplant.fragment.ImageSelectFragment
+data class PlantImage(val resourceId: Int, val description: String)
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var currentPlantImage: PlantImage
 
+    fun updateMainFlower(newPlantImageResId: Int) {
+        val mainFlower = findViewById<ImageButton>(R.id.mainFlower)
 
+        mainFlower.setImageResource(newPlantImageResId)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //-----------식물 클릭시, 신분증 나오는 부분
-        val flowerButton = findViewById<ImageButton>(R.id.flowerButton)
+        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+        val mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         val flowerIdFrame = findViewById<FrameLayout>(R.id.flowerIdFrame)
 
-        flowerButton.setOnClickListener{
+        //----------신분증에서 식물 이미지 값에 따라 특정 화면 전환
+        mainFlower.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment: Fragment = FlowerIdFragment()
-            fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+
+            when (currentPlantImage.resourceId) {
+                R.drawable.delete_plant -> {
+                    val fragment: Fragment = ImageSelectFragment()
+                    fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+                }
+                else -> {
+                    val fragment: Fragment = FlowerIdFragment()
+                    fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+                }
+            }
 
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
             flowerIdFrame.bringToFront()
+        }
 
 
-
+        //-------이미지 변경
+        val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0)
+        if (newPlantImageResId != 0) {
+            currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
+            updateMainFlower(currentPlantImage.resourceId)
         }
 
         //------------------------센서

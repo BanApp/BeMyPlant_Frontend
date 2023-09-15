@@ -16,22 +16,23 @@
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:padding="1dp"
-        android:text="회원탈퇴를\n하시겠습니까?"
+        android:text="식물 정보를\n삭제하시겠습니까?"
         android:textColor="@color/black"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/horizontalGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/verticalGuideline"
         android:layout_width="wrap_content"
@@ -51,10 +52,11 @@
         android:text="예"
         android:textColor="@color/green_1"
         android:textSize="18sp"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/verticalGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/noButton"
@@ -66,9 +68,10 @@
         android:text="아니오"
         android:textColor="@color/green_1"
         android:textSize="18sp"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/verticalGuideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

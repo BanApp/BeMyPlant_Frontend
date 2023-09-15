@@ -84,17 +84,17 @@ class SettingActivity : AppCompatActivity() {
 
         }
         //---삭제버튼
-        deleteButton.setOnClickListener{
+        deleteButton.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
             val fragment: Fragment = DeletePlantPopupFragment()
-            fragmentTransaction.add(R.id.popupFrame, fragment)
 
+            fragmentTransaction.replace(R.id.popupFrame, fragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
             popupFrame.bringToFront()
-
         }
+
         //----푸시알림버튼
         alarmButton.setOnClickListener{
             val fragmentManager: FragmentManager = supportFragmentManager

@@ -6,6 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.bemyplant.R
+import android.widget.ImageButton
+import androidx.fragment.app.FragmentTransaction
+import android.content.Intent
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,9 +40,22 @@ class FlowerIdFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_flower_id, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_flower_id, container, false)
+        val mainFlower = rootView.findViewById<ImageButton>(R.id.mainFlower)
+
+        mainFlower.setOnClickListener{
+            val imageSelectFragment = ImageSelectFragment()
+
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(android.R.id.content, imageSelectFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+        }
+
+        return rootView
     }
+
 
     companion object {
         /**
