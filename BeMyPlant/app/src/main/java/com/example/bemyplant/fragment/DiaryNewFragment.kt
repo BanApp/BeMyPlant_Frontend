@@ -3,9 +3,12 @@ package com.example.bemyplant.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,18 +21,33 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
+import com.example.bemyplant.model.Diary
+import com.example.bemyplant.model.DiaryRealmManager
+import io.realm.Realm
+import java.io.ByteArrayOutputStream
 
 
 class DiaryNewFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
     private lateinit var imagePicker: ActivityResultLauncher<Intent>
-    private lateinit var spinner : Spinner
+    private lateinit var weatherSpinner : Spinner
+    lateinit var formattedDate: String
+    lateinit var selectedDay: Day
+    var weatherCode : Int = 0
+
+    lateinit var diaryImage: ImageView
+    lateinit var diaryDateTextView: TextView
+    lateinit var contentEditText: EditText
+    lateinit var diaryTitleEditText: EditText
+    lateinit var diaryRealmManager: DiaryRealmManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,29 +72,38 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view:View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view)
+        diaryDateTextView = view.findViewById(R.id.textView_diaryNew_day)
+        diaryTitleEditText= view.findViewById(R.id.editText_diaryNew_diaryTitle)
+        diaryImage = view.findViewById(R.id.imageView_diaryNew_plant)
+        weatherSpinner = view.findViewById(R.id.spinner_diaryNew_weather)
+        contentEditText = view.findViewById(R.id.editText_diaryNew_diaryContent)
+        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
         val bundle = arguments
         if (bundle != null && bundle.containsKey("selectedDay")) {
-            val selectedDay = bundle.getParcelable<Day>("selectedDay")
+            selectedDay = bundle.getParcelable<Day>("selectedDay")!!
 
-            val formattedDate = String.format(
+            formattedDate = String.format(
                 "%04d/%02d/%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
             )
 
             // 클릭된 셀의 Day 정보(날짜 정보)를 화면에 작성
-            val diaryDateTextView: TextView = view.findViewById(R.id.TextView_diaryNew_day)
             diaryDateTextView.text = formattedDate
         }
+        else{
+            // TODO: 예외처리 (toast message) "옳지 못합 접근입니다.."
+            navController.navigate(R.id.calendarFragment)
+        }
+
 
         // 날씨 (스피너) 클릭 처리
-        spinner = view.findViewById(R.id.Spinner_diaryNew_weather)
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        weatherSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
                 position: Int,
                 id: Long
-            ) {}
+            ) {weatherCode = position} //선택된 아이템 번호로 갱신
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -90,37 +117,53 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
         photoImageButton.setOnClickListener(this)
 
 
-    }private fun showToast(context: Context, message: String) {
+    }
+    private fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(v: View?){
         when(v?.id){
             R.id.imageButton_diaryNew_complete -> {
-                val titleComponent: EditText? = view?.findViewById(R.id.editText_diaryNew_diaryTitle)
-                val title = titleComponent.toString()
-
-                val contentsComponent : EditText? = view?.findViewById(R.id.editText_diaryNew_diaryContent)
-                val contents = contentsComponent.toString()
-
-
+                if (diaryTitleEditText.text==null || contentEditText.text == null || diaryImage.drawable == null ){
+                    // TODO: 각 케이스별로 예외처리
+                    showToast(requireContext(),"입력을 완료해주세요.")
+                    return
+                }
+                val title = diaryTitleEditText.text.toString() //diaryTitleEditText.toString()
+                val contents = contentEditText.text.toString()
+                val image = diaryImage.drawable.toBitmap()
+                if (image==null){
+                    showToast(requireContext(),"그림을 입력해주세요.")
+                }
                 if (title.isEmpty()){
                     showToast(requireContext(),"제목을 입력해주세요.")
                 }
                 if (contents.isEmpty()){
                     showToast(requireContext(),"내용을 입력해주세요.")
                 }
+
                 else{
-                    val selectedDay = arguments?.getParcelable<Day>("selectedDay")
+                    // DB 생성
+                    val updateData = Diary()
+                    updateData.Date = formattedDate
+                    updateData.Title =  diaryTitleEditText.text.toString()
+                    updateData.WeatherCode = weatherCode
+                    updateData.Content = contentEditText.text.toString()
+                    updateData.Image = diaryImage.drawable.toBitmap().toByteArray() // bitmap -> byteArray (db)
+
+                    diaryRealmManager.create(updateData)
+                    Log.d("diary", "diary new: db에 넣기 성공")
 
                     val bundle = Bundle()
                     bundle.putParcelable("selectedDay", selectedDay)
-                    // TODO: (정현) 다이어리 DB 업데이트
-
-                    // 날씨:
-                    //val spinner: Spinner = view.findViewById(R.id.Spinner_diaryNew_weather)
-                    //val selectedWeather = spinner.selectedItem.toString()
-
+                    bundle.putString("title", diaryTitleEditText.text.toString())
+                    bundle.putParcelable("image", diaryImage.drawable.toBitmap())
+                    bundle.putString("contents", contentEditText.text.toString())
+                    bundle.putInt("weatherCode", weatherCode)
+                    //bundle.putParcelable("selectedDay", selectedDay)
+                    Log.d("diary", "diary new: bundle 설정 성공")
                     navController.navigate(R.id.diaryViewFragment, bundle)
                 }
 
@@ -168,4 +211,10 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
 
 
 
+}
+
+fun Bitmap.toByteArray(): ByteArray {
+    val stream = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.PNG, 100, stream)
+    return stream.toByteArray()
 }
