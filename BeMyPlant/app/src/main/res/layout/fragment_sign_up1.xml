@@ -221,74 +221,84 @@
         app:layout_constraintTop_toBottomOf="@+id/signText" />
 
     <LinearLayout
-        android:id="@+id/userName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+
+
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signSeq"
-        app:layout_constraintWidth_percent="0.75">
+        app:layout_constraintBottom_toTopOf="@+id/nextButton">
 
-
-        <TextView
-            android:id="@+id/userNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="@string/user_name"
-            android:textColor="@color/black"
-            android:textSize="32sp" />
-
-        <EditText
-            android:id="@+id/userNameInput"
+        <LinearLayout
+            android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="name"
-            android:backgroundTint="@color/green_1"
-            android:gravity="center"
-            android:hint="사용자 이름을 입력해주세요."
-            android:inputType="text"
-            android:padding="15dp"
-            app:layout_constraintWidth_percent="0.5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/userPhone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signSeq"
-        app:layout_constraintWidth_percent="0.75">
+            android:layout_marginTop="44dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signSeq"
+            app:layout_constraintWidth_percent="0.75">
 
 
-        <TextView
-            android:id="@+id/userPhoneText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="번호 *"
-            android:textColor="@color/black"
-            android:textSize="32sp" />
+            <TextView
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="@string/user_name"
+                android:textColor="@color/black"
+                android:textSize="32sp" />
 
-        <EditText
-            android:id="@+id/userPhoneInput"
+            <EditText
+                android:id="@+id/userNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="name"
+                android:backgroundTint="@color/green_1"
+                android:gravity="center"
+                android:hint="사용자 이름을 입력해주세요."
+                android:inputType="text"
+                android:padding="15dp"
+                app:layout_constraintWidth_percent="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/userPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="name"
-            android:backgroundTint="@color/green_1"
-            android:gravity="center"
-            android:hint="핸드폰 번호를 입력해주세요."
-            android:inputType="phone"
-            android:padding="15dp"
-            app:layout_constraintWidth_percent="0.5" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userName"
+            app:layout_constraintWidth_percent="0.75">
+
+
+            <TextView
+                android:id="@+id/userPhoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="번호 *"
+                android:textColor="@color/black"
+                android:textSize="32sp" />
+
+            <EditText
+                android:id="@+id/userPhoneInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="name"
+                android:backgroundTint="@color/green_1"
+                android:gravity="center"
+                android:hint="핸드폰 번호를 입력해주세요."
+                android:inputType="phone"
+                android:padding="15dp"
+                app:layout_constraintWidth_percent="0.5" />
+        </LinearLayout>
     </LinearLayout>
 
     <android.widget.Button

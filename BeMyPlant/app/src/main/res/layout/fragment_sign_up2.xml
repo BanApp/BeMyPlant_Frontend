@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.SignUp2Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <!--회원가입-->
     <TextView
         android:id="@+id/signText"
@@ -42,158 +41,171 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signText" />
 
+
     <LinearLayout
-        android:id="@+id/userId"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signSeq"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintWidth_percent="0.8">
+        app:layout_constraintBottom_toTopOf="@+id/finishButton">
 
-        <TextView
-            android:id="@+id/userIdText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="@string/id"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            />
-
-        <EditText
-            android:id="@+id/userIdInput"
+        <LinearLayout
+            android:id="@+id/userId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/green_1"
-            android:fontFamily="@font/notosans_medium"
-            android:gravity="center"
-            android:hint="고유한 ID를 입력해주세요."
-            android:inputType="text"
-            app:layout_constraintWidth_percent = "0.5"
-            />
-    </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signSeq"
+            app:layout_constraintWidth_percent="0.8">
 
-
-    <LinearLayout
-        android:id="@+id/userPw"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userId"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintWidth_percent="0.8">
-
-        <TextView
-            android:id="@+id/userPwText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="@string/pw"
-            android:textColor="@color/black"
-            android:textSize="28sp" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
+            <TextView
+                android:id="@+id/userIdText"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/notosans_bold"
+                android:text="@string/id"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/userPwInput"
+                android:id="@+id/userIdInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="password"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/green_1"
+                android:fontFamily="@font/notosans_medium"
                 android:gravity="center"
-                android:hint="비밀번호를 입력해주세요."
-                android:inputType="textPassword"
+                android:hint="고유한 ID를 입력해주세요."
+                android:inputType="text"
+                android:textColor="@color/black"
                 app:layout_constraintWidth_percent="0.5" />
-
-            <android.widget.ImageButton
-                android:id="@+id/visibleButton"
-                android:layout_width="30dp"
-                android:layout_height="26dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/visible"
-                android:backgroundTint="@color/charcoal"
-                android:contentDescription="visible2"
-                />
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/userPwConfirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPw"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintWidth_percent="0.8">
-
-        <TextView
-            android:id="@+id/userPwConfirmText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="비밀번호 확인"
-            android:textColor="@color/black"
-            android:textSize="28sp" />
-
-        <FrameLayout
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/userPw"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userId"
+            app:layout_constraintWidth_percent="0.8">
 
-            <EditText
-                android:id="@+id/userPwConfirmInput"
+            <TextView
+                android:id="@+id/userPwText"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/notosans_bold"
+                android:text="@string/pw"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/green_1"
-                android:gravity="center"
-                android:hint="한번 더 비밀번호를 입력해주세요."
-                android:inputType="textPassword"
-                android:autofillHints="password"
-                app:layout_constraintWidth_percent="0.5"
-                />
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            <android.widget.ImageButton
-                android:id="@+id/visibleButton2"
-                android:layout_width="30dp"
-                android:layout_height="26dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/visible"
-                android:backgroundTint="@color/charcoal"
-                android:contentDescription="visible"
-                />
+                <EditText
+                    android:id="@+id/userPwInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:backgroundTint="@color/green_1"
+                    android:gravity="center"
+                    android:hint="비밀번호를 입력해주세요."
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <android.widget.ImageButton
+                    android:id="@+id/visibleButton"
+                    android:layout_width="30dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@drawable/visible"
+                    android:backgroundTint="@color/charcoal"
+                    android:contentDescription="visible2" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/userPwConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userPw"
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent="0.8">
+
+            <TextView
+                android:id="@+id/userPwConfirmText"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/notosans_bold"
+                android:text="비밀번호 확인"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/userPwConfirmInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autofillHints="password"
+                    android:backgroundTint="@color/green_1"
+                    android:gravity="center"
+                    android:hint="한번 더 비밀번호를 입력해주세요."
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <android.widget.ImageButton
+                    android:id="@+id/visibleButton2"
+                    android:layout_width="30dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@drawable/visible"
+                    android:backgroundTint="@color/charcoal"
+                    android:contentDescription="visible" />
 
 
-        </FrameLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

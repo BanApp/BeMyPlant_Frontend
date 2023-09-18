@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">BeMyPlant</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="d_day_format">D + </string>
     <string name="d_day">67</string>
     <string name="Plant_name">뽀삐</string>
@@ -9,7 +9,7 @@
     <string name="title_activity_setting">SettingActivity</string>
     <string name="day">Mon</string>
     <string name="example_diary_contents">뽀삐가 많이 자란것 같아서 분갈이를 해줘야 할거 같다..!\n어제보다 더 자란거 같은건 기분 탓인가? </string>
-   
+
     <string name="main_name">🪴\nBE MY\nPLANT!</string>
     <string name="sub_name">Be My Plant!</string>
     <string name="id">ID</string>
@@ -24,8 +24,6 @@
     <string name="register_plant">안녕하세요😊\n처음 오셨군요!</string>
     <string name="register_plant_sub1">키우고 있는\n식물의 종류는 무엇인가요?</string>
     <string name="register_plant_sub2">식물에게 이름을 지어주세요!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
