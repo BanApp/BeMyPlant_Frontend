@@ -106,7 +106,7 @@
                 android:textSize="20dp"></TextView>
 
             <TextView
-                android:id="@+id/editText_diaryView_weather"
+                android:id="@+id/textView_diaryView_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -117,16 +117,19 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/textView_diaryView_diaryContents"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_regular"
-            android:text="@string/example_diary_contents"
-            android:textSize="@dimen/diary_text_size">
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView_diaryView_diaryContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_regular"
+                android:text="@string/example_diary_contents"
+                android:textSize="@dimen/diary_text_size">
 
-        </TextView>
+            </TextView>
+        </ScrollView>>
     </LinearLayout>
 
 

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.databinding.FragmentSignUp2Binding
+import com.example.bemyplant.databinding.FragmentS2Binding
 import com.example.bemyplant.network.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +53,8 @@ class SignUp2Fragment : Fragment() {
     private val retrofitService = RetrofitService().apiService
 
     private fun getSignUpData(): SignUpData {
+        val username = binding.userIdInput.text.toString()
+        val pw = binding.userPwInput.text.toString()
         val username = binding.userIdInput.text.toString()
         val pw = binding.userPwConfirmInput.text.toString()
         val r_name = arguments?.getString("r_name").toString()

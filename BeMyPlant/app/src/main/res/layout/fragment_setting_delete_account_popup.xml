@@ -5,14 +5,14 @@
     android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".fragment.BluetoothPopupFragment">
+    tools:context=".fragment.SettingDeleteAccountPopupFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
-        android:text="게시글을\n삭제하시겠습니까?"
+        android:text="정말로 계정을\n삭제하시겠습니까?"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:padding="1dp"
@@ -32,7 +32,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton_diary_yes"
+            android:id="@+id/appCompatButton_deleteAccount_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -43,7 +43,7 @@
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton_diary_no"
+            android:id="@+id/appCompatButton_deleteAccount_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아니오"

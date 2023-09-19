@@ -23,23 +23,18 @@ private const val ARG_PARAM2 = "param2"
  */
 class ImageSelectFragment : Fragment() {
     var selectedImage: String = ""
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     val binding by lazy{FragmentImageSelectBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-// 이미지 선택하면 문자열이 넘어감.
-        binding.flowerButton1.setOnClickListener{
+
+        // 이미지 선택하면 문자열이 넘어감.
+        binding.imageButtonImageSelectPlant1.setOnClickListener{
             selectedImage = "flower1"
             val intent = Intent(requireActivity(), MainActivity::class.java)
             navigateToMain()
         }
-        binding.flowerButton2.setOnClickListener{
+        binding.imageButtonImageSelectPlant2.setOnClickListener{
             selectedImage = "flower2"
             val intent = Intent(requireActivity(), MainActivity::class.java)
             navigateToMain()
@@ -54,7 +49,7 @@ class ImageSelectFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding.finishButton.setOnClickListener {
+        binding.buttonImageSelectFinishButton.setOnClickListener {
 //                                    val intent = Intent(requireActivity(), MainActivity::class.java)
 //                        requireActivity().startActivity(intent)
             findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)

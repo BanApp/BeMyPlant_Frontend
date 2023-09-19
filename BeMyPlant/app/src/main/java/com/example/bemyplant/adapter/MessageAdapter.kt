@@ -26,6 +26,10 @@ class MessageAdapter(
             messageContent.text = message.content
             sendTime.text = message.sendTime
 
+            val msgContents = message.content
+            val tag3 = "MessageContents"
+            Log.d(tag3, "$msgContents")
+
 
         }
     }
