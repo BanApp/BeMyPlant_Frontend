@@ -3,18 +3,16 @@ package com.example.bemyplant
 import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
-import androidx.activity.ComponentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.ImageButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import android.widget.FrameLayout
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bemyplant.fragment.FlowerIdFragment
-import com.example.bemyplant.fragment.ImageSelectFragment
+import com.example.bemyplant.fragment.PlantRegisterFragment
+
 data class PlantImage(val resourceId: Int, val description: String)
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     fun updateMainFlower(newPlantImageResId: Int) {
         val mainFlower = findViewById<ImageButton>(R.id.mainFlower)
-
         mainFlower.setImageResource(newPlantImageResId)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +29,12 @@ class MainActivity : AppCompatActivity() {
         //-----------식물 클릭시, 신분증 나오는 부분
         currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
         val mainFlower = findViewById<ImageButton>(R.id.mainFlower)
-        val flowerIdFrame = findViewById<FrameLayout>(R.id.flowerIdFrame)
-
+        val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
+        val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0)
+        if (newPlantImageResId != 0) {
+            currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
+            updateMainFlower(currentPlantImage.resourceId)
+        }
         //----------신분증에서 식물 이미지 값에 따라 특정 화면 전환
         mainFlower.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
@@ -41,27 +42,26 @@ class MainActivity : AppCompatActivity() {
 
             when (currentPlantImage.resourceId) {
                 R.drawable.delete_plant -> {
-                    val fragment: Fragment = ImageSelectFragment()
-                    fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+                    val fragment = PlantRegisterFragment()
+                    fragmentTransaction.add(R.id.screenFrame, fragment)
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    screenFrame.bringToFront()
+
                 }
                 else -> {
-                    val fragment: Fragment = FlowerIdFragment()
-                    fragmentTransaction.add(R.id.flowerIdFrame, fragment)
+                    val fragment = FlowerIdFragment()
+                    fragmentTransaction.add(R.id.screenFrame, fragment)
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    screenFrame.bringToFront()
+
                 }
+
             }
 
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-            flowerIdFrame.bringToFront()
         }
 
-
-        //-------이미지 변경
-        val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0)
-        if (newPlantImageResId != 0) {
-            currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
-            updateMainFlower(currentPlantImage.resourceId)
-        }
 
         //------------------------센서
         val linearLayout = findViewById<LinearLayout>(R.id.linearLayout_main_health)

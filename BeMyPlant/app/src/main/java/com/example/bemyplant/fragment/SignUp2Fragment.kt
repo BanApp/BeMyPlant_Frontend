@@ -35,6 +35,8 @@ class SignUp2Fragment : Fragment() {
             val signUpData = getSignUpData()
 
             val pw2 = binding.userPwConfirmInput.text.toString()
+            findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
+
             if (signUpData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력해주세요.")
             } else if (signUpData.password.isEmpty()){

@@ -7,8 +7,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context=".MainActivity">
+
     <FrameLayout
-        android:id="@+id/flowerIdFrame"
+        android:id="@+id/screenFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"

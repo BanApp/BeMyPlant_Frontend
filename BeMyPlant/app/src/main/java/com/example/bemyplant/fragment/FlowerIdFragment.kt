@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.bemyplant.R
 import android.widget.ImageButton
+import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.FragmentTransaction
 import android.content.Intent
 
@@ -44,9 +45,11 @@ class FlowerIdFragment : Fragment() {
         val mainFlower = rootView.findViewById<ImageButton>(R.id.mainFlower)
 
         mainFlower.setOnClickListener{
-            val imageSelectFragment = ImageSelectFragment()
-
+            val flagValue = true
+            val imageSelectFragment = ImageSelectFragment.newInstance("param1", "param2", flagValue)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+            sharedViewModel.imageText = "뽀삐를\n다시 선택해보아요!"
             transaction.replace(android.R.id.content, imageSelectFragment)
             transaction.addToBackStack(null)
             transaction.commit()
