@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="190dp"
-    tools:context=".fragment.BluetoothPopupFragment">
+    tools:context=".popup.BluetoothPopupFragment">
 
 
     <TextView

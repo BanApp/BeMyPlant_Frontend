@@ -5,7 +5,7 @@
     android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".fragment.BluetoothPopupFragment">
+    tools:context=".popup.BluetoothPopupFragment">
 
     <TextView
         android:layout_width="wrap_content"

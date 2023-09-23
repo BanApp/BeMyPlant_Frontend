@@ -1,96 +1,25 @@
-package com.example.bemyplant
+/*package com.example.bemyplant
 
-import retrofit2.Response
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageButton
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import android.util.Log
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import com.example.bemyplant.fragment.SettingDeleteAccountPopupFragment //내 로직
-import com.example.bemyplant.fragment.SettingDeletePlantPopupFragment //내 로직
-import com.example.bemyplant.fragment.SettingLogoutPopupFragment //내 로직
-import com.example.bemyplant.network.RetrofitService
+import com.example.bemyplant.popup.DeletePlantPopupFragment
+import com.example.bemyplant.popup.WithdrawalPopupFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import com.example.bemyplant.fragment.DeletePlantPopupFragment
-import com.example.bemyplant.fragment.PushAlarmFragment
-import com.example.bemyplant.fragment.WithdrawlPopupFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SettingActivity : AppCompatActivity() {
-class SettingActivity : AppCompatActivity() {
-    private val retrofitService = RetrofitService().apiService
 
-    private lateinit var userImage: ImageView
-    private lateinit var realNameTextView: TextView
-    private lateinit var uidTextView: TextView
-    //private val pushAlarmButton: TextView = findViewById(R.id.textView_sensor_temperature)
-    private lateinit var logoutButton: TextView
-    private lateinit var deleteAccountButton: TextView
-    private lateinit var deletePlantButton: TextView
-
-    fun showToast(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        // 내 로직 =================================================
-        userImage = findViewById(R.id.imageView_setting_user)
-        realNameTextView = findViewById(R.id.textView_setting_name)
-        uidTextView = findViewById(R.id.textView_setting_uid)
-        logoutButton = findViewById(R.id.textView_setting_logout)
-        deleteAccountButton = findViewById(R.id.textView_setting_deleteAccount)
-        deletePlantButton = findViewById(R.id.textView_setting_deletePlant)
-        // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
-        getUserAccount()
-
-        // TODO: 사용자 얼굴은 default값으로 미리 지정해둘 것
-        // coroutine으로 처리할 것 (비동기)
-
-        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
-
-        // (1) 로그아웃 버튼 클릭 시 처리
-        logoutButton.setOnClickListener{
-            logoutPopup() //팝업창 띄움
-        }
-
-        // (2) 회원탈퇴 버튼 클릭 시 처리
-        deleteAccountButton.setOnClickListener{
-            deleteAccountPopup() //팝업창 띄움
-        }
-
-        // (3) 식물삭제 버튼 클릭 시 처리
-        deletePlantButton.setOnClickListener{
-            deletePlantPopup() //팝업창 띄움
-
-        }
-
-        // 내 로직 끝=================================================
-
-
-        // 하단바
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
 
         bottomNavigationView.selectedItemId = R.id.menu_setting
@@ -135,14 +64,14 @@ class SettingActivity : AppCompatActivity() {
 
         val withdrawlButton = findViewById<Button>(R.id.withdrawalButton)
         val deleteButton = findViewById<Button>(R.id.deleteButton)
-        val alarmButton=findViewById<Button>(R.id.alarmButton)
+        //val alarmButton=findViewById<Button>(R.id.alarmButton)
         val popupFrame = findViewById<FrameLayout>(R.id.popupFrame)
 
         //---회원탈퇴
         withdrawlButton.setOnClickListener{
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment: Fragment = WithdrawlPopupFragment()
+            val fragment: Fragment = WithdrawalPopupFragment()
             fragmentTransaction.add(R.id.popupFrame, fragment)
 
             fragmentTransaction.addToBackStack(null)
@@ -163,7 +92,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         //----푸시알림버튼
-        alarmButton.setOnClickListener{
+        *//*alarmButton.setOnClickListener{
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
             val fragment: Fragment = PushAlarmFragment()
@@ -173,11 +102,124 @@ class SettingActivity : AppCompatActivity() {
             fragmentTransaction.commit()
             popupFrame.bringToFront()
 
-        }
+        }*//*
 
     }
-    // 민정언니 pr 끝
+}*/
 
+package com.example.bemyplant
+
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import com.example.bemyplant.network.RetrofitService
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class SettingActivity : AppCompatActivity() {
+    private val retrofitService = RetrofitService().apiService
+
+    private lateinit var userImage: ImageView
+    private lateinit var realNameTextView: TextView
+    private lateinit var uidTextView: TextView
+    //private val pushAlarmButton: TextView = findViewById(R.id.textView_sensor_temperature)
+    private lateinit var logoutButton: Button
+    private lateinit var deleteAccountButton: Button
+    private lateinit var deletePlantButton: Button
+
+    fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_setting)
+
+        userImage = findViewById(R.id.imageView_setting_user)
+        realNameTextView = findViewById(R.id.textView_setting_name)
+        uidTextView = findViewById(R.id.textView_setting_uid)
+        logoutButton = findViewById(R.id.button_setting_logout)
+        deleteAccountButton = findViewById(R.id.button_setting_deleteAccount)
+        deletePlantButton = findViewById(R.id.button_setting_deletePlant)
+        // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
+        getUserAccount()
+
+        // TODO: 사용자 얼굴은 default값으로 미리 지정해둘 것
+        // coroutine으로 처리할 것 (비동기)
+
+        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
+
+        // (1) 로그아웃 버튼 클릭 시 처리
+        logoutButton.setOnClickListener{
+            logoutPopup() //팝업창 띄움
+        }
+
+        // (2) 회원탈퇴 버튼 클릭 시 처리
+        deleteAccountButton.setOnClickListener{
+            deleteAccountPopup() //팝업창 띄움
+        }
+
+        // (3) 식물삭제 버튼 클릭 시 처리
+        deletePlantButton.setOnClickListener{
+            deletePlantPopup() //팝업창 띄움
+
+        }
+
+        // 하단바
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
+
+        bottomNavigationView.selectedItemId = R.id.menu_setting
+        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+//        val selectedItemIndex = 3
+//
+//        menuView.getChildAt(selectedItemIndex).performClick()
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    // "홈" 메뉴 클릭 시 MainActivity로 이동
+                    val homeIntent = Intent(this@SettingActivity, MainActivity::class.java)
+                    startActivity(homeIntent)
+                    true
+                }
+
+                R.id.menu_setting -> {
+                    // "setting" 메뉴 클릭 시 SettingActivity로 이동
+                    val boardIntent = Intent(this@SettingActivity, SettingActivity::class.java)
+                    startActivity(boardIntent)
+                    true
+                }
+
+                R.id.menu_chat -> {
+                    // "채팅" 메뉴 클릭 시 ChatActivity로 이동
+                    val chatIntent = Intent(this@SettingActivity, ChatActivity::class.java)
+                    startActivity(chatIntent)
+                    true
+                }
+
+                R.id.menu_diary -> {
+                    // "일기" 메뉴 클릭 시 DiaryActivity로 이동
+                    val diaryIntent = Intent(this@SettingActivity, DiaryActivity::class.java)
+                    startActivity(diaryIntent)
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
 
     private fun getUserAccount() {
         val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
@@ -321,9 +363,15 @@ class SettingActivity : AppCompatActivity() {
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
             // 비동기로 처리 ? (고려중)
 
-            // 3. 메인 화면으로 (식물 이미지 = default = +)
-            val homeIntent = Intent(this@SettingActivity, MainActivity::class.java)
-            startActivity(homeIntent)
+            // 식물 이미지 변경 (+)
+            val deletePlant = R.drawable.delete_plant
+            val bundle = Bundle()
+            bundle.putInt("newPlantImageResId", deletePlant)
+
+            // 화면 이동 (메인화면 이동)
+            val mainActivityIntent = Intent(this@SettingActivity, MainActivity::class.java)
+            mainActivityIntent.putExtras(bundle)
+            startActivity(mainActivityIntent)
         }
 
         // 아니오 버튼 클릭 시의 동작

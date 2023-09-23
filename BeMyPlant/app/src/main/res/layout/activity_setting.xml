@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".MainActivity">
+    tools:context=".SettingActivity">
     <FrameLayout
         android:id="@+id/popupFrame"
         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
 
 
         <ImageView
-            android:id="@+id/profileImage"
+            android:id="@+id/imageView_setting_user"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/user_image"
@@ -63,7 +63,7 @@
             android:paddingLeft="30dp">
 
             <TextView
-                android:id = "@+id/profileName"
+                android:id = "@+id/textView_setting_name"
                 android:layout_width="wrap_content"
                 android:layout_height="51dp"
                 android:fontFamily="@font/notosans_bold"
@@ -74,7 +74,7 @@
                 tools:layout_editor_absoluteY="160dp"/>
 
             <TextView
-                android:id = "@+id/profileId"
+                android:id = "@+id/textView_setting_uid"
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
                 android:fontFamily="@font/notosans_bold"
@@ -92,7 +92,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:paddingLeft="30dp"
@@ -103,7 +104,29 @@
         app:layout_constraintTop_toBottomOf="@+id/profile">
 
         <Button
-            android:id="@+id/withdrawalButton"
+            android:id="@+id/button_setting_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/notosans_bold"
+            android:text="로그아웃"
+            android:textColor="#0B7328"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <TextView
+            android:id="@+id/logoutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
+            android:text="서비스에서 로그아웃합니다."
+            android:textColor="#000000"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_setting_deleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -125,7 +148,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/deleteButton"
+            android:id="@+id/button_setting_deletePlant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -148,7 +171,7 @@
             app:layout_constraintStart_toStartOf="parent"
             />
 
-        <Button
+        <!--<Button
             android:id="@+id/alarmButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +190,7 @@
             android:text="관련된 정보를 푸시알림합니다."
             android:textColor="#000000"
             android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>-->
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
