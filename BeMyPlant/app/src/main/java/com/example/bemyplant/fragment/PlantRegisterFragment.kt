@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentPlantRegisterBinding
@@ -38,16 +37,12 @@ class PlantRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        showToast(requireContext(),"회원가입 완료")
         binding.finishButton.setOnClickListener {
             findNavController().navigate(R.id.action_pRFragment_to_iSFragment2)
         }
-        // Inflate the layout for this fragment
         return binding.root
     }
-    private fun showToast(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
