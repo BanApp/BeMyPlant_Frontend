@@ -33,9 +33,9 @@
         android:textColor="@color/black"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
-        app:layout_constraintEnd_toEndOf="@+id/flowerBirthDay"
+        app:layout_constraintEnd_toEndOf="@+id/plantRegistration"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/flowerBirthDay"
+        app:layout_constraintStart_toStartOf="@+id/plantRegistration"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -61,12 +61,12 @@
         android:text="해바라기"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/flowerBirthDay"
-        app:layout_constraintEnd_toEndOf="@+id/flowerBirthDay"
-        app:layout_constraintStart_toStartOf="@+id/flowerBirthDay" />
+        app:layout_constraintBottom_toTopOf="@+id/plantRegistration"
+        app:layout_constraintEnd_toEndOf="@+id/plantRegistration"
+        app:layout_constraintStart_toStartOf="@+id/plantRegistration" />
 
     <TextView
-        android:id="@+id/flowerBirthDay"
+        android:id="@+id/plantRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_medium"
