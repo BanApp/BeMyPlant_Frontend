@@ -13,7 +13,7 @@ class WithdrawalPopupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_withdrawal_popup, container, false)
+        return inflater.inflate(R.layout.fragment_setting_withdrawal_popup, container, false)
     }
 
 }

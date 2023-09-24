@@ -1,112 +1,3 @@
-/*package com.example.bemyplant
-
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Button
-import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.bemyplant.popup.DeletePlantPopupFragment
-import com.example.bemyplant.popup.WithdrawalPopupFragment
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-
-class SettingActivity : AppCompatActivity() {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
-
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
-
-        bottomNavigationView.selectedItemId = R.id.menu_setting
-        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-//        val selectedItemIndex = 3
-//
-//        menuView.getChildAt(selectedItemIndex).performClick()
-
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_home -> {
-                    // "홈" 메뉴 클릭 시 MainActivity로 이동
-                    val homeIntent = Intent(this@SettingActivity, MainActivity::class.java)
-                    startActivity(homeIntent)
-                    true
-                }
-
-                R.id.menu_setting -> {
-                    // "setting" 메뉴 클릭 시 SettingActivity로 이동
-                    val boardIntent = Intent(this@SettingActivity, SettingActivity::class.java)
-                    startActivity(boardIntent)
-                    true
-                }
-
-                R.id.menu_chat -> {
-                    // "채팅" 메뉴 클릭 시 ChatActivity로 이동
-                    val chatIntent = Intent(this@SettingActivity, ChatActivity::class.java)
-                    startActivity(chatIntent)
-                    true
-                }
-
-                R.id.menu_diary -> {
-                    // "일기" 메뉴 클릭 시 DiaryActivity로 이동
-                    val diaryIntent = Intent(this@SettingActivity, DiaryActivity::class.java)
-                    startActivity(diaryIntent)
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        val withdrawlButton = findViewById<Button>(R.id.withdrawalButton)
-        val deleteButton = findViewById<Button>(R.id.deleteButton)
-        //val alarmButton=findViewById<Button>(R.id.alarmButton)
-        val popupFrame = findViewById<FrameLayout>(R.id.popupFrame)
-
-        //---회원탈퇴
-        withdrawlButton.setOnClickListener{
-            val fragmentManager: FragmentManager = supportFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment: Fragment = WithdrawalPopupFragment()
-            fragmentTransaction.add(R.id.popupFrame, fragment)
-
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-            popupFrame.bringToFront()
-
-        }
-        //---삭제버튼
-        deleteButton.setOnClickListener {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment: Fragment = DeletePlantPopupFragment()
-
-            fragmentTransaction.replace(R.id.popupFrame, fragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-            popupFrame.bringToFront()
-        }
-
-        //----푸시알림버튼
-        *//*alarmButton.setOnClickListener{
-            val fragmentManager: FragmentManager = supportFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment: Fragment = PushAlarmFragment()
-            fragmentTransaction.add(R.id.popupFrame, fragment)
-
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-            popupFrame.bringToFront()
-
-        }*//*
-
-    }
-}*/
-
 package com.example.bemyplant
 
 import android.app.AlertDialog
@@ -156,8 +47,8 @@ class SettingActivity : AppCompatActivity() {
         // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
         getUserAccount()
 
-        // TODO: 사용자 얼굴은 default값으로 미리 지정해둘 것
-        // coroutine으로 처리할 것 (비동기)
+        // TODO: 사용자 이미지 변경할 것
+        userImage.setImageResource(R.drawable.user_image)
 
         // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 
@@ -290,7 +181,7 @@ class SettingActivity : AppCompatActivity() {
     fun deleteAccountPopup(){
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
-        val dialogView = inflater.inflate(R.layout.fragment_setting_delete_account_popup, null)
+        val dialogView = inflater.inflate(R.layout.fragment_setting_withdrawal_popup, null)
 
         // 팝업 창의 뷰로 사용할 XML 레이아웃 설정
         builder.setView(dialogView)
@@ -298,7 +189,7 @@ class SettingActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // 예 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deleteAccount_yes).setOnClickListener {
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_withdrawal_yes).setOnClickListener {
             // 2. 회원 탈퇴 (rest API 로 계정 delete)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
@@ -339,7 +230,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         // 아니오 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deleteAccount_no).setOnClickListener {
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_withdrawal_no).setOnClickListener {
             dialog.dismiss() // 다이얼로그를 닫습니다.
         }
 
@@ -350,7 +241,7 @@ class SettingActivity : AppCompatActivity() {
     fun deletePlantPopup(){
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
-        val dialogView = inflater.inflate(R.layout.fragment_setting_delete_account_popup, null)
+        val dialogView = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, null)
 
         // 팝업 창의 뷰로 사용할 XML 레이아웃 설정
         builder.setView(dialogView)
@@ -358,7 +249,7 @@ class SettingActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // 예 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deleteAccount_yes).setOnClickListener {
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes).setOnClickListener {
             // 2. 식물 삭제
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
             // 비동기로 처리 ? (고려중)
@@ -375,7 +266,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         // 아니오 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deleteAccount_no).setOnClickListener {
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_no).setOnClickListener {
             dialog.dismiss() // 다이얼로그를 닫습니다.
         }
 

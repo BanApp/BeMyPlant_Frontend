@@ -15,8 +15,8 @@ class DeletePlantPopupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootview = inflater.inflate(R.layout.fragment_delete_plant_popup, container, false)
-        val yesButton = rootview.findViewById<Button>(R.id.yesButton)
+        val rootview = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, container, false)
+        val yesButton = rootview.findViewById<Button>(R.id.appCompatButton_deletePlant_yes)
         yesButton.setOnClickListener {
             // 이미지 변경
             val deletePlant = R.drawable.delete_plant

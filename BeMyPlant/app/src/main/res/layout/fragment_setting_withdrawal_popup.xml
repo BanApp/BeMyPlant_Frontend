@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="190dp"
-    tools:context=".fragment.popup.WithdrawlPopupFragment"
-    android:background="@drawable/button_white">
+    android:background="@drawable/button_white_no_border">
 
 
     <TextView
@@ -19,7 +18,7 @@
         android:text="회원탈퇴를\n하시겠습니까?"
         android:textColor="@color/black"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +41,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/yesButton"
+        android:id="@+id/appCompatButton_withdrawal_yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -57,7 +56,7 @@
         app:layout_constraintTop_toTopOf="@+id/horizontalGuideline" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/noButton"
+        android:id="@+id/appCompatButton_withdrawal_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"

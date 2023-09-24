@@ -5,7 +5,7 @@
     android:layout_width="300dp"
     android:layout_height="190dp"
     tools:context=".popup.DeletePlantPopupFragment"
-    android:background="@drawable/button_white">
+    android:background="@drawable/button_white_no_border">
 
 
     <TextView
@@ -43,7 +43,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/yesButton"
+        android:id="@+id/appCompatButton_deletePlant_yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="@+id/horizontalGuideline" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/noButton"
+        android:id="@+id/appCompatButton_deletePlant_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"

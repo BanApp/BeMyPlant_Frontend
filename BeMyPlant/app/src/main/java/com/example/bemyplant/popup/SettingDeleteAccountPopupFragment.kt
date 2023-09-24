@@ -16,11 +16,10 @@ class SettingDeleteAccountPopupFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootview = inflater.inflate(R.layout.fragment_setting_delete_account_popup, container, false)
-        val yesButton = rootview.findViewById<Button>(R.id.appCompatButton_deleteAccount_yes)
+        val rootview = inflater.inflate(R.layout.fragment_setting_withdrawal_popup, container, false)
+        val yesButton = rootview.findViewById<Button>(R.id.appCompatButton_withdrawal_yes)
 
         yesButton.setOnClickListener {
-            // TODO: DB에서 삭제
             // 이미지 변경
             val deletePlant = R.drawable.delete_plant
             val bundle = Bundle()
