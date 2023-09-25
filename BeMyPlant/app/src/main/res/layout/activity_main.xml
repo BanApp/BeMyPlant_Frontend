@@ -8,6 +8,15 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/screenFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_main_menu"
         android:layout_width="409dp"
@@ -22,18 +31,20 @@
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu" />
 
-    <ImageView
-        android:id="@+id/imageView_main_flower"
-        android:layout_width="152dp"
-        android:layout_height="227dp"
+
+    <ImageButton
+        android:id="@+id/mainFlower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/flower"
+        android:background="@android:color/transparent"
         app:backgroundTint="#DFF4C7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.394"></ImageView>
+        app:layout_constraintVertical_bias="0.394"/>
 
     <FrameLayout
         android:id="@+id/frameLayout_main_dDay"

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ImageSelectFragment">
+    tools:context=".fragment.ImageSelectFragment"
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/textView_imageSelect_plantName"
         android:layout_width="wrap_content"
@@ -14,7 +15,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/notosans_bold"
-        android:text="뽀삐를🪴\n선택해 보아요! "
+        android:text="뽀삐를\n선택해 보아요!"
         android:textColor="@color/black"
         android:textSize="44sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,9 +29,11 @@
         android:id="@+id/imageButton_imageSelect_plant1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="centerInside"
         android:layout_marginTop="140dp"
         android:layout_marginStart="20dp"
-        android:background="@drawable/flower"
+        android:background="@drawable/image_select"
+        android:src="@drawable/flower"
         android:contentDescription="flowerButton1"
         app:layout_constraintDimensionRatio="1:1.2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,9 +47,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="140dp"
-        android:background="@drawable/flower2"
+        android:background="@drawable/image_select"
+        android:src="@drawable/flower2"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:scaleType="centerInside"
         android:contentDescription="flowerButton2"
         app:layout_constraintDimensionRatio="1:1.2"
         app:layout_constraintEnd_toEndOf="parent"

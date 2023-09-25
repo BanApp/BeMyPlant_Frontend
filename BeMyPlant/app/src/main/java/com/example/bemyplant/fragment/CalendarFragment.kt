@@ -1,6 +1,7 @@
 package com.example.bemyplant.fragment
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,13 +15,15 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bemyplant.CalendarAdapter
 import com.example.bemyplant.ChatActivity
 import com.example.bemyplant.Day
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.SettingActivity
+import com.example.bemyplant.adapter.CalendarAdapter
+import com.example.bemyplant.model.DiaryRealmManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
@@ -30,12 +33,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var calendarAdapter: CalendarAdapter
     lateinit var navController: NavController
-
-    // 더미데이터 - 가상의 이미지 ID 맵 생성 (추후 실제 DB 값으로 대체)
-    private val dateImageMap = hashMapOf(
-        "2023-07-01" to R.drawable.example_photo,
-        "2023-07-10" to R.drawable.flower,
-    )
+    private lateinit var diaryRealmManager: DiaryRealmManager
 
     // 현재 날짜 정보
     @RequiresApi(Build.VERSION_CODES.O)
@@ -49,14 +47,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
-
+        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
 
         // 캘린더 설정
-        val dayList: ArrayList<Day> = getCalendarData(currentDate)/*
-        calendarAdapter = CalendarAdapter(requireContext(), dayList)
-        calendarAdapter.setClickListener(this)*/
+        val dayList: ArrayList<Day> = getCalendarData(currentDate)
         calendarAdapter =
-            CalendarAdapter(requireContext(), dayList, this, dateImageMap) // itemClickListener 전달
+            CalendarAdapter(requireContext(), dayList, this) // itemClickListener 전달
         recyclerView.adapter = calendarAdapter
 
         updateCalendar(view)
@@ -122,9 +118,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
 
         // 현재 년도와 월을 나타내는 TextView를 찾음
         val monthTextView = view.findViewById<TextView>(R.id.monthTextView)
-
-        // 현재 날짜 정보 가져오기
-        //val currentDate = LocalDate.now()
 
         // 년도와 월을 표시할 형식 지정 (예: "23년 7월")
         val formatter = DateTimeFormatter.ofPattern("yy년 M월", Locale.getDefault())
@@ -207,72 +200,27 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
 
     }
 
-    /*
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCalendarData(): ArrayList<Day> {
-        val dayList = ArrayList<Day>()
-
-        // 현재 날짜 정보 가져오기
-        val currentDate = LocalDate.now()
-
-        // 현재 달의 첫 날 구하기
-        val firstDayOfMonth = currentDate.with(TemporalAdjusters.firstDayOfMonth())
-
-        // 현재 달의 마지막 날 구하기
-        val lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth())
-
-        // 현재 달의 첫 날의 요일 구하기 (일요일: 7, 월요일: 1, ..., 토요일: 6)
-        val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value
-
-        // 현재 달의 마지막 날짜
-        val lastDay = lastDayOfMonth.dayOfMonth
-
-
-        // 이전 달의 마지막 날 구하기
-        val lastDayOfPrevMonth = firstDayOfMonth.minusDays(1)
-
-        // 이전 달의 마지막 날짜
-        val lastPrevDay = lastDayOfPrevMonth.dayOfMonth
-
-        // 현재 달의 시작일(1일)에서 남은 요일만큼 이전 달 날짜로 채우기
-        for (i in firstDayOfWeek - 1 downTo 0) {
-            val day = Day()
-            day.day = (lastPrevDay - i).toString()
-            day.isInMonth = false
-            dayList.add(day)
-        }
-
-        // 현재 달 날짜 추가
-        for (i in 1..lastDay) {
-            val day = Day()
-            day.day = i.toString()
-            day.isInMonth = true
-            dayList.add(day)
-        }
-
-        // 다음 달의 날짜로 채우기
-        val remainingDays = 42 - dayList.size // 6주 x 7일
-        for (i in 1..remainingDays) {
-            val day = Day()
-            day.day = i.toString()
-            day.isInMonth = false
-            dayList.add(day)
-        }
-
-
-        return dayList
-
-    }
-*/
     override fun onItemClick(view: View?, day: Day) {
+        // DB조회
         // 날짜 클릭 시 다이어리 확인 or 작성
+        var hasImage = false
         val date =
-            "${day.year}-${String.format("%02d", day.month)}-${String.format("%02d", day.day)}"
-        val hasImage = dateImageMap.containsKey(date)
+            "${day.year}/${String.format("%02d", day.month)}/${String.format("%02d", day.day)}"
+        val data = diaryRealmManager.find(date)
 
-        if (hasImage) {
+        if (data != null) { //해당하는 날짜에 데이터가 있다면
             // 기존 다이어리 확인
             val bundle = Bundle()
+            bundle.putString("title", data?.Title)
+            bundle.putParcelable("image",  BitmapFactory.decodeByteArray(data?.Image, 0, data?.Image!!.size)) //db의 이미지는 ByteArray -> bitmap으로 수정
+            bundle.putString("contents", data?.Content)
+            if (data?.WeatherCode == null){
+                bundle.putInt("weatherCode", 0) //기본값 0(맑음)
+            }
+            else{
+                bundle.putInt("weatherCode", data!!.WeatherCode)
+            }
+
             bundle.putParcelable("selectedDay", day)
             navController.navigate(R.id.diaryViewFragment, bundle)
         } else {
@@ -282,6 +230,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
             navController.navigate(R.id.diaryNewFragment, bundle)
         }
     }
+
 }
 
 

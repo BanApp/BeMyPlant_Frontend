@@ -5,6 +5,11 @@
     android:id="@+id/navigation1"
     app:startDestination="@id/mainFragment2">
     <fragment
+        android:id="@+id/nav_host_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph" />
+    <fragment
         android:id="@+id/mainFragment2"
         android:name="com.example.bemyplant.fragment.MainFragment"
         android:label="fragment_main"
@@ -91,7 +96,7 @@
         tools:layout="@layout/fragment_sign_up2" >
         <action
             android:id="@+id/action_s2Fragment_to_pRFragment"
-            app:destination="@id/pRFragment" />
+            app:destination="@id/fragment_plant_register" />
     </fragment>
     <fragment
         android:id="@+id/bRFragment"
@@ -103,7 +108,7 @@
             app:destination="@id/loginFragment3" />
     </fragment>
     <fragment
-        android:id="@+id/pRFragment"
+        android:id="@+id/fragment_plant_register"
         android:name="com.example.bemyplant.fragment.PlantRegisterFragment"
         android:label="fragment_p_r"
         tools:layout="@layout/fragment_plant_register" >

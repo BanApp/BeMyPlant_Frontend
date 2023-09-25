@@ -1,20 +1,34 @@
 package com.example.bemyplant
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.adapter.MessageAdapter
+import com.example.bemyplant.data.ChatRequest
+import com.example.bemyplant.data.LoginData
+import com.example.bemyplant.network.RetrofitService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class ChatActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
     private lateinit var sendButton: Button
@@ -23,28 +37,66 @@ class ChatActivity : AppCompatActivity() {
     private val itemListMe = ArrayList<ChatMsg>()
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
+    private val retrofitService = RetrofitService().apiService2
+
+
+    private fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getTime(): String {
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val dateFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    private fun renderingMessage(message: String, user:String, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
+        Log.d("chatbot", "[function] message: $message")
+        Log.d("chatbot", "[function] user: $user")
+
+        if (message.isNotEmpty()) {
+            if (user == "jo") {
+                itemListMe.add(ChatMsg(message, currentUser, getTime()))
+                messageAdapterMe.notifyDataSetChanged()
+                recyclerViewMe.scrollToPosition(itemListMe.size - 1)
+
+                // 빈 문자열 추가
+                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, ""))
+                messageAdapterOther.notifyDataSetChanged()
+                recyclerViewOther.scrollToPosition(itemListMe.size - 1)
+            } else {
+                Log.d("chatbot", "[function] other user enter")
+                itemListOther.add(ChatMsg(message, user, getTime()))
+                Log.d("chatbot", "[function] (1) itemListOther.add")
+                messageAdapterOther.notifyDataSetChanged()
+                Log.d("chatbot", "[function] (2) messageAdapterOther")
+                recyclerViewOther.scrollToPosition(itemListOther.size - 1)
+                Log.d("chatbot", "[function] (3) recyclerViewOther")
+
+                // 빈 문자열 추가
+                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, ""))
+                Log.d("chatbot", "[function] (4) itemListOther.add")
+                messageAdapterMe.notifyDataSetChanged()
+                Log.d("chatbot", "[function] (5) messageAdapterOtherjmj0801")
+                recyclerViewMe.scrollToPosition(itemListMe.size - 1)
+                Log.d("chatbot", "[function] (6) recyclerViewOther")
+            }
+            messageEditText.text.clear()
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        // 현재시간
-        fun getTime():String{
-            val now = System.currentTimeMillis()
-            val date = Date(now)
-            val dateFormat = SimpleDateFormat("hh:mm",Locale.getDefault())
-            return dateFormat.format(date)
 
+        val bottomNavigationView =
+            findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
 
-        }
-
-
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
 
         bottomNavigationView.selectedItemId = R.id.menu_chat
         val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-//        val selectedItemIndex = 0
-//
-//        menuView.getChildAt(selectedItemIndex).performClick()
-
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
@@ -78,6 +130,7 @@ class ChatActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
         messageEditText = findViewById(R.id.messageEditText)
         sendButton = findViewById(R.id.sendButton)
 
@@ -85,7 +138,7 @@ class ChatActivity : AppCompatActivity() {
         val recyclerViewOther = findViewById<RecyclerView>(R.id.recycler_view_other)
 
         messageAdapterMe = MessageAdapter(itemListMe, currentUser)
-        messageAdapterOther = MessageAdapter(itemListOther, currentUser)
+        messageAdapterOther = MessageAdapter(itemListOther, "other")
 
         recyclerViewMe.adapter = messageAdapterMe
         recyclerViewOther.adapter = messageAdapterOther
@@ -93,20 +146,104 @@ class ChatActivity : AppCompatActivity() {
         recyclerViewMe.layoutManager = LinearLayoutManager(this)
         recyclerViewOther.layoutManager = LinearLayoutManager(this)
 
+        ///*
         sendButton.setOnClickListener {
             val message = messageEditText.text.toString()
-            if (message.isNotEmpty()) {
-                if (currentUser == "jo") {
-                    itemListMe.add(ChatMsg(message, currentUser, getTime()))
-                    messageAdapterMe.notifyDataSetChanged()
-                    recyclerViewMe.scrollToPosition(itemListMe.size - 1)
-                } else {
-                    itemListOther.add(ChatMsg(message, "otherUserId", getTime()))
-                    messageAdapterOther.notifyDataSetChanged()
-                    recyclerViewOther.scrollToPosition(itemListOther.size - 1)
+            CoroutineScope(Dispatchers.Main).launch { // 메인 스레드에서 코루틴 실행
+                renderingMessage(message, "jo", recyclerViewMe, recyclerViewOther)
+
+                val chatData = ChatRequest(message)
+                val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+                val token: String? = sharedPreferences.getString("token", null)
+
+                if (token != null) {
+                    Log.d("full-token", "Bearer " + token)
                 }
-                messageEditText.text.clear()
+
+                // 토큰 부재 시 초기화면(MJ_main)으로 전환
+                if (token.isNullOrEmpty()) {
+                    val homeIntent = Intent(this@ChatActivity, MJ_MainActivity::class.java)
+                    startActivity(homeIntent)
+                }
+
+                try {
+                    // API 요청 보내기
+                    val response = retrofitService.chat(chatData, "Bearer " + token)
+
+                    val Tag: String = "chatbot"
+                    Log.d(Tag, "chatbot raw-response: $response")
+                    Log.d(Tag, "chatbot raw-response-body: ${response.body()}")
+                    Log.d(Tag, "chatbot raw-response-body-response: ${response.body()?.response}")
+
+                    val responseString = response.body()?.response
+                    if (responseString != null) {
+                        renderingMessage(responseString, "otherUser", recyclerViewMe, recyclerViewOther)
+                    }
+
+                } catch (e: Exception) {
+                    // API 요청 실패
+                    val Tag: String = "chatbot"
+                    Log.d(Tag, "chatbot processing failed")
+                }
+
             }
         }
+
+         //*/
     }
+
 }
+
+            /*lifecycleScope.launch {
+                val result = sendMessage(message)
+
+                result.onSuccess { response ->
+                    // 성공한 경우 response를 사용하여 처리
+                    val Tag : String = "chatbot"
+                    Log.d(Tag, "chatbot processing seccuess")
+                    renderingMessage(response)
+                }
+
+                result.onFailure { exception ->
+                    // 실패한 경우 exception을 사용하여 처리
+                    val Tag : String = "chatbot"
+                    Log.d(Tag, "chatbot processing failed: ${exception.message}")
+
+                }
+            }
+
+        }*/
+
+    /*private suspend fun sendMessage(message: String): Result<String> {
+        val chatData = ChatRequest(message)
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+
+        // 토큰 부재 시 초기화면(MJ_main)으로 전환
+        if (token.isNullOrEmpty()) {
+            val homeIntent = Intent(this@ChatActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+            return Result.failure(Exception("Token is missing"))
+        }
+
+
+        try {
+            // API 요청 보내기
+            val response = retrofitService.chat(chatData, token)
+
+            return if (response.isSuccessful) {
+                // API 요청 성공
+                Result.success(response.body()?.response ?: "")
+            } else {
+                // 챗봇 처리 실패
+                val errorBody = response.errorBody()?.string()
+                Result.failure(Exception("Chatbot processing failed: $errorBody"))
+
+            }
+        } catch (e: Exception) {
+            // API 요청 실패
+            return Result.failure(e)
+        }
+    }*/
+
+

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <!--Plant 제목 색깔 바꾸기 & 글자 높이 변경-->
     <!--로그인버튼-->
     <!--회원가입버튼-->

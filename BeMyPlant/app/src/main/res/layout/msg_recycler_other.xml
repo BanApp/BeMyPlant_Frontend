@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:gravity="left"
         android:text="메세지 내용"
         android:textSize="15sp" />
     <TextView

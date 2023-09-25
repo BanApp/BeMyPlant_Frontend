@@ -28,6 +28,18 @@ data class AuthorityDto(
     val authorityName: String
 )
 
+/*data class withdrawalResponse(
+    val message: String
+)*/
+
+data class UserData(
+    val username: String,
+    val r_name: String,
+    val phones: String,
+    val cre_date: String,
+    val authorityDtoSet:  List<AuthorityDto>
+)
+
 
 data class SensorData(
     val id: String,
@@ -38,6 +50,16 @@ data class SensorData(
     val status: Boolean,
     val date: String
 )
+
+
+data class ChatRequest(
+    val input_text: String
+)
+
+data class ChatResponse(
+    val response: String 
+)
+
 
 data class GardenResponse(
     val cntntsNo: String, //컨텐츠 번호

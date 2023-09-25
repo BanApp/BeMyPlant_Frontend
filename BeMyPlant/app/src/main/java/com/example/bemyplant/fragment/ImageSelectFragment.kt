@@ -1,145 +1,91 @@
 package com.example.bemyplant.fragment
 
-import android.os.Bundle
 import android.content.Intent
-import androidx.fragment.app.Fragment
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentImageSelectBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ImageSelectFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+class SharedViewModel : ViewModel() {
+    var imageText: String = ""
+}
 class ImageSelectFragment : Fragment() {
-    var selectedImage: String = ""
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    val binding by lazy{FragmentImageSelectBinding.inflate(layoutInflater)}
+    val binding by lazy{ FragmentImageSelectBinding.inflate(layoutInflater)}
+    var newPlantImageResId: Int = 0
+    private var flag: Boolean = false
+    private var plantName: String = ""
+    private var plantRace: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-// 이미지 선택하면 문자열이 넘어감.
-        binding.imageButtonImageSelectPlant1.setOnClickListener{
-            selectedImage = "flower1"
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            navigateToMain()
-        }
-        binding.imageButtonImageSelectPlant2.setOnClickListener{
-            selectedImage = "flower2"
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            navigateToMain()
+            flag = it.getBoolean("flag", false)
+            plantName = it.getString("name", "")
+            plantRace = it.getString("race", "")
         }
     }
-    // 다른 화면으로 값이 넘어가게끔
-    private fun navigateToMain(){
-        val intent = Intent(requireActivity(), MainActivity::class.java)
-        intent.putExtra("selectedImage", selectedImage)
-        requireActivity().startActivity(intent)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val rootView = inflater.inflate(R.layout.fragment_image_select, container, false)
+        val flowerButton1 = rootView.findViewById<ImageButton>(R.id.imageButton_imageSelect_plant1)
+        val flowerButton2 = rootView.findViewById<ImageButton>(R.id.imageButton_imageSelect_plant2)
+        val finishButton = rootView.findViewById<Button>(R.id.button_imageSelect_finishButton)
+        val changeText = rootView.findViewById<TextView>(R.id.textView_imageSelect_plantName)
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        if (flag){
+            changeText.text = sharedViewModel.imageText
+        }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding.buttonImageSelectFinishButton.setOnClickListener {
-//                                    val intent = Intent(requireActivity(), MainActivity::class.java)
-//                        requireActivity().startActivity(intent)
-            findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)
-        }// Inflate the layout for this fragment
-        return binding.root
+        flowerButton1.setOnClickListener {
+            flowerButton1.setBackgroundResource(R.drawable.image_select)
+            flowerButton2.setBackgroundResource(0)
+            newPlantImageResId = R.drawable.flower
+        }
+
+        flowerButton2.setOnClickListener {
+            flowerButton2.setBackgroundResource(R.drawable.image_select)
+            flowerButton1.setBackgroundResource(0)
+            newPlantImageResId = R.drawable.flower2
+        }
+        finishButton.setOnClickListener {
+            //----메인엑티비티에 이미지 값 전달
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.putExtra("newPlantImageResId", newPlantImageResId) // TODO: 실제 이미지값으로 변경
+            //--------flag값에 따라 화면 전환
+            if (flag) {
+                // TODO: (정현) 식물 DB에서 식물 이미지 update (newPlantImageResId)
+                startActivity(intent)
+            } else  {
+                // TODO: (정현) 식물 DB에서 식물 정보 create (plantName, plantRace, newPlantImageResId, Plant Birth plantRegistration)
+                // 참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)
+            }
+        }
+        return rootView
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment imageSelectFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic fun newInstance(param1: String, param2: String) =
+        @JvmStatic fun newInstance(flag: Boolean, plantName: String, plantRace: String) =
             ImageSelectFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putBoolean("flag", flag)
+                    putString("name", plantName)
+                    putString("race", plantRace)
                 }
             }
     }
 }
-
-//package com.example.bemyplant.fragment
-//
-//import android.os.Bundle
-//import androidx.fragment.app.Fragment
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import androidx.navigation.fragment.findNavController
-//import com.example.bemyplant.R
-//import com.example.bemyplant.databinding.FragmentISBinding
-//import com.example.bemyplant.databinding.FragmentImageSelectBinding
-//
-//// TODO: Rename parameter arguments, choose names that match
-//// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-//
-///**
-// * A simple [Fragment] subclass.
-// * Use the [ImageSelectFragment.newInstance] factory method to
-// * create an instance of this fragment.
-// */
-//class ImageSelectFragment : Fragment() {
-//    // TODO: Rename and change types of parameters
-//    private var param1: String? = null
-//    private var param2: String? = null
-//    val binding by lazy{FragmentImageSelectBinding.inflate(layoutInflater)}
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-//    }
-//
-//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-//                              savedInstanceState: Bundle?): View? {
-//        binding.button1.setOnClickListener {
-//            findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)
-//        }// Inflate the layout for this fragment
-//        return binding.root
-//    }
-//
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment imageSelectFragment.
-//         */
-//        @JvmStatic fun newInstance(param1: String, param2: String) =
-//                ImageSelectFragment().apply {
-//                    arguments = Bundle().apply {
-//                        putString(ARG_PARAM1, param1)
-//                        putString(ARG_PARAM2, param2)
-//                    }
-//                }
-//    }
-//}

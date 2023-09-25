@@ -1,5 +1,6 @@
 package com.example.bemyplant.fragment
 
+import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.bemyplant.data.LoginData
+import com.example.bemyplant.data.LoginResponse
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.network.RetrofitService
 import java.util.*
@@ -62,8 +64,6 @@ class LoginFragment : Fragment() {
             } else {
                 login(loginData)
             }
-
-
         }
     }
     private fun showToast(context: Context, message: String) {
@@ -86,6 +86,15 @@ class LoginFragment : Fragment() {
                     // 로그인 성공
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "로그인이 되었습니다.")
+
+                        // 토큰 정보 저장 (SharedPreferences)
+                        val token = response.body()?.token
+                        val sharedPreferences = context?.getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences?.edit()
+                        editor?.putString("token", token)
+                        editor?.apply()
+
+                        // main 화면으로 전환
                         val intent = Intent(requireActivity(), MainActivity::class.java)
                         requireActivity().startActivity(intent)
                     }
