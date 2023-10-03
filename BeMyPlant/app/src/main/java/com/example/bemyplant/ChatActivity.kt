@@ -2,32 +2,26 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.adapter.MessageAdapter
+import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
-import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.network.RetrofitService
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
@@ -166,30 +160,32 @@ class ChatActivity : AppCompatActivity() {
                     startActivity(homeIntent)
                 }
 
-                try {
-                    // API 요청 보내기
-                    val response = retrofitService.chat(chatData, "Bearer " + token)
+                val response = retrofitService.chat(chatData, "Bearer " + token)
 
-                    val Tag: String = "chatbot"
-                    Log.d(Tag, "chatbot raw-response: $response")
-                    Log.d(Tag, "chatbot raw-response-body: ${response.body()}")
-                    Log.d(Tag, "chatbot raw-response-body-response: ${response.body()?.response}")
+                if (response.code() == 401) {
+                    // 401 Unauthorized 오류 처리
+                    // 첫 화면으로 (로그인 시도 화면) 이동
+                    val homeIntent = Intent(this@ChatActivity, MJ_MainActivity::class.java)
+                    startActivity(homeIntent)
+                } else {
+                    // TODO: 채팅 데이터 api call - 다른 HTTP 오류 코드에 대한 처리
+                }
 
+                val Tag: String = "chatbot"
+                Log.d(Tag, "chatbot raw-response: $response")
+                Log.d(Tag, "chatbot raw-response-body: ${response.body()}")
+                Log.d(Tag, "chatbot raw-response-body-response: ${response.body()?.response}")
+
+
+                if (response.isSuccessful) {
                     val responseString = response.body()?.response
                     if (responseString != null) {
                         renderingMessage(responseString, "otherUser", recyclerViewMe, recyclerViewOther)
                     }
-
-                } catch (e: Exception) {
-                    // API 요청 실패
-                    val Tag: String = "chatbot"
-                    Log.d(Tag, "chatbot processing failed")
                 }
 
             }
         }
-
-         //*/
     }
 
 }

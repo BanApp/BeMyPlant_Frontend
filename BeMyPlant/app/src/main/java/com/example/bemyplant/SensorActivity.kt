@@ -2,36 +2,25 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.content.SharedPreferences
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.activity.ComponentActivity
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bemyplant.data.SensorData
-import com.example.bemyplant.databinding.ActivitySensorBinding
 import com.example.bemyplant.network.ApiService
 import com.example.bemyplant.network.RetrofitService
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.github.mikephil.charting.data.Entry
-import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import kotlin.collections.ArrayList
-import kotlin.collections.firstOrNull
 import kotlin.math.abs
 
 
@@ -155,7 +144,18 @@ class SensorActivity : AppCompatActivity() {
             startActivity(homeIntent)
         }
         CoroutineScope(Dispatchers.IO).launch {
+            // api call to get sensor data
             val response = retrofitService.getSensorData(1, "Bearer " + token)
+            // HTTP 오류 코드에 대한 처리
+            if (response.code() == 401) {
+                // 401 Unauthorized 오류 처리
+                // 첫 화면으로 (로그인 시도 화면) 이동
+                val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+                startActivity(homeIntent)
+            } else {
+                // TODO: 센서 데이터 api call - 다른 HTTP 오류 코드에 대한 처리
+            }
+
             val Tag: String = "sensor"
             Log.d(Tag, "sensor raw-response: $response")
 
