@@ -85,9 +85,7 @@ dependencies {
 
     // realm 추가
     implementation "io.realm:realm-gradle-plugin:10.13.3-transformer-api"
-   //implementation 'io.realm:realm-android:10.7.2'
+    //implementation 'io.realm:realm-android:10.7.2'
     //implementation 'io.realm:realm-annotations:10.16.1'
     //implementation 'io.realm:realm-android-library:10.16.1'
 }
-
-

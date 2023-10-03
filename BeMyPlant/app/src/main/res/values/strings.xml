@@ -24,6 +24,7 @@
     <string name="register_plant">안녕하세요😊\n처음 오셨군요!</string>
     <string name="register_plant_sub1">키우고 있는\n식물의 종류는 무엇인가요?</string>
     <string name="register_plant_sub2">식물에게 이름을 지어주세요!</string>
+    <string name="title_activity_test2">testActivity2</string>
 
 
 </resources>
