@@ -1,6 +1,7 @@
 package com.example.bemyplant.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.bemyplant.R
 
 
-class FlowerIdFragment(bundle: Bundle) : Fragment() {
+class FlowerIdFragment() : Fragment() {
     private lateinit var plantImage: ImageView
     private lateinit var plantName: TextView
     private lateinit var plantRegistration: TextView
@@ -28,7 +29,9 @@ class FlowerIdFragment(bundle: Bundle) : Fragment() {
         val plantRegistration = rootView.findViewById<TextView>(R.id.plantRegistration)
 
         val bundle = arguments
-        if (bundle != null && bundle.containsKey("plantImage") && bundle.containsKey("plantName") &&  bundle.containsKey("plantRace") && bundle.containsKey("plantRegistration")) {
+        Log.d(bundle.toString(), "test-bundle-id-fragment")
+        //if (bundle != null && bundle.containsKey("plantImage") && bundle.containsKey("plantName") &&  bundle.containsKey("plantRace") && bundle.containsKey("plantRegistration")) {
+        if (bundle != null && bundle.containsKey("plantImageRes") && bundle.containsKey("plantName") &&  bundle.containsKey("plantRace") && bundle.containsKey("plantRegistration")) {
             mainFlower.setImageBitmap(bundle.getParcelable("plantImage"))
             plantName.text = bundle.getString("plantName")
             plantRace.text = bundle.getString("plantRace")

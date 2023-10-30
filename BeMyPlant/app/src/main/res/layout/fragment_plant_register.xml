@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".fragment.PlantRegisterFragment">
+<!--    app:defaultNavHost = "true"-->
+<!--    app:navGraph="@navigation/nav_graph1">-->
 
     <!--<androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -145,6 +147,4 @@
             app:layout_constraintTop_toBottomOf="@+id/editsLayout"
             app:layout_constraintVertical_bias="0.6" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

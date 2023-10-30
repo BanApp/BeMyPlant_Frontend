@@ -1,14 +1,15 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.bemyplant.R
+import com.example.bemyplant.PlantRegisterForFragmentActivity
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
@@ -35,7 +36,6 @@ class SignUp2Fragment : Fragment() {
             val signUpData = getSignUpData()
 
             val pw2 = binding.userPwConfirmInput.text.toString()
-            findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
 
             if (signUpData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력해주세요.")
@@ -75,7 +75,17 @@ class SignUp2Fragment : Fragment() {
                     // 회원 가입 성공
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "회원가입이 완료되었습니다")
-                        findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
+                        //TODO: 반드시 확인 , nav_graph 쪼갬
+                        // plant register 화면으로 전환 (ACTIVITY 전환)
+                        Log.d("회원가입" ,"회원가입 완료")
+                        //(activity as MJ_MainActivity?)!!.replaceFragment(PlantRegisterFragment.newInstance()) // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                        //findNavController().navigate(R.id.action_to_navigation2)
+
+                        val plantRegisterIntent = Intent(activity, PlantRegisterForFragmentActivity::class.java)
+                        startActivity(plantRegisterIntent)
+
+                        //findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
+
                     }
                 } else {
                     // 회원 가입 실패
