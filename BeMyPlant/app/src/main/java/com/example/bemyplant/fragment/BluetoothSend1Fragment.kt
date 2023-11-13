@@ -1,65 +1,77 @@
 package com.example.bemyplant.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.bemyplant.ConnectedBluetoothThread
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBluetoothSend1Binding
+import org.json.JSONObject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [BluetoothSend1Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BluetoothSend1Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     val binding by lazy{FragmentBluetoothSend1Binding.inflate(layoutInflater)}
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var wifiEdit: String? = null
+    private var wifiPwEdit: String? = null
+    private var userIdEdit: String? = null
+    private var userPwEdit: String? = null
+    val mThreadConnectedBluetooth = ConnectedBluetoothThread
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
-        }
         // Inflate the layout for this fragment
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /*wifiEdit = binding.wifiEdit.text.toString()
+        wifiPwEdit = binding.wifiPwEdit.text.toString()
+        userIdEdit = binding.userIdEdit.text.toString()
+        userPwEdit = binding.userPwEdit.text.toString()
+*/
+
+
+        binding.finishButton.setOnClickListener {
+            wifiEdit = binding.editTextWifiSsid.text.toString()
+            wifiPwEdit = binding.editTextWifiPwd.text.toString()
+
+            userIdEdit = binding.editTextUserId.text.toString()
+            userPwEdit = binding.editTextUserPwd.text.toString()
+            // 보내기 시도
+            if (mThreadConnectedBluetooth != null) {
+                val json = createJson(wifiEdit.toString(), wifiPwEdit.toString(), userIdEdit.toString(), userPwEdit.toString() )
+                mThreadConnectedBluetooth?.write(json.toString())
+                showToast("전송 성공")
+                // 만일 보내기 성공 시 화면이동
+                // findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
+                findNavController().navigate(R.id.bS2Fragment2)
+            }
+        }
+
+    }
+
+    private fun createJson(wifi_ssid: String, wifi_password: String, user_id: String, user_password: String): JSONObject {
+        val json = JSONObject()
+        json.put("ssid", wifi_ssid)
+        json.put("password", wifi_password)
+        json.put("user_id", user_id)
+        json.put("user_pw", user_password)
+        return json
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment bSFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            BluetoothSend1Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+            BluetoothSend1Fragment().apply {}
     }
 }
