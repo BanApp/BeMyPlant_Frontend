@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation3"
+    app:startDestination="@id/sensorRegisterFragment2">
+    <fragment
+        android:id="@+id/subNavigation1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph3" />
+
+    <fragment
+        android:id="@+id/sensorRegisterFragment2"
+        android:name="com.example.bemyplant.fragment.SensorRegisterFragment"
+        android:label="SensorRegisterFragment" >
+        <action
+            android:id="@+id/action_sensorRegisterFragment2_to_bluetoothConnectFragment"
+            app:destination="@id/bluetoothConnectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothConnectFragment"
+        android:name="com.example.bemyplant.fragment.BluetoothConnectFragment"
+        android:label="fragment_bluetooth_connect"
+        tools:layout="@layout/fragment_bluetooth_connect" >
+        <action
+            android:id="@+id/action_bluetoothConnectFragment_to_bluetoothSend1Fragment"
+            app:destination="@id/bluetoothSend1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothSend1Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend1Fragment"
+        android:label="fragment_bluetooth_send1"
+        tools:layout="@layout/fragment_bluetooth_send1" >
+        <action
+            android:id="@+id/action_bluetoothSend1Fragment_to_bluetoothSend2Fragment"
+            app:destination="@id/bluetoothSend2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothSend2Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend2Fragment"
+        android:label="fragment_bluetooth_send2"
+        tools:layout="@layout/fragment_bluetooth_send2" >
+        <action
+            android:id="@+id/action_bluetoothSend2Fragment_to_bluetoothSend3Fragment"
+            app:destination="@id/bluetoothSend3Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothSend3Fragment"
+        android:name="com.example.bemyplant.fragment.BluetoothSend3Fragment"
+        android:label="fragment_bluetooth_send3"
+        tools:layout="@layout/fragment_bluetooth_send3" >
+        <action
+            android:id="@+id/action_bluetoothSend3Fragment_to_bluetoothReadyFragment"
+            app:destination="@id/bluetoothReadyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothReadyFragment"
+        android:name="com.example.bemyplant.fragment.BluetoothReadyFragment"
+        android:label="fragment_bluetooth_ready"
+        tools:layout="@layout/fragment_bluetooth_ready" />
+</navigation>

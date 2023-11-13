@@ -1,0 +1,20 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven{url 'https://jitpack.io'}
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "BeMyPlant"
+// rootProject.buildFileName = 'build.gradle.kts'  // 이 부분을 주석 처리하거나 삭제합니다.
+
+include ':app'
