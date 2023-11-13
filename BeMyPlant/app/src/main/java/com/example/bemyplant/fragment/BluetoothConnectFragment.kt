@@ -14,15 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.ConnectedBluetoothThread
-import com.example.bemyplant.ConnectedBluetoothThread.BT_MESSAGE_READ
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBluetoothConnectBinding
-import com.example.bemyplant.testActivity
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.util.UUID

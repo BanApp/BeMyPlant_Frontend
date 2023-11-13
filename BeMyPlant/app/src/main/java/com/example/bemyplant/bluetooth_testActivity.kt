@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -24,11 +25,12 @@ import java.io.OutputStream
 import java.io.UnsupportedEncodingException
 import java.util.UUID
 
-class testActivity : AppCompatActivity() {
+class bluetooth_testActivity : AppCompatActivity() {
 
     private lateinit var mBluetoothAdapter: BluetoothAdapter
     private lateinit var mPairedDevices: Set<BluetoothDevice>
     private lateinit var mListPairedDevices: List<String>
+    //private lateinit var foundDevice: Boolean
 
     private lateinit var mBluetoothHandler: Handler
     private var mThreadConnectedBluetooth: ConnectedBluetoothThread? = null
@@ -40,7 +42,6 @@ class testActivity : AppCompatActivity() {
     private val BT_CONNECTING_STATUS = 3
     private val BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
-
     private lateinit var btnBluetoothOn : Button
     private lateinit var btnBluetoothOff : Button
     private lateinit var btnConnect : Button
@@ -50,14 +51,17 @@ class testActivity : AppCompatActivity() {
     private lateinit var tvReceiveData : TextView
     private lateinit var tvBluetoothStatus : TextView
 
+    val REQUEST_BLUETOOTH_PERMISSION = 123 // 임의의 값으로 권한 요청 코드 지정
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.test)
 
+        // 블루투스 권한 부여
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), REQUEST_BLUETOOTH_PERMISSION)
+
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-
         btnBluetoothOn = findViewById<Button>(R.id.btnBluetoothOn)
         btnBluetoothOff = findViewById<Button>(R.id.btnBluetoothOff)
         btnConnect = findViewById<Button>(R.id.btnConnect)
@@ -85,9 +89,11 @@ class testActivity : AppCompatActivity() {
             if (mThreadConnectedBluetooth != null) {
                 val ssid = tvSendData1.text.toString()
                 val password =tvSendData2.text.toString()
+                //val ssid = "iPhone-km"
+                //val password = "km010605"
                 val json = createJson(ssid, password)
                 mThreadConnectedBluetooth?.write(json.toString())
-
+                showToast("전송 성공")
                 //tvSendData.text = ""
             }
         }
@@ -111,6 +117,8 @@ class testActivity : AppCompatActivity() {
         val json = JSONObject()
         json.put("ssid", ssid)
         json.put("password", password)
+        json.put("user_id", "jmj0801")
+        json.put("user_pw", "0801")
         return json
     }
 
@@ -127,20 +135,7 @@ class testActivity : AppCompatActivity() {
                 // 블루투스를 활성화
                 showToast("블루투스를 활성화합니다.")
                 val intentBluetoothEnable = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return
-                }
+
                 startActivityForResult(intentBluetoothEnable, BT_REQUEST_ENABLE)
             }
         }
@@ -149,20 +144,7 @@ class testActivity : AppCompatActivity() {
     private fun bluetoothOff() {
         if (mBluetoothAdapter.isEnabled) {
             // 블루투스 비활성화
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
+
             mBluetoothAdapter.disable()
             showToast("블루투스가 비활성화되었습니다.")
             tvBluetoothStatus.text = "비활성화"
@@ -187,26 +169,18 @@ class testActivity : AppCompatActivity() {
     }
 
     private fun listPairedDevices() {
-        showToast("listPairedDevices함수 실행")
+        Log.d("test-listPairedDevices", "listPariedDevices 함수 실행")
+
+
+
         if (mBluetoothAdapter.isEnabled) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                showToast("권한 설정 실패")
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
+            Log.d("test-listPairedDevices", "mBluetoothAdapter is Enabled")
+
             mPairedDevices = mBluetoothAdapter.bondedDevices
 
             if (mPairedDevices.size > 0) {
+                //foundDevice = true
+                Log.d("test-listPairedDevices", "mPairedDevices.size > 0")
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("장치 선택")
 
@@ -223,9 +197,13 @@ class testActivity : AppCompatActivity() {
                 alert.show()
             } else {
                 showToast("페어링된 장치가 없습니다.")
+                //foundDevice = false
+                Log.d("test-listPairedDevices", "페어링된 장치가 없습니다")
+                //scanDevice()
             }
         } else {
             showToast("블루투스가 비활성화되어 있습니다.")
+            Log.d("test-listPairedDevices", "블루투스가 비활성화되어 있습니다")
         }
     }
 
@@ -252,10 +230,24 @@ class testActivity : AppCompatActivity() {
         }
         try {
             mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(BT_UUID)
-            mBluetoothSocket.connect()
+            Log.d("bluetooth", "mBluetoothSocket complete")
+
+            try {
+                mBluetoothSocket.connect()
+                Log.d("bluetooth", "mBluetoothSocket connect")
+            } catch (e: IOException) {
+                // 연결 시도 중 예외 발생 시 해당 에러 메시지를 출력
+                Log.e("BluetoothConnection", "Connection error: ${e.message}")
+                e.printStackTrace()
+            }
+
             mThreadConnectedBluetooth = ConnectedBluetoothThread(mBluetoothSocket)
+            Log.d("bluetooth", "mThreadConnectedBluetooth")
             mThreadConnectedBluetooth?.start()
+            Log.d("bluetooth", "mThreadConnectedBluetooth?.start()")
             mBluetoothHandler.obtainMessage(BT_CONNECTING_STATUS, 1, -1).sendToTarget()
+            Log.d("bluetooth", "obtainMessage")
+            showToast("블루투스 연결 성공")
         } catch (e: IOException) {
             showToast("블루투스 연결 중 오류가 발생했습니다.")
         }

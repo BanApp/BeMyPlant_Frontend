@@ -3,30 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation1"
-    app:startDestination="@id/fragment_plant_register">
-    <fragment
-        android:id="@+id/nav_host_fragment1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/nav_graph1" />
-    <fragment
-        android:id="@+id/fragment_plant_register"
-        android:name="com.example.bemyplant.fragment.PlantRegisterFragment"
-        android:label="fragment_p_r"
-        tools:layout="@layout/fragment_plant_register">
-        <action
-            android:id="@+id/action_pRFragment_to_iSFragment2"
-            app:destination="@id/iSFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/iSFragment2"
-        android:name="com.example.bemyplant.fragment.ImageSelectFragment"
-        android:label="fragment_i_s"
-        tools:layout="@layout/fragment_image_select" >
-        <action
-            android:id="@+id/action_iSFragment2_to_sRFragment"
-            app:destination="@id/sRFragment" />
-    </fragment>
+    app:startDestination="@id/sRFragment">
+
+
     <fragment
         android:id="@+id/sRFragment"
         android:name="com.example.bemyplant.fragment.SensorRegisterFragment"

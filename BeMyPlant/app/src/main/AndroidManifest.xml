@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -35,7 +37,7 @@
             android:name=".SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".testActivity"
+            android:name=".bluetooth_testActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

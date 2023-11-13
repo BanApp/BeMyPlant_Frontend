@@ -1,7 +1,6 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.bemyplant.PlantRegisterForFragmentActivity
+import androidx.navigation.fragment.findNavController
+import com.example.bemyplant.R
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
@@ -81,8 +81,7 @@ class SignUp2Fragment : Fragment() {
                         //(activity as MJ_MainActivity?)!!.replaceFragment(PlantRegisterFragment.newInstance()) // 새로 불러올 Fragment의 Instance를 Main으로 전달
                         //findNavController().navigate(R.id.action_to_navigation2)
 
-                        val plantRegisterIntent = Intent(activity, PlantRegisterForFragmentActivity::class.java)
-                        startActivity(plantRegisterIntent)
+                        findNavController().navigate(R.id.action_s2Fragment_to_fragment_plant_register)
 
                         //findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
 
