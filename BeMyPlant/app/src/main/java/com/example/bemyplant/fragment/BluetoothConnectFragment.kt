@@ -46,7 +46,7 @@ class BluetoothConnectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_bCFragment2_to_bSFragment2)
+            findNavController().navigate(R.id.action_bluetoothConnectFragment_to_bluetoothSend1Fragment)
         }
 
 //        ConnectedBluetoothThread.mBluetoothHandler = object : Handler() {

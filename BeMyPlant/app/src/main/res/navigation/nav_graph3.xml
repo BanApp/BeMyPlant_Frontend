@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation3"
-    app:startDestination="@id/sensorRegisterFragment2">
+    app:startDestination="@id/sensorRegisterFragment">
     <fragment
         android:id="@+id/subNavigation1"
         android:layout_width="match_parent"
@@ -11,9 +11,11 @@
         app:navGraph="@navigation/nav_graph3" />
 
     <fragment
-        android:id="@+id/sensorRegisterFragment2"
+        tools:layout="@layout/fragment_sensor_register"
+        android:id="@+id/sensorRegisterFragment"
         android:name="com.example.bemyplant.fragment.SensorRegisterFragment"
-        android:label="SensorRegisterFragment" >
+        android:label="SensorRegisterFragment"
+        >
         <action
             android:id="@+id/action_sensorRegisterFragment2_to_bluetoothConnectFragment"
             app:destination="@id/bluetoothConnectFragment" />

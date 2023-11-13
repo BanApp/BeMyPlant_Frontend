@@ -5,15 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TempConnectActivity">
+
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/subNavigation1"
+        android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:defaultNavHost = "true"
+        app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph3" />
+
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/subNavigation1"-->
+<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:defaultNavHost = "true"-->
+<!--        app:navGraph="@navigation/nav_graph3" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

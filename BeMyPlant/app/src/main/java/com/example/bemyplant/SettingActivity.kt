@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.example.bemyplant.fragment.SensorRegisterFragment
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,6 +30,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var logoutButton: Button
     private lateinit var deleteAccountButton: Button
     private lateinit var deletePlantButton: Button
+    private lateinit var modifySensorButton: Button
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -40,10 +42,11 @@ class SettingActivity : AppCompatActivity() {
 
         userImage = findViewById(R.id.imageView_setting_user)
         realNameTextView = findViewById(R.id.textView_setting_name)
-        uidTextView = findViewById(R.id.textView_setting_uid)
-        logoutButton = findViewById(R.id.button_setting_logout)
-        deleteAccountButton = findViewById(R.id.button_setting_deleteAccount)
-        deletePlantButton = findViewById(R.id.button_setting_deletePlant)
+        uidTextView = findViewById(R.id.settingUid)
+        logoutButton = findViewById(R.id.logoutButton)
+        deleteAccountButton = findViewById(R.id.deleteAccountButton)
+        deletePlantButton = findViewById(R.id.deletePlantButton)
+        modifySensorButton = findViewById(R.id.modifySensorButton)
         // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
         getUserAccount()
 
@@ -66,6 +69,11 @@ class SettingActivity : AppCompatActivity() {
         deletePlantButton.setOnClickListener{
             deletePlantPopup() //팝업창 띄움
 
+        }
+        //(4) 센서 변경
+        modifySensorButton.setOnClickListener{
+            val subNav1 = Intent(this@SettingActivity, TempConnectActivity::class.java)
+            startActivity(subNav1)
         }
 
         // 하단바

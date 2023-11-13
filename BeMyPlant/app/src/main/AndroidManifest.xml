@@ -42,6 +42,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity android:name=".TempConnectActivity"
+            android:exported="false"/>
         <activity
             android:name=".MJ_MainActivity"
             android:exported="true">

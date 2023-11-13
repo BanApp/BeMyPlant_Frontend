@@ -74,7 +74,7 @@
                 tools:layout_editor_absoluteY="160dp"/>
 
             <TextView
-                android:id = "@+id/textView_setting_uid"
+                android:id = "@+id/settingUid"
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
                 android:fontFamily="@font/notosans_bold"
@@ -94,82 +94,127 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
-        android:paddingLeft="30dp"
         android:paddingRight="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile">
-
-        <Button
-            android:id="@+id/button_setting_logout"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/notosans_bold"
-            android:text="로그아웃"
-            android:textColor="#0B7328"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/notosans_bold"
+                android:text="로그아웃"
+                android:textColor="#0B7328"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
-        <TextView
-            android:id="@+id/logoutText"
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/logoutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="서비스에서 로그아웃합니다."
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="서비스에서 로그아웃합니다."
-            android:textColor="#000000"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/modifySensorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/notosans_bold"
+                android:text="센서변경"
+                android:textColor="#0B7328"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/button_setting_deleteAccount"
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/modifyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="센서를 변경합니다"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.12"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/notosans_bold"
-            android:text="회원탈퇴"
-            android:textColor="#0B7328"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/deleteAccountButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/notosans_bold"
+                android:text="회원탈퇴"
+                android:textColor="#0B7328"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-
-        <TextView
-            android:id="@+id/withdrawalText"
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/deleteAccountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="서비스에서 탈퇴합니다."
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="서비스에서 탈퇴합니다."
-            android:textColor="#000000"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/deletePlantButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/notosans_bold"
+                android:text="식물삭제"
+                android:textColor="#0B7328"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/button_setting_deletePlant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/notosans_bold"
-            android:text="식물삭제"
-            android:textColor="#0B7328"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/deleteText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_bold"
-            android:text="등록된 식물을 삭제합니다."
-            android:textColor="#000000"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/deleteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="등록된 식물을 삭제합니다."
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.12"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+        </LinearLayout>
 
         <!--<Button
             android:id="@+id/alarmButton"

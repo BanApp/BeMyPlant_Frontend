@@ -1,5 +1,6 @@
 package com.example.bemyplant.fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,11 +38,29 @@ class SensorRegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_sRFragment_to_bCFragment2)
+            findNavController().navigate(R.id.action_sensorRegisterFragment2_to_bluetoothConnectFragment)
+        }
+        // 버튼 클릭시, 각각 센서에 대한 설명 보이도록 구현
+        binding.luminousButton.setOnClickListener {
+            popupExplainFragment(R.layout.fragment_explain_sensor1)
+        }
+        binding.soilButton.setOnClickListener {
+            popupExplainFragment(R.layout.fragment_explain_sensor2)
+        }
+        binding.temperatureButton.setOnClickListener {
+            popupExplainFragment(R.layout.fragment_explain_sensor3)
         }
         return binding.root
         // Inflate the layout for this fragment
     }
+    private fun popupExplainFragment(layoutResId: Int) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(layoutResId)
+        val layoutParams = ViewGroup.LayoutParams(1000, 900)
+        dialog.window?.setLayout(layoutParams.width, layoutParams.height)
+        dialog.show()
+    }
+
 
     companion object {
         /**
