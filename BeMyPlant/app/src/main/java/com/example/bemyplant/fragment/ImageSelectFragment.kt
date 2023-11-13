@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.bemyplant.MainActivity
-import com.example.bemyplant.PlantRegisterForFragmentActivity
 import com.example.bemyplant.R
+import com.example.bemyplant.SensorRegisterForFragmentActivity
 import com.example.bemyplant.databinding.FragmentImageSelectBinding
 
 class SharedViewModel : ViewModel() {
@@ -73,7 +73,7 @@ class ImageSelectFragment : Fragment() {
                 // 참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
                 //findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)
-                val sensorRegisterIntent = Intent(activity, PlantRegisterForFragmentActivity::class.java)
+                val sensorRegisterIntent = Intent(activity, SensorRegisterForFragmentActivity::class.java)
                 startActivity(sensorRegisterIntent)
             }
         }
