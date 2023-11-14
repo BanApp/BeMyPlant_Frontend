@@ -59,17 +59,9 @@
         android:label="fragment_s2"
         tools:layout="@layout/fragment_sign_up2" >
         <action
-            android:id="@+id/action_s2Fragment_to_pRFragment"
-            app:destination="@id/fragment_plant_register" />
-        <action
             android:id="@+id/action_s2Fragment_to_plantImageSelect1Fragment"
             app:destination="@id/plantImageSelect1Fragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fragment_plant_register"
-        android:name="com.example.bemyplant.fragment.PlantRegisterFragment"
-        android:label="fragment_p_r"
-        tools:layout="@layout/fragment_plant_register" />
     <fragment
         android:id="@+id/plantImageSelect1Fragment"
         android:name="com.example.bemyplant.fragment.PlantImageSelect1Fragment"
