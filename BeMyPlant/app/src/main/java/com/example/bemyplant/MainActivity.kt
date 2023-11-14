@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     fragmentTransaction.addToBackStack(null) // 백 스택에 추가 (선택 사항)
                     fragmentTransaction.commit()*/
 
-                    val plantRegisterIntent = Intent(this@MainActivity, SensorRegisterForFragmentActivity::class.java)
+                    val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
                     startActivity(plantRegisterIntent)
 
                     //fragmentTransaction.add(R.id.screenFrame, fragment)

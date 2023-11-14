@@ -2,10 +2,10 @@ package com.example.bemyplant.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentSensorRegisterBinding
@@ -38,7 +38,7 @@ class SensorRegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_sensorRegisterFragment2_to_bluetoothConnectFragment)
+            findNavController().navigate(R.id.action_sRFragment_to_bCFragment2)
         }
         // 버튼 클릭시, 각각 센서에 대한 설명 보이도록 구현
         binding.luminousButton.setOnClickListener {

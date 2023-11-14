@@ -25,9 +25,6 @@
             android:name=".SensorActivity"
             android:exported="false" />
         <activity
-            android:name=".SensorRegisterForFragmentActivity"
-            android:exported="false" />
-        <activity
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
@@ -35,9 +32,6 @@
             android:exported="false" />
         <activity
             android:name=".SettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".bluetooth_testActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,10 +1,10 @@
 package com.example.bemyplant.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBluetoothSend3Binding
@@ -37,7 +37,7 @@ class BluetoothSend3Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_bluetoothSend3Fragment_to_bluetoothReadyFragment)
+            findNavController().navigate(R.id.action_bS3Fragment2_to_bRFragment)
         }
         return binding.root
     }

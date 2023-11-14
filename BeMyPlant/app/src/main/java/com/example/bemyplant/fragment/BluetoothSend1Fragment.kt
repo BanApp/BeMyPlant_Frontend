@@ -24,9 +24,6 @@ class BluetoothSend1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_bluetoothSend1Fragment_to_bluetoothSend2Fragment)
-        }
         return binding.root
     }
 
@@ -52,7 +49,7 @@ class BluetoothSend1Fragment : Fragment() {
                 showToast("전송 성공")
                 // 만일 보내기 성공 시 화면이동
                 // findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
-                findNavController().navigate(R.id.action_bluetoothSend1Fragment_to_bluetoothSend2Fragment)
+                findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
             }
         }
 

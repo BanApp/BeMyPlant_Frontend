@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph3" />
+        app:navGraph="@navigation/nav_graph1" />
 
 <!--    <androidx.fragment.app.FragmentContainerView-->
 <!--        android:id="@+id/subNavigation1"-->
