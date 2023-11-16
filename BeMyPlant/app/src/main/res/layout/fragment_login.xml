@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".fragment.LoginFragment">
     <!--텍스트: 로그인-->
+
+    <!--텍스트: BeMyPlant!-->
+
     <TextView
         android:id="@+id/loginText"
         android:layout_width="wrap_content"
@@ -14,14 +17,14 @@
         android:gravity="center"
         android:text="@string/login"
         android:textColor="@color/black"
-        android:textSize="54sp"
+        android:textSize="@dimen/textBigSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.121" />
 
-    <!--텍스트: BeMyPlant!-->
     <TextView
         android:id="@+id/appNameText"
         android:layout_width="wrap_content"
@@ -30,7 +33,7 @@
         android:gravity="center"
         android:text="@string/sub_name"
         android:textColor="@color/black"
-        android:textSize="44sp"
+        android:textSize="@dimen/textMediumSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +53,7 @@
         <LinearLayout
             android:id="@+id/userId"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight = "1"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,19 +65,17 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight = "1.2"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:labelFor="@+id/id_input"
                 android:text="@string/id"
                 android:textColor="@color/black"
-                android:textSize="30sp" />
+                android:textSize="@dimen/textSmallSize" />
 
             <EditText
                 android:id="@+id/userIdInput"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight = "1"
+                android:layout_height="80dp"
                 android:background="@drawable/button_white2" />
 
         </LinearLayout>
@@ -83,8 +83,7 @@
         <LinearLayout
             android:id="@+id/userPw"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight = "1"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,15 +91,13 @@
             app:layout_constraintTop_toBottomOf="@+id/userId"
             app:layout_constraintVertical_bias="0.085">
 
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight = "1.2"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="@string/pw"
                 android:textColor="@color/black"
-                android:textSize="30sp" />
+                android:textSize="@dimen/textSmallSize" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -110,7 +107,7 @@
                 <EditText
                     android:id="@+id/userPwInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="80dp"
                     android:autofillHints="password"
                     android:inputType="textPassword"
                     android:background="@drawable/button_white2" />
@@ -135,9 +132,9 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/button_green"
         android:gravity="center"
-        android:text="@string/start"
+        android:text="로그인"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="@dimen/textButtonSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -43,19 +43,19 @@ class FlowerIdFragment() : Fragment() {
 
         }
 
-        mainFlower.setOnClickListener{
-            val flagValue = true
-            //val imageSelectFragment = ImageSelectFragment.newInstance(flagValue, plantName.text.toString(), plantRace.text.toString())
-            val imageSelectFragment = ImageSelectFragment.newInstance(flagValue, "", "")
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-
-            sharedViewModel.imageText =  plantName.text.toString() + "을(를)\n다시 선택해보아요!"
-            transaction.replace(android.R.id.content, imageSelectFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-
-        }
+//        mainFlower.setOnClickListener{
+//            val flagValue = true
+//            //val imageSelectFragment = ImageSelectFragment.newInstance(flagValue, plantName.text.toString(), plantRace.text.toString())
+//            val imageSelectFragment = ImageSelectFragment.newInstance(flagValue, "", "")
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+//
+//            sharedViewModel.imageText =  plantName.text.toString() + "을(를)\n다시 선택해보아요!"
+//            transaction.replace(android.R.id.content, imageSelectFragment)
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+//
+//        }
 
         return rootView
     }

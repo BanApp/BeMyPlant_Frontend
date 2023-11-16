@@ -13,6 +13,7 @@ import com.example.bemyplant.databinding.FragmentLoginBinding
 import android.content.Context
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope

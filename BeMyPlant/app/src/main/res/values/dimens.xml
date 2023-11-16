@@ -5,4 +5,8 @@
     <dimen name="gridMargin">3dp</dimen>
     <dimen name="textSize">10sp</dimen>
     <dimen name="diary_text_size">20dp</dimen>
+    <dimen name="textBigSize">54sp</dimen>
+    <dimen name="textMediumSize">44sp</dimen>
+    <dimen name="textSmallSize">30sp</dimen>
+    <dimen name="textButtonSize">26sp</dimen>
 </resources>
