@@ -34,6 +34,7 @@ class SignUp2Fragment : Fragment() {
     * 입력받은*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //비밀번호 마스킹 처리 코드
         binding.visibleButton.setOnClickListener {
             val currentTransformation = binding.userPwInput.transformationMethod
             if(currentTransformation is PasswordTransformationMethod) {

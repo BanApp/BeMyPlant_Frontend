@@ -5,24 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background2"
     tools:context=".MainActivity">
+
 
     <FrameLayout
         android:id="@+id/screenFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </FrameLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_main_menu"
-        android:layout_width="409dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         app:itemIconTint="@drawable/menu_item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,20 +35,19 @@
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu" />
 
-
     <ImageButton
         android:id="@+id/mainFlower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/flower"
         android:background="@android:color/transparent"
+        android:src="@drawable/flower"
         app:backgroundTint="#DFF4C7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.394"/>
+        app:layout_constraintVertical_bias="0.394" />
 
     <FrameLayout
         android:id="@+id/frameLayout_main_dDay"
@@ -200,6 +203,79 @@
         </LinearLayout>
 
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/statusImage1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/flower"
+        app:layout_constraintBottom_toTopOf="@+id/mainFlower"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/statusImage2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="328dp"
+        android:src="@drawable/flower"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.463"
+        app:layout_constraintStart_toEndOf="@+id/mainFlower"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/statusImage3"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="104dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/flower"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/screenFrame" />
+-->
+
+    <LinearLayout
+        android:id="@+id/strangeCondition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainFlower"
+        app:layout_constraintVertical_bias="0">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_warning" />
+
+        <TextView
+            android:id="@+id/strangeConText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/notosans_bold"
+            android:text="상태가 이상합니다"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="194dp"
+            tools:layout_editor_absoluteY="148dp" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

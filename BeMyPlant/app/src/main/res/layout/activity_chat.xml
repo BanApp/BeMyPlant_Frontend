@@ -67,16 +67,16 @@
     </android.widget.LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_main_menu"
-        android:layout_width="409dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="4dp"
-        android:background="#FFFFFF"
+        android:background="@android:color/white"
         app:itemIconTint="@drawable/menu_item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

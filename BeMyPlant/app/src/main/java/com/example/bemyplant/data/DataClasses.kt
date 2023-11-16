@@ -24,6 +24,8 @@ data class SignUpResponse(
     val authorityDtoSet:  List<AuthorityDto>
 )
 
+
+
 data class AuthorityDto(
     val authorityName: String
 )
@@ -60,6 +62,18 @@ data class ChatResponse(
     val response: String 
 )
 
+data class StatusResponse(
+    val name : String,
+    val weather: String,
+    val temperature: Double,
+    val humidity: Int,
+    val status: Int,
+    val most_important_feature: String
+)
+
+data class StatusData(
+    val city: String
+)
 
 data class GardenResponse(
     val cntntsNo: String, //컨텐츠 번호

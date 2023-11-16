@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     // realm 추가
     implementation "io.realm:realm-gradle-plugin:10.13.3-transformer-api"
     //implementation 'io.realm:realm-android:10.7.2'
