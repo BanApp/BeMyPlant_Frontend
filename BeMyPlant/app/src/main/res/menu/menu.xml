@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_chat"
+        android:title=" "
+        android:icon="@drawable/icon_chat"
+        app:showAsAction="always"/>
+    <item android:id="@+id/menu_home"
+        android:title=" "
+        android:icon="@drawable/icon_home"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_diary"
+        android:icon="@drawable/icon_calender"
+        android:title=" "
+        app:showAsAction="always"/>
+    <item android:id="@+id/menu_setting"
+        android:title=" "
+        android:icon="@drawable/icon_setting"
+        app:showAsAction="always"/>
+</menu>

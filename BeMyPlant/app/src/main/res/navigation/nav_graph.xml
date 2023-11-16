@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation1"
+    app:startDestination="@id/mainFragment2">
+    <fragment
+        android:id="@+id/mainNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph" />
+    <fragment
+        android:id="@+id/mainFragment2"
+        android:name="com.example.bemyplant.fragment.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment2_to_loginFragment3"
+            app:destination="@id/loginFragment3" />
+        <action
+            android:id="@+id/action_mainFragment2_to_s1Fragment"
+            app:destination="@id/s1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment3"
+        android:name="com.example.bemyplant.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <!--    <fragment-->
+    <!--        android:id="@+id/sRFragment"-->
+    <!--        android:name="com.example.bemyplant.fragment.SensorRegisterFragment"-->
+    <!--        android:label="fragment_s_r"-->
+    <!--        tools:layout="@layout/fragment_sensor_register" >-->
+    <!--        <action-->
+    <!--            android:id="@+id/action_sRFragment_to_bCFragment2"-->
+    <!--            app:destination="@id/bCFragment2" />-->
+    <!--    </fragment>-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/bSFragment2"-->
+    <!--        android:name="com.example.bemyplant.fragment.BluetoothSend1Fragment"-->
+    <!--        android:label="fragment_b_s"-->
+    <!--        tools:layout="@layout/fragment_bluetooth_send1" >-->
+    <!--        <action-->
+    <!--            android:id="@+id/action_bSFragment2_to_bS2Fragment2"-->
+    <!--            app:destination="@id/bS2Fragment2" />-->
+    <!--    </fragment>-->
+    <fragment
+        android:id="@+id/s1Fragment"
+        android:name="com.example.bemyplant.fragment.SignUp1Fragment"
+        android:label="fragment_s1"
+        tools:layout="@layout/fragment_sign_up1" >
+        <action
+            android:id="@+id/action_s1Fragment_to_s2Fragment"
+            app:destination="@id/s2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/s2Fragment"
+        android:name="com.example.bemyplant.fragment.SignUp2Fragment"
+        android:label="fragment_s2"
+        tools:layout="@layout/fragment_sign_up2" >
+        <action
+            android:id="@+id/action_s2Fragment_to_plantImageSelect1Fragment"
+            app:destination="@id/plantImageSelect1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/plantImageSelect1Fragment"
+        android:name="com.example.bemyplant.fragment.PlantImageSelect1Fragment"
+        android:label="fragment_plant_image_select1"
+        tools:layout="@layout/fragment_plant_image_select1" >
+        <action
+            android:id="@+id/action_plantImageSelect1Fragment_to_plantImageSelect2Fragment"
+            app:destination="@id/plantImageSelect2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/plantImageSelect2Fragment"
+        android:name="com.example.bemyplant.fragment.PlantImageSelect2Fragment"
+        android:label="fragment_plant_image_select2"
+        tools:layout="@layout/fragment_plant_image_select2" >
+        <action
+            android:id="@+id/action_plantImageSelect2Fragment_to_userImageSelect1Fragment"
+            app:destination="@id/userImageSelect1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userImageSelect1Fragment"
+        android:name="com.example.bemyplant.fragment.UserImageSelect1Fragment"
+        android:label="fragment_user_image_select1"
+        tools:layout="@layout/fragment_user_image_select1" >
+        <action
+            android:id="@+id/action_userImageSelect1Fragment_to_userImageSelect2Fragment"
+            app:destination="@id/userImageSelect2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userImageSelect2Fragment"
+        android:name="com.example.bemyplant.fragment.UserImageSelect2Fragment"
+        android:label="fragment_user_image_select2"
+        tools:layout="@layout/fragment_user_image_select2" />
+</navigation>
