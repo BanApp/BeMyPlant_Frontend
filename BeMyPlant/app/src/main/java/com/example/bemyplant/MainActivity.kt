@@ -60,8 +60,10 @@ class MainActivity : AppCompatActivity() {
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
                         val statusImageResource = if (statusTemp == 0) {
+                            Log.d("123", statusTemp.toString())
                             R.drawable.good_status1
                         } else {
+                            Log.d("123", statusTemp.toString())
                             R.drawable.bad_status
                         }
                         for (imageView in statusImages) {

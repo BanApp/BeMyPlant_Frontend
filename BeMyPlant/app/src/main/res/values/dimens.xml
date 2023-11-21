@@ -5,4 +5,9 @@
     <dimen name="gridMargin">3dp</dimen>
     <dimen name="textSize">10sp</dimen>
     <dimen name="diary_text_size">20dp</dimen>
+    <dimen name="appFontBigSize">54sp</dimen>
+    <dimen name="appFontMediumSize">40sp</dimen>
+    <dimen name="appFontSmallSize">32sp</dimen>
+    <dimen name="appFontSmallSize2">28sp</dimen>
+    <dimen name="appButtonFontSize">24sp</dimen>
 </resources>

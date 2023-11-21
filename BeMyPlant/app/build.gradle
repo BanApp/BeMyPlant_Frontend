@@ -29,7 +29,7 @@ realm{
 
 android {
     namespace 'com.example.bemyplant'
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.bemyplant"

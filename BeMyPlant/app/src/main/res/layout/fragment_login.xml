@@ -6,54 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".fragment.LoginFragment">
     <!--텍스트: 로그인-->
+
+    <!--텍스트: BeMyPlant!-->
+
     <TextView
         android:id="@+id/loginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
-        android:text="@string/login"
+        android:text="@string/app_name"
         android:textColor="@color/black"
-        android:textSize="54sp"
+        android:textSize="@dimen/appFontBigSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.207" />
 
-    <!--텍스트: BeMyPlant!-->
-    <TextView
-        android:id="@+id/appNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/notosans_bold"
-        android:gravity="center"
-        android:text="@string/sub_name"
-        android:textColor="@color/black"
-        android:textSize="44sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginText"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <TextView-->
+<!--        android:id="@+id/appNameText"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/notosans_bold"-->
+<!--        android:gravity="center"-->
+<!--        android:text="@string/sub_name"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="@dimen/appFontSmallSize"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/loginText"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="530dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginBottom="30dp"
+
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/appNameText"
-        app:layout_constraintBottom_toTopOf="@+id/startButton">
+        app:layout_constraintTop_toBottomOf="@+id/loginText" >
+<!--        app:layout_constraintBottom_toTopOf="@+id/startButton">-->
 
         <LinearLayout
             android:id="@+id/userId"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight = "1"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,28 +66,26 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight = "1.2"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:labelFor="@+id/id_input"
                 android:text="@string/id"
                 android:textColor="@color/black"
-                android:textSize="30sp" />
+                android:textSize="@dimen/appFontSmallSize" />
 
             <EditText
                 android:id="@+id/userIdInput"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight = "1"
-                android:background="@drawable/button_white2" />
+                android:padding="3dp"
+                android:layout_width="420dp"
+                android:layout_height="85dp"
+                android:background="@drawable/button_white4" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/userPw"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight = "1"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,52 +96,51 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight = "1.2"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="@string/pw"
                 android:textColor="@color/black"
-                android:textSize="30sp" />
+                android:textSize="@dimen/appFontSmallSize"
+                />
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight = "1">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               >
 
                 <EditText
                     android:id="@+id/userPwInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="420dp"
+                    android:padding="3dp"
+                    android:layout_height="85dp"
                     android:autofillHints="password"
                     android:inputType="textPassword"
-                    android:background="@drawable/button_white2" />
+                    android:background="@drawable/button_white4" />
 
                 <android.widget.Button
                     android:id="@+id/visibleButton"
-                    android:layout_width="37dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="12dp"
                     android:background="@drawable/visible"
                     android:backgroundTint="@color/charcoal"
                     android:contentDescription="visible" />
             </FrameLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <android.widget.Button
-        android:id="@+id/startButton"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/button_green"
-        android:gravity="center"
-        android:text="@string/start"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <android.widget.Button
+            android:layout_marginTop="70dp"
+            android:id="@+id/startButton"
+            android:layout_width="420dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="104dp"
+            android:background="@drawable/button_green"
+            android:gravity="center"
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/appButtonFontSize" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

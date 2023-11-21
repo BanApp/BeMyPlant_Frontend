@@ -7,56 +7,58 @@
     tools:context=".fragment.SignUp2Fragment">
 
     <!--회원가입-->
-    <TextView
-        android:id="@+id/signText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/notosans_bold"
-        android:gravity="center"
-        android:text="@string/sign"
-        android:textColor="@color/black"
-        android:textSize="44sp"
-        android:layout_marginStart="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"  />
     <!--1-2순서-->
 
     <!--ID-->
     <!--비밀번호-->
     <!--비밀번호확인-->
 
+
+    <TextView
+
+        android:id="@+id/signText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center"
+        android:text="@string/sign"
+        android:textColor="@color/black"
+        android:textSize="@dimen/appFontBigSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02" />
+
+
     <android.widget.ImageView
         android:id="@+id/signSeq"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/sign_seq2"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.13"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signText" />
-
+        app:layout_constraintTop_toBottomOf="@+id/signText"
+        app:layout_constraintWidth_percent="0.9" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         app:layout_constraintTop_toBottomOf="@+id/signSeq"
-        app:layout_constraintBottom_toTopOf="@+id/finishButton">
-
+        app:layout_constraintVertical_bias="0.1"
+        tools:layout_editor_absoluteX="0dp">
         <LinearLayout
             android:id="@+id/userId"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:orientation="vertical"
@@ -64,23 +66,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signSeq"
-            app:layout_constraintWidth_percent="0.8">
+            >
 
             <TextView
                 android:id="@+id/userIdText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="@string/id"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="@dimen/appFontSmallSize2" />
 
             <EditText
                 android:id="@+id/userIdInput"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height= "wrap_content"
                 android:backgroundTint="@color/green_1"
                 android:fontFamily="@font/notosans_medium"
                 android:gravity="center"
@@ -92,12 +92,11 @@
         <LinearLayout
             android:id="@+id/userPw"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:orientation="vertical"
+            android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,17 +106,16 @@
             <TextView
                 android:id="@+id/userPwText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="@string/pw"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="@dimen/appFontSmallSize2" />
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                >
 
                 <EditText
                     android:id="@+id/userPwInput"
@@ -126,6 +124,7 @@
                     android:autofillHints="password"
                     android:backgroundTint="@color/green_1"
                     android:gravity="center"
+                    android:fontFamily="@font/notosans_medium"
                     android:hint="비밀번호를 입력해주세요."
                     android:inputType="textPassword"
                     android:textColor="@color/black"
@@ -148,11 +147,10 @@
         <LinearLayout
             android:id="@+id/userPwConfirm"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,26 +163,24 @@
             <TextView
                 android:id="@+id/userPwConfirmText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="비밀번호 확인"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="@dimen/appFontSmallSize2" />
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/userPwConfirmInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:autofillHints="password"
                     android:backgroundTint="@color/green_1"
                     android:gravity="center"
+                    android:fontFamily="@font/notosans_medium"
                     android:hint="한번 더 비밀번호를 입력해주세요."
                     android:inputType="textPassword"
                     android:textColor="@color/black"
@@ -211,18 +207,17 @@
 
     <android.widget.Button
         android:id="@+id/finishButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="@string/finish"
+        android:text="완료"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintDimensionRatio="2.3:1"
+        android:textSize="@dimen/appButtonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

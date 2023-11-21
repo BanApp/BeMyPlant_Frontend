@@ -90,8 +90,8 @@ class ChatActivity : AppCompatActivity() {
 
 
         bottomNavigationView.selectedItemId = R.id.menu_chat
-        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        //val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
