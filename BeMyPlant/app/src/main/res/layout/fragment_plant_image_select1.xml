@@ -70,8 +70,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/question1Edit"
+                    <EditText
+                        android:id="@+id/editText_plantName_plantImgSelect"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center"
@@ -112,9 +112,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
-
-                        android:id="@+id/question2Edit"
+                    <EditText
+                        android:id="@+id/editText_plantSpecies_plantImgSelect"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center"
@@ -127,6 +126,21 @@
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="348dp" />
+
+<!--                    <androidx.appcompat.widget.SearchView-->
+<!--                        android:id="@+id/question2Edit"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/button_white2"-->
+<!--                        android:fontFamily="@font/notosans_bold"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintHorizontal_bias="0.066"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        tools:layout_editor_absoluteY="348dp" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -155,9 +169,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
-
-                        android:id="@+id/question3Edit"
+                    <EditText
+                        android:id="@+id/editText_plantColor_plantImgSelect"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center"
@@ -199,8 +212,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/question4Edit"
+                    <EditText
+                        android:id="@+id/editText_potColor_plantImgSelect"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center"

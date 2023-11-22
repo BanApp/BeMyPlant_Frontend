@@ -1,30 +1,23 @@
 package com.example.bemyplant.fragment
 
-import android.content.SharedPreferences
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.method.PasswordTransformationMethod
+import android.text.method.SingleLineTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.bemyplant.MainActivity
-import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentLoginBinding
-import android.content.Context
-import android.text.method.PasswordTransformationMethod
-import android.text.method.SingleLineTransformationMethod
-import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import com.example.bemyplant.MainActivity
+import com.example.bemyplant.data.LoginData
+import com.example.bemyplant.databinding.FragmentLoginBinding
+import com.example.bemyplant.network.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.bemyplant.data.LoginData
-import com.example.bemyplant.data.LoginResponse
-import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.network.RetrofitService
-import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -124,6 +117,7 @@ class LoginFragment : Fragment() {
 
         }
     }
+
         companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =

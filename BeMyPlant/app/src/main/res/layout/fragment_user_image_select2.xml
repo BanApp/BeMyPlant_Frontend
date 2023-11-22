@@ -40,30 +40,67 @@
 
 
     <ImageButton
-        android:id="@+id/plantImageButton1"
+        android:id="@+id/userImageButton1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/image_select"
         android:contentDescription="plant1"
         android:scaleType="centerInside"
-        android:src="@drawable/user_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tagText"
         app:layout_constraintVertical_bias="0.075"
         app:layout_constraintWidth_percent="0.4" />
+    <!--android:src="@drawable/user_image"-->
+
+    <TextView
+        android:id="@+id/textOverlay1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="Creating..."
+        android:textColor="@color/charcoal"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagText"
+        app:layout_constraintVertical_bias="0.072"
+        app:layout_constraintWidth_percent="0.4" />
+
 
     <ImageButton
-        android:id="@+id/plantImageButton2"
+        android:id="@+id/userImageButton2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="plant2"
         android:background="@drawable/image_select"
         android:scaleType="centerInside"
-        android:src="@drawable/user_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagText"
+        app:layout_constraintVertical_bias="0.077"
+        app:layout_constraintWidth_percent="0.4" />
+    <!--android:src="@drawable/user_image"-->
+
+    <TextView
+        android:id="@+id/textOverlay2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="Creating..."
+        android:textColor="@color/charcoal"
+        android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"

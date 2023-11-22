@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         //mainFlower.setImageResource(R.drawable.sea_otter)
         //mainFlower.setImageResource(R.drawable.test_img)
 
-
-
         //R.drawable.flower
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
@@ -163,4 +161,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 }
+

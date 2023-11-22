@@ -2,19 +2,23 @@ package com.example.bemyplant.network
 import com.example.bemyplant.data.ChatRequest
 import com.example.bemyplant.data.ChatResponse
 import com.example.bemyplant.data.GardenResponse
+import com.example.bemyplant.data.GeneratePlantImageRequest
+import com.example.bemyplant.data.GeneratePlantImageResponse
+import com.example.bemyplant.data.GenerateUserImageRequest
+import com.example.bemyplant.data.GenerateUserImageResponse
 import com.example.bemyplant.data.LoginData
-import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.data.SensorData
 import com.example.bemyplant.data.LoginResponse
+import com.example.bemyplant.data.SensorData
+import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.data.SignUpResponse
 import com.example.bemyplant.data.UserData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.POST
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
@@ -32,6 +36,12 @@ interface ApiService {
 
     @GET("api/get-sensor-data")
     suspend fun getSensorData(@Query("num") num: Int, @Header("Authorization") token: String?): Response<ArrayList<SensorData>>
+
+    @POST("api/generate_plant_images")
+    suspend fun generatePlantImages(@Body generatePlantImageRequest: GeneratePlantImageRequest): Response<GeneratePlantImageResponse>
+
+    @POST("api/generate_user_images")
+    suspend fun generateUserImages(@Body generateUserImageRequest: GenerateUserImageRequest): Response<GenerateUserImageResponse>
 
 
     @GET("api/user")
