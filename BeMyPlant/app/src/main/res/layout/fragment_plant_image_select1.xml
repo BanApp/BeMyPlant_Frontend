@@ -70,9 +70,10 @@
                     <EditText
                         android:id="@+id/question1Edit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        android:padding="10dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
                         android:textSize="20sp"
@@ -107,12 +108,12 @@
                         app:layout_constraintHorizontal_bias="0.05" />
 
                     <EditText
-
                         android:id="@+id/question2Edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
                         android:textSize="20sp"
@@ -148,10 +149,10 @@
                         app:layout_constraintHorizontal_bias="0.058" />
 
                     <EditText
-
+                        android:padding="10dp"
                         android:id="@+id/question3Edit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/button_white2"
@@ -191,8 +192,9 @@
 
                     <EditText
                         android:id="@+id/question4Edit"
+                        android:padding="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/button_white2"
