@@ -25,6 +25,9 @@
             android:name=".SensorActivity"
             android:exported="false" />
         <activity
+            android:name=".PlantRegisterForFragmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
