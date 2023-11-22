@@ -35,7 +35,6 @@ class PlantImageSelect1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding.nextButton.setOnClickListener{
             findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment)
         }

@@ -1,18 +1,28 @@
 package com.example.bemyplant
 
+import android.content.Context
+import android.util.Log
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.transition.Visibility
+import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.fragment.FlowerIdFragment
+import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 data class PlantImage(val resourceId: Int, val description: String) // TODO: DB 연동 후 삭제
 
@@ -24,10 +34,83 @@ class MainActivity : AppCompatActivity() {
     private lateinit var plantName: TextView
     private lateinit var plantRace: String
     private lateinit var plantRegistration: String
+    private val retrofitService = RetrofitService().apiService2
+
+    // ----------- 상태에 따른 이미지 및 텍스트 변경
+    private fun updateStatus() {
+        val statusData = StatusData("Seoul")
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        val statusImages = arrayOf(
+            findViewById<ImageView>(R.id.statusImage1),
+            findViewById<ImageView>(R.id.statusImage2),
+            findViewById<ImageView>(R.id.statusImage3),
+        )
+        val strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
+        val strangeConText = findViewById<TextView>(R.id.strangeConText)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = retrofitService.getWeatherAndStatus(statusData, "Bearer $token")
+                if (response.isSuccessful){
+                    launch(Dispatchers.Main) {
+                        // 상태에 따른 이미지 변경
+                        val statusResponse = response.body()
+                        val statusTemp = statusResponse?.status
+                        val strangeTemp = statusResponse?.most_important_feature
+                        val statusImageResource = if (statusTemp == 0) {
+                            Log.d("123", statusTemp.toString())
+                            R.drawable.good_status1
+                        } else {
+                            Log.d("123", statusTemp.toString())
+                            R.drawable.bad_status
+                        }
+                        for (imageView in statusImages) {
+                            imageView.setImageResource(statusImageResource)
+                        }
+                        //상태에 따른 텍스트 변경
+                        if (statusTemp == 0) {
+                            statusText.text = "Good"
+                            strangeConText.visibility = View.INVISIBLE
+
+                        } else {
+                            statusText.text = "Bad"
+                            strangeCondition.visibility = View.VISIBLE
+                        }
+                        if (strangeTemp == "airHumid"){
+                            strangeConText.text = "습도이상"
+
+                        }else if (strangeTemp == "airTemp") {
+                            strangeConText.text = "온도이상"
+                        }else {
+                            strangeConText.text = "확인용!!!!!"
+                        }
+                    }
+
+                    }else{
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("Error_Response", errorBody ?: "error body X")
+                }
+
+
+
+            }catch (e:Exception){
+                Log.e("API_Connection", "API 연결 실패")
+                e.printStackTrace()
+
+
+            }
+        }
+    }
 
     fun updateMainFlower(newPlantImageResId: Int) {
         mainFlower.setImageResource(newPlantImageResId) // TODO: DB 연동 후 삭제
 
+    }
+    override fun onResume() {
+        super.onResume()
+        updateStatus()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,16 +118,11 @@ class MainActivity : AppCompatActivity() {
 
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
-
-
         // main image 설정
         //mainFlower.setImageResource(R.drawable.flower)
         //mainFlower.setImageResource(R.drawable.delete_plant)
         //mainFlower.setImageResource(R.drawable.sea_otter)
         //mainFlower.setImageResource(R.drawable.test_img)
-
-
-
         //R.drawable.flower
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
@@ -108,10 +186,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        //------------------------센서
-        val linearLayout = findViewById<LinearLayout>(R.id.linearLayout_main_health)
+        //------------------------상태에 관한 텍스트 클릭시 , 센서 화면으로 이동
+        //TODO: 새로고침 버튼 구현
+        val healthText = findViewById<TextView>(R.id.textView_main_healthValue)
 
-        linearLayout.setOnClickListener {
+        healthText.setOnClickListener {
             // "LinearLayout" 클릭 시 SensorActivity로 이동
             val sensorIntent = Intent(this@MainActivity, SensorActivity::class.java)
             startActivity(sensorIntent)

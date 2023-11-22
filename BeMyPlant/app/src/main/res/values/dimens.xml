@@ -9,4 +9,9 @@
     <dimen name="textMediumSize">44sp</dimen>
     <dimen name="textSmallSize">30sp</dimen>
     <dimen name="textButtonSize">26sp</dimen>
+    <dimen name="appFontBigSize">54sp</dimen>
+    <dimen name="appFontMediumSize">40sp</dimen>
+    <dimen name="appFontSmallSize">32sp</dimen>
+    <dimen name="appFontSmallSize2">28sp</dimen>
+    <dimen name="appButtonFontSize">24sp</dimen>
 </resources>

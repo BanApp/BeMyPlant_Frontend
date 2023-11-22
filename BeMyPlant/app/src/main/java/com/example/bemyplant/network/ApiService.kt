@@ -7,6 +7,8 @@ import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.data.SensorData
 import com.example.bemyplant.data.LoginResponse
 import com.example.bemyplant.data.SignUpResponse
+import com.example.bemyplant.data.StatusData
+import com.example.bemyplant.data.StatusResponse
 import com.example.bemyplant.data.UserData
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -28,10 +30,16 @@ interface ApiService {
     suspend fun signUp(@Body signUpData: SignUpData): Response<SignUpResponse>
 
     @POST("api/chatbot")
-    suspend fun chat(@Body chatRequest: ChatRequest, @Header("Authorization") token: String?): Response<ChatResponse>
+    suspend fun chat(
+        @Body chatRequest: ChatRequest,
+        @Header("Authorization") token: String?
+    ): Response<ChatResponse>
 
     @GET("api/get-sensor-data")
-    suspend fun getSensorData(@Query("num") num: Int, @Header("Authorization") token: String?): Response<ArrayList<SensorData>>
+    suspend fun getSensorData(
+        @Query("num") num: Int,
+        @Header("Authorization") token: String?
+    ): Response<ArrayList<SensorData>>
 
 
     @GET("api/user")
@@ -42,9 +50,15 @@ interface ApiService {
 
     @GET("garden/gardenDtl")
     //suspend fun getSensorData(@Query("num") num: Int): Response<SensorsData>
-    suspend fun getGardenDetail(@Query("apiKey") apiKey: String,@Query("cntntsNo") cntntsNo: String): Response<GardenResponse>
-
-
+    suspend fun getGardenDetail(
+        @Query("apiKey") apiKey: String,
+        @Query("cntntsNo") cntntsNo: String
+    ): Response<GardenResponse>
+   @POST("api/weather_and_status")
+    suspend fun getWeatherAndStatus(
+        @Body statusData: StatusData, @Header("Authorization") token: String?): Response<StatusResponse>
 
 }
+
+
 
