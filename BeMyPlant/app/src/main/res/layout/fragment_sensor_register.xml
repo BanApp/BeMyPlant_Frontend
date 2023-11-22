@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.SensorRegisterRFragment">
+    tools:context=".fragment.SensorRegisterFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -15,7 +15,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="준비된 센서를\n등록해 볼까요? "
         android:textColor="@color/black"
-        android:textSize="44sp"
+        android:textSize="@dimen/appFontMediumSize"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,40 +30,40 @@
         android:id="@+id/luminousButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_url1"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:padding="0sp"
         android:text="광도\n센서"
-        android:textSize="32sp"
-        android:layout_marginBottom="10dp"
+        android:textSize="@dimen/appFontSmallSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sensorResigeterText"
-        app:layout_constraintVertical_bias="0.08"
+        app:layout_constraintVertical_bias="0.166"
         app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.Button
         android:id="@+id/soilButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_url2"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
         android:padding="0sp"
         android:text="토양\n센서"
-        android:textSize="32sp"
-        android:layout_marginBottom="10dp"
+        android:textSize="@dimen/appFontSmallSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.759"
+        app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sensorResigeterText"
-        app:layout_constraintVertical_bias="0.08"
+        app:layout_constraintVertical_bias="0.166"
         app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.Button
@@ -75,7 +75,7 @@
         android:gravity="center"
         android:padding="0sp"
         android:text="온습도\n센서"
-        android:textSize="32sp"
+        android:textSize="@dimen/appFontSmallSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
         android:fontFamily="@font/notosans_medium"
         android:text="LED 불이 들어오는지 확인해주세요😉\n불이 들어온다면, 센서 등록 완료 ! "
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,19 +100,17 @@
 
     <android.widget.Button
         android:id="@+id/finishButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="@string/finish"
+        android:text="완료"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintDimensionRatio="2.3:1"
+        android:textSize="@dimen/appButtonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subText"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
