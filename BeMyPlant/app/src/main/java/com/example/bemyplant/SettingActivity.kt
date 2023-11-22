@@ -3,6 +3,11 @@ package com.example.bemyplant
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,14 +16,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import com.example.bemyplant.fragment.SensorRegisterFragment
+import androidx.core.content.ContextCompat
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class SettingActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService
@@ -31,7 +38,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var deleteAccountButton: Button
     private lateinit var deletePlantButton: Button
     private lateinit var modifySensorButton: Button
-
+    private lateinit var defaultUserImage: Bitmap
+    private lateinit var user_image: Bitmap
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
@@ -51,7 +59,9 @@ class SettingActivity : AppCompatActivity() {
         getUserAccount()
 
         // TODO: 사용자 이미지 변경할 것
-        userImage.setImageResource(R.drawable.user_image)
+
+
+
 
         // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 
@@ -279,6 +289,50 @@ class SettingActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    fun readBitmapFromExternalStorage(file: File): Bitmap? {
+        return try {
+            BitmapFactory.decodeFile(file.absolutePath)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+    fun drawableResourceToBitmap(context: Context, drawableResId: Int): Bitmap? {
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                // Drawable을 가져옵니다.
+                val drawable = ContextCompat.getDrawable(context, drawableResId)
+
+                // Drawable을 Bitmap으로 변환합니다.
+                drawableToBitmap(drawable)
+            }
+        }
+    }
+
+    // 변환 함수
+    fun drawableToBitmap(drawable: Drawable?): Bitmap? {
+        if (drawable == null) {
+            return null
+        }
+
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
     }
 
 }

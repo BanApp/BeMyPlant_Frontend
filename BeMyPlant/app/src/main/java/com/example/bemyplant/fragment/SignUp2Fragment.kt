@@ -1,7 +1,6 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
@@ -13,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
+import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
@@ -22,11 +22,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
-import com.example.bemyplant.PlantRegisterForFragmentActivity
 
 
 class SignUp2Fragment : Fragment() {
     val binding by lazy{FragmentSignUp2Binding.inflate((layoutInflater))}
+    lateinit var username : String
+    lateinit var pw : String
+    lateinit var r_name : String
+    lateinit var phones : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -82,12 +86,47 @@ class SignUp2Fragment : Fragment() {
     }
     private val retrofitService = RetrofitService().apiService
 
+    private fun login(loginData: LoginData){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // API 요청 보내기
+                val response = retrofitService.login(loginData)
+
+                if (response.isSuccessful) {
+                    // 로그인 성공
+                    withContext(Dispatchers.Main) {
+                        showToast(requireContext(), "로그인이 되었습니다.")
+
+                        // 토큰 정보 저장 (SharedPreferences)
+                        val token = response.body()?.token
+                        val sharedPreferences = context?.getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences?.edit()
+                        editor?.putString("token", token)
+                        editor?.apply()
+                        findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
+                    }
+                } else {
+                    // 로그인 실패
+                    withContext(Dispatchers.Main) {
+                        showToast(requireContext(), "로그인 실패")
+                    }
+                }
+            } catch (e: Exception) {
+                // API 요청 실패
+                withContext(Dispatchers.Main) {
+                    showToast(requireContext(), "API 요청 실패: ${e.message}")
+                }
+            }
+
+        }
+    }
+
     private fun getSignUpData(): SignUpData {
-        val username = binding.userIdInput.text.toString()
-        val pw = binding.userPwInput.text.toString()
-        val r_name = arguments?.getString("r_name").toString()
-        val phones = arguments?.getString("phones").toString()
-        val date = Date()
+        username = binding.userIdInput.text.toString()
+        pw = binding.userPwInput.text.toString()
+        r_name = arguments?.getString("r_name").toString()
+        phones = arguments?.getString("phones").toString()
+        var date = Date()
 
         val format = SimpleDateFormat("yyyy-MM-dd")
         val dateStr: String = format.format(date)
@@ -106,14 +145,12 @@ class SignUp2Fragment : Fragment() {
                         //TODO: 반드시 확인 , nav_graph 쪼갬
                         // plant register 화면으로 전환 (ACTIVITY 전환)
                         Log.d("회원가입" ,"회원가입 완료")
-                        //(activity as MJ_MainActivity?)!!.replaceFragment(PlantRegisterFragment.newInstance()) // 새로 불러올 Fragment의 Instance를 Main으로 전달
-                        //findNavController().navigate(R.id.action_to_navigation2)
-                        //val plantRegisterIntent = Intent(activity, PlantRegisterForFragmentActivity::class.java)
-                        //startActivity(plantRegisterIntent)
-                        findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
 
-                        //findNavController().navigate(R.id.action_s2Fragment_to_pRFragment)
+                        // 로그인 시도
+                        var loginData: LoginData = LoginData(username, pw)
+                        login(loginData)
 
+                        //findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
                     }
                 } else {
                     // 회원 가입 실패
