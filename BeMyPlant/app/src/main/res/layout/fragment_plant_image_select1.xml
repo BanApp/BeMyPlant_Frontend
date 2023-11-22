@@ -75,7 +75,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.05" />
 
-                    <androidx.appcompat.widget.SearchView
+                    <EditText
 
                         android:id="@+id/question2Edit"
                         android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
+                    <EditText
 
                         android:id="@+id/question3Edit"
                         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -189,7 +189,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.058" />
 
-                    <androidx.appcompat.widget.SearchView
+                    <EditText
                         android:id="@+id/question4Edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -211,14 +211,13 @@
                 android:layout_width="150dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_green"
                 android:fontFamily="@font/notosans_medium"
                 android:text="@string/next"
                 android:textColor="@color/white"
-                android:textSize="@dimen/appButtonFontSize"
-                 />
+                android:textSize="@dimen/appButtonFontSize" />
 
         </LinearLayout>
 
