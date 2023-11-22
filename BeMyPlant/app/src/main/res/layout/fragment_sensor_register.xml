@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.SensorRegisterFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/sensorResigeterText"
@@ -15,7 +12,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="준비된 센서를\n등록해 볼까요? "
         android:textColor="@color/black"
-        android:textSize="@dimen/appFontMediumSize"
+        android:textSize="44sp"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +27,6 @@
         android:id="@+id/luminousButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/button_url1"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"
@@ -50,7 +46,6 @@
         android:id="@+id/soilButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/button_url2"
         android:fontFamily="@font/notosans_bold"
         android:gravity="center"

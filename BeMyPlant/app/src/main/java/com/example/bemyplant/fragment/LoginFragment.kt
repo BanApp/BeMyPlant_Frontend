@@ -1,22 +1,22 @@
 package com.example.bemyplant.fragment
 
-import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.bemyplant.MainActivity
-import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentLoginBinding
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
+import com.example.bemyplant.network.RetrofitService
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
 import android.text.style.ForegroundColorSpan
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +26,6 @@ import kotlinx.coroutines.withContext
 import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.LoginResponse
 import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.network.RetrofitService
 import java.util.*
 
 
@@ -56,16 +55,6 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        val changeAppNameText = SpannableString(resources.getString(R.string.app_name))
-        val searchText = "Plant"
-        val startIndex = changeAppNameText.indexOf(searchText)
-        if (startIndex != -1) {
-            val endIndex = startIndex + searchText.length
-            val colorText = ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.green_1))
-            changeAppNameText.setSpan(colorText, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-
-        binding.loginText.text = changeAppNameText
         return binding.root
     }
 

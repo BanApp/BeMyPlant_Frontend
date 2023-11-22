@@ -118,6 +118,8 @@ class MainActivity : AppCompatActivity() {
 
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
+
+
         // main image 설정
         //mainFlower.setImageResource(R.drawable.flower)
         //mainFlower.setImageResource(R.drawable.delete_plant)
