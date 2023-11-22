@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="gridWidth">55dp</dimen>
+    <dimen name="gridHeight">80dp</dimen>
+    <dimen name="gridMargin">3dp</dimen>
+    <dimen name="textSize">10sp</dimen>
+    <dimen name="diary_text_size">20dp</dimen>
+    <dimen name="textBigSize">54sp</dimen>
+    <dimen name="textMediumSize">44sp</dimen>
+    <dimen name="textSmallSize">30sp</dimen>
+    <dimen name="textButtonSize">26sp</dimen>
+    <dimen name="appFontBigSize">54sp</dimen>
+    <dimen name="appFontMediumSize">40sp</dimen>
+    <dimen name="appFontSmallSize">32sp</dimen>
+    <dimen name="appFontSmallSize2">28sp</dimen>
+    <dimen name="appButtonFontSize">24sp</dimen>
+</resources>

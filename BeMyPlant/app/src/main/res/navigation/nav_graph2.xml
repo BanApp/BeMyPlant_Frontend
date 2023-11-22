@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.bemyplant.fragment.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_diaryViewFragment"
+            app:destination="@id/diaryViewFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_diaryNewFragment"
+            app:destination="@id/diaryNewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/diaryViewFragment"
+        android:name="com.example.bemyplant.fragment.DiaryViewFragment"
+        android:label="fragment_diary_view"
+        tools:layout="@layout/fragment_diary_view" >
+        <argument
+            android:name="selectedDate"
+            app:argType="com.example.bemyplant.Day" />
+        <action
+            android:id="@+id/action_diaryViewFragment_to_diaryEditFragment"
+            app:destination="@id/diaryEditFragment" />
+        <action
+            android:id="@+id/action_diaryViewFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/diaryEditFragment"
+        android:name="com.example.bemyplant.fragment.DiaryEditFragment"
+        android:label="fragment_diary_edit"
+        tools:layout="@layout/fragment_diary_edit" >
+        <argument
+            android:name="selectedDay"
+            app:argType="com.example.bemyplant.Day" />
+        <action
+            android:id="@+id/action_diaryEditFragment_to_diaryViewFragment"
+            app:destination="@id/diaryViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/diaryNewFragment"
+        android:name="com.example.bemyplant.fragment.DiaryNewFragment"
+        android:label="fragment_diary_new"
+        tools:layout="@layout/fragment_diary_new" >
+        <action
+            android:id="@+id/action_diaryNewFragment_to_diaryViewFragment"
+            app:destination="@id/diaryViewFragment" />
+    </fragment>
+
+</navigation>
