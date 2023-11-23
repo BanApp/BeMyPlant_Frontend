@@ -106,11 +106,6 @@ class LoginFragment : Fragment() {
                 this.P_Race = "Rosaceae"
 //                this.P_Image =
                 this.P_Registration = "P_0001"
-//                this.P_Name = ""
-//                this.P_Birth = ""
-//                this.P_Race = ""
-//                this.P_Image =
-//                this.P_Registration = ""
             }
         }
 
@@ -159,15 +154,28 @@ class LoginFragment : Fragment() {
         // sdhan : 날짜
 //        val dateFormat = "yyyy-MM-dd HH:mm"
         val dateFormat = "yyyy-MM-dd"
+        val dateFormat2 = "yyMMdd"
         val date = Date(System.currentTimeMillis())
         val simpleDateFormat = SimpleDateFormat(dateFormat)
-        
+        val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+
         val simpleDate: String = simpleDateFormat.format(date)
-        Log.d("++++++++++++++++++++++++++", simpleDate)
+        val simpleDate2: String = simpleDateFormat2.format(date)
+        Log.d("++++++++++++", "++++++++++++++++++++++++++")
+        Log.d("++++++++++++", simpleDate)
+        Log.d("++++++++++++", simpleDate2)
 
         // sdhan : 랜덤함수
-        val range = (100000..999999)  // 100000 <= n <= 999999
-        println(range.random())
+        val range = (1000000..9999999)  // 1000000 <= n <= 9999999
+        val randomNum = range.random()
+
+        // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+        // sdhan : 등록번호 = 날짜 + 랜덤숫자
+        val regNum = "${simpleDate2}-${randomNum}"
+        Log.d("++++++++++++", "++++++++++++++++++++++++++")
+        Log.d("++++++++++++", "++++++++++++++++++++++++++")
+        Log.d("++++++++++++", "++++++++++++++++++++++++++")
+        Log.d("++++++++++++", regNum)
 
 
         binding.startButton.setOnClickListener {
@@ -243,10 +251,10 @@ class LoginFragment : Fragment() {
                         val P_Race = vo?.P_Race
                         val P_Registration = vo?.P_Registration
 
-                        Log.d("+++++++", "+++++++")
-                        if (P_Birth != null) {
-                            Log.d("P_Birth", P_Birth)
-                        }
+//                        Log.d("+++++++", "+++++++")
+//                        if (P_Birth != null) {
+//                            Log.d("P_Birth", P_Birth)
+//                        }
 
                         // main 화면으로 전환
                         val intent = Intent(requireActivity(), MainActivity::class.java)

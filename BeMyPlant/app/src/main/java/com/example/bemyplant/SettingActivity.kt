@@ -133,6 +133,8 @@ class SettingActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("token", null)
         val Tag: String = "sensor"
         //Log.d(Tag, "token: $token")
+        val mainIntent = getIntent()
+        val P_Name = mainIntent.getStringExtra("P_Name").toString()
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
         if (token.isNullOrEmpty()){
@@ -148,7 +150,7 @@ class SettingActivity : AppCompatActivity() {
                 val UserData = response.body()
 
                 runOnUiThread {
-                    realNameTextView.text = response.body()?.r_name
+                    realNameTextView.text = response.body()?.r_name + "(${P_Name} 주인님)"
                     uidTextView.text = response.body()?.username
                     // 화면 갱신
                     realNameTextView.invalidate()

@@ -142,8 +142,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
-        plantRace = "해바라기" // 품종
-        plantRegistration = "1010-1010" //주민등록번호
+
             
             
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
@@ -163,17 +162,11 @@ class MainActivity : AppCompatActivity() {
         val P_Race = mainIntent.getStringExtra("P_Race").toString()
         val P_Registration = mainIntent.getStringExtra("P_Registration").toString()
 
-//        val dateFormat = "yyyy-MM-dd"
-//        val date = Date(System.currentTimeMillis())
-//        val simpleDateFormat = SimpleDateFormat(dateFormat)
-//        val nowSimpleDate: String = simpleDateFormat.format(date)
-//
-//        val birtDayString = P_Birth.toString()
-//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//        val date1 = LocalDate.parse(nowSimpleDate, formatter)
-//        val date2 = LocalDate.parse(birtDayString, formatter)
-//        Log.d("++++++++++++++++++++++++++", P_Birth)
+        plantName.text = P_Name // 이름
+        plantRace = P_Race // 품종
+        plantRegistration = P_Registration //주민등록번호
 
+        // sdhan : D-Day 계산
         var sampleDate = P_Birth
         var date = SimpleDateFormat("yyyy-MM-dd") .parse(sampleDate)
         var today = Calendar.getInstance()
@@ -263,6 +256,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_setting -> {
                     // "setting" 메뉴 클릭 시 SettingActivity로 이동
                     val boardIntent = Intent(this@MainActivity, SettingActivity::class.java)
+                    boardIntent.putExtra("P_Name", P_Name)
                     startActivity(boardIntent)
                     true
                 }
