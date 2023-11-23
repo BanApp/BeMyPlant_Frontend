@@ -59,9 +59,7 @@ class SettingActivity : AppCompatActivity() {
         getUserAccount()
 
         // TODO: 사용자 이미지 변경할 것
-
-
-
+        userImage.setImageResource(R.drawable.user_image)
 
         // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 

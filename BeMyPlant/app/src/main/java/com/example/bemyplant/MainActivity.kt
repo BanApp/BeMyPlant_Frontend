@@ -1,20 +1,21 @@
 package com.example.bemyplant
 
 import android.content.Context
-import android.util.Log
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.transition.Visibility
 import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.fragment.FlowerIdFragment
 import com.example.bemyplant.network.RetrofitService
@@ -23,6 +24,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 
 data class PlantImage(val resourceId: Int, val description: String) // TODO: DB 연동 후 삭제
 
@@ -88,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-                    }else{
+                }else{
                     val errorBody = response.errorBody()?.string()
                     Log.e("Error_Response", errorBody ?: "error body X")
                 }
@@ -125,6 +131,9 @@ class MainActivity : AppCompatActivity() {
         //mainFlower.setImageResource(R.drawable.delete_plant)
         //mainFlower.setImageResource(R.drawable.sea_otter)
         //mainFlower.setImageResource(R.drawable.test_img)
+
+
+
         //R.drawable.flower
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
@@ -141,6 +150,36 @@ class MainActivity : AppCompatActivity() {
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
 
         val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
+
+        // sdhan : LoginFragment에서 intent 통해 전달 받은 값
+        val mainIntent = getIntent()
+
+        val P_Name = mainIntent.getStringExtra("P_Name").toString()
+        val P_Birth = mainIntent.getStringExtra("P_Birth").toString()
+        val P_Race = mainIntent.getStringExtra("P_Race").toString()
+        val P_Registration = mainIntent.getStringExtra("P_Registration").toString()
+
+//        val dateFormat = "yyyy-MM-dd"
+//        val date = Date(System.currentTimeMillis())
+//        val simpleDateFormat = SimpleDateFormat(dateFormat)
+//        val nowSimpleDate: String = simpleDateFormat.format(date)
+//
+//        val birtDayString = P_Birth.toString()
+//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//        val date1 = LocalDate.parse(nowSimpleDate, formatter)
+//        val date2 = LocalDate.parse(birtDayString, formatter)
+//        Log.d("++++++++++++++++++++++++++", P_Birth)
+
+        var sampleDate = P_Birth
+        var date = SimpleDateFormat("yyyy-MM-dd") .parse(sampleDate)
+        var today = Calendar.getInstance()
+        var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
+
+        val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
+        textView_dDayValue.text = calculateDate.toString()
+
+
+
         if (newPlantImageResId != 0) { // 현재 이미지와 다른 이미지값이 들어온다면
             currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
             updateMainFlower(newPlantImageResId)

@@ -17,21 +17,25 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentUserImageSelect2Binding
+import com.example.bemyplant.model.PlantModel
+import io.realm.Realm
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.Date
 import kotlin.concurrent.thread
 
 private lateinit var imageURLs: List<String>
@@ -41,7 +45,14 @@ private lateinit var characteristic: String
 private var selectedImage: Bitmap? = null
 
 class UserImageSelect2Fragment : Fragment() {
+    // TODO: Rename and change types of parameters
     val binding by lazy{FragmentUserImageSelect2Binding.inflate(layoutInflater)}
+    lateinit var realm : Realm
+    private lateinit var plantName: String
+    private lateinit var plantSpecies: String
+    private lateinit var plantColor: String
+    private lateinit var potColor: String
+//    private lateinit var imageURLs: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,9 +142,36 @@ class UserImageSelect2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.nextButton.setOnClickListener{
+
+            getImageGenerateData()
+
+            realm.executeTransaction{
+                with(it.createObject(PlantModel::class.java)){
+                    val date = Date()
+                    val format = SimpleDateFormat("yyyy-MM-dd")
+                    val dateStr: String = format.format(date)
+                    val range = (100000..999999)  // 100000 <= n <= 999999
+                    val regist_num = range.random().toString()
+
+                    this.P_Name = plantName
+                    this.P_Birth = dateStr
+                    this.P_Race = plantSpecies
+//                    this.P_Image = imageURLs
+                    this.P_Registration = regist_num
+                }
+            }
             val intent = Intent(requireActivity(), TempConnectActivity::class.java)
             requireActivity().startActivity(intent)
         }
+    }
+
+    private fun getImageGenerateData() {
+        //Log.d("bundle-f2", arguments?.getStringArrayList("imageURLs").toString())
+        plantName = arguments?.getString("plantName").toString()
+        plantSpecies = arguments?.getString("plantSpecies").toString()
+        plantColor = arguments?.getString("plantColor").toString()
+        potColor = arguments?.getString("potColor").toString()
+//        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
     }
 
     fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {
@@ -322,7 +360,6 @@ class UserImageSelect2Fragment : Fragment() {
 
         return bitmap
     }
-
 
     companion object {
         @JvmStatic

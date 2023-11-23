@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -23,15 +24,25 @@ import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
 import kotlin.concurrent.thread
 
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [PlantImageSelect2Fragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 class PlantImageSelect2Fragment : Fragment() {
-    val binding by lazy { FragmentPlantImageSelect2Binding.inflate((layoutInflater)) }
+    val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
+    // TODO: Rename and change types of parameters
     private lateinit var plantName: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
     private lateinit var imageURLs: List<String>
     private var selectedImage: Bitmap? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,9 +125,11 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to "http://www.google.com")
                 findNavController().navigate(
-                    R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment
-                 )
+                    R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment,
+                    bundle
+                )
             }
         }
 
@@ -285,8 +298,6 @@ class PlantImageSelect2Fragment : Fragment() {
 //        binding.plantImageButton1.setImageBitmap(imageLoadFromURL(url1))
         // TODO: 만일 받아온 이미지가 null이라면 .. 처리
     }
-
-
 
     companion object {
         @JvmStatic

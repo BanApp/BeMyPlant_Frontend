@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentSignUp1Binding
@@ -23,6 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SignUp1Fragment : Fragment() {
+
     val binding by lazy{FragmentSignUp1Binding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +46,6 @@ class SignUp1Fragment : Fragment() {
                 showToast(requireContext(),"핸드폰 번호를 입력해주세요")
             } else {
                 findNavController().navigate(R.id.action_s1Fragment_to_s2Fragment,bundle)
-
             }
         }
         // Inflate the layout for this fragment

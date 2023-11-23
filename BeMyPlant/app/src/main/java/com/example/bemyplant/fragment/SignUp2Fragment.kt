@@ -1,6 +1,7 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
@@ -12,7 +13,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
@@ -22,9 +22,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
+import com.example.bemyplant.PlantRegisterForFragmentActivity
+import com.example.bemyplant.data.LoginData
+import io.realm.Realm
 
 
 class SignUp2Fragment : Fragment() {
+    lateinit var realm : Realm
     val binding by lazy{FragmentSignUp2Binding.inflate((layoutInflater))}
     lateinit var username : String
     lateinit var pw : String
@@ -52,7 +56,7 @@ class SignUp2Fragment : Fragment() {
         binding.visibleButton2.setOnClickListener {
             val currentTransformation = binding.userPwConfirmInput.transformationMethod
             if(currentTransformation is PasswordTransformationMethod){
-                binding.userPwConfirmInput.transformationMethod =                     SingleLineTransformationMethod.getInstance()
+                binding.userPwConfirmInput.transformationMethod = SingleLineTransformationMethod.getInstance()
             }else{
                 binding.userPwConfirmInput.transformationMethod = PasswordTransformationMethod.getInstance()
 
@@ -133,6 +137,7 @@ class SignUp2Fragment : Fragment() {
         val dateStr: String = format.format(date)
         return SignUpData(username, pw, phones, r_name, dateStr, 1)
     }
+
     private fun signUp(signUpData: SignUpData){
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -148,10 +153,10 @@ class SignUp2Fragment : Fragment() {
                         Log.d("회원가입" ,"회원가입 완료")
 
                         // 로그인 시도
-                        var loginData: LoginData = LoginData(username, pw)
-                        login(loginData)
+//                        var loginData: LoginData = LoginData(username, pw)
+//                        login(loginData)
 
-                        //findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
+                        findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
                     }
                 } else {
                     // 회원 가입 실패

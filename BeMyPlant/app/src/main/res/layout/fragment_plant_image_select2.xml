@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tagText"
         app:layout_constraintVertical_bias="0.077"
         app:layout_constraintWidth_percent="0.4" />
-        <!--android:src="@drawable/image_plant"-->
+    <!--android:src="@drawable/image_plant"-->
     <TextView
         android:id="@+id/textOverlay2"
         android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
         app:layout_constraintWidth_percent="0.4" />
 
 
-<!--새로고침 버튼 이미지 버튼으로 쓰려 했는데, 다음버튼과 크기 맞추기가 어려워서 우선 일반버튼으로 설정해놓을게요!-->
+    <!--새로고침 버튼 이미지 버튼으로 쓰려 했는데, 다음버튼과 크기 맞추기가 어려워서 우선 일반버튼으로 설정해놓을게요!-->
     <android.widget.Button
         android:id="@+id/refreshButton"
         android:layout_width="0dp"
