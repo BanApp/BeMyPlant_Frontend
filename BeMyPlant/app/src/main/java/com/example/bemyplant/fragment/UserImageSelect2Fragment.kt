@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -47,12 +48,13 @@ private var selectedImage: Bitmap? = null
 class UserImageSelect2Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     val binding by lazy{FragmentUserImageSelect2Binding.inflate(layoutInflater)}
-    lateinit var realm : Realm
+//    lateinit var realm : Realm
     private lateinit var plantName: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
-//    private lateinit var imageURLs: List<String>
+    private lateinit var plantImageURLs: List<String>
+    private lateinit var userImageURLs: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +68,14 @@ class UserImageSelect2Fragment : Fragment() {
         // 이전화면에서 넘어온 데이터 저장 (성별, 특징, url)
         gender = arguments?.getString("gender").toString()
         characteristic = arguments?.getString("characteristic").toString()
-        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
+        userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
 
         binding.tagText.text = "#${gender}#${characteristic}"
         
         var shownImageCount = 0
-        var imageURLsCount = imageURLs.size
-        Log.d("사용자 이미지 개수", imageURLs.size.toString())
+        var userImageURLsCount = userImageURLs.size
+        Log.d("사용자 이미지 개수", userImageURLs.size.toString())
 
         // 이미지 2개만 고치기
 //        setTwoImages(
@@ -81,25 +84,25 @@ class UserImageSelect2Fragment : Fragment() {
 //        )
 //        shownImageCount += 2
         // 테스트코드
-        if (imageURLs.isNotEmpty() && imageURLsCount >= 2) {
+        if (userImageURLs.isNotEmpty() && userImageURLsCount >= 2) {
             setTwoImages(
-                imageURLs[shownImageCount],
-                imageURLs[shownImageCount + 1]
+                userImageURLs[shownImageCount],
+                userImageURLs[shownImageCount + 1]
             )
             shownImageCount += 2
         }
 
         binding.refreshButton.setOnClickListener {
             Log.d("식물 이미지 업데이트 횟수", shownImageCount.toString())
-            if ((shownImageCount + 2) <= imageURLsCount) { // 둘 다 변경 가능하면 변경
+            if ((shownImageCount + 2) <= userImageURLsCount) { // 둘 다 변경 가능하면 변경
                 setTwoImages(
-                    imageURLs[shownImageCount],
-                    imageURLs[shownImageCount + 1]
+                    userImageURLs[shownImageCount],
+                    userImageURLs[shownImageCount + 1]
                 )
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 2
-            } else if ((shownImageCount + 1 ) <= imageURLsCount) { // 하나라도 변경 가능하면 변경
-                setOneImages(imageURLs[shownImageCount]) //button1 수정
+            } else if ((shownImageCount + 1 ) <= userImageURLsCount) { // 하나라도 변경 가능하면 변경
+                setOneImages(userImageURLs[shownImageCount]) //button1 수정
                 //binding.plantImageButton2.setImageBitmap((imageURLs[shownImageCount]))
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 1
@@ -153,21 +156,28 @@ class UserImageSelect2Fragment : Fragment() {
 
             getImageGenerateData()
 
-            realm.executeTransaction{
-                with(it.createObject(PlantModel::class.java)){
-                    val date = Date()
-                    val format = SimpleDateFormat("yyyy-MM-dd")
-                    val dateStr: String = format.format(date)
-                    val range = (100000..999999)  // 100000 <= n <= 999999
-                    val regist_num = range.random().toString()
-
-                    this.P_Name = plantName
-                    this.P_Birth = dateStr
-                    this.P_Race = plantSpecies
-//                    this.P_Image = imageURLs
-                    this.P_Registration = regist_num
-                }
-            }
+//            realm.executeTransaction{
+//                with(it.createObject(PlantModel::class.java)){
+//                    val date = Date()
+//                    val format = SimpleDateFormat("yyyy-MM-dd")
+//                    val dateStr: String = format.format(date)
+//                    val range = (100000..999999)  // 100000 <= n <= 999999
+//                    val regist_num = range.random().toString()
+//
+//                    this.P_Name = plantName
+//                    this.P_Birth = dateStr
+//                    this.P_Race = plantSpecies
+////                    this.P_Image = imageURLs
+//                    this.P_Registration = regist_num
+//                }
+//            }
+            val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs)
+            Log.d("bundle-f4", bundle.getString("plantName").toString())
+            Log.d("bundle-f4", bundle.getString("plantSpecies").toString())
+            Log.d("bundle-f4", bundle.getString("plantColor").toString())
+            Log.d("bundle-f4", bundle.getString("potColor").toString())
+            Log.d("bundle-f4", bundle.getStringArrayList("plantImageURLs").toString())
+            Log.d("bundle-f4", bundle.getStringArrayList("userImageURLs").toString())
             val intent = Intent(requireActivity(), TempConnectActivity::class.java)
             requireActivity().startActivity(intent)
         }
@@ -179,7 +189,8 @@ class UserImageSelect2Fragment : Fragment() {
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()
-//        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
+        userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
     }
 
     fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {

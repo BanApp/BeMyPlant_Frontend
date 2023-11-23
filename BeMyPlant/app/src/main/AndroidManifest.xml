@@ -25,6 +25,9 @@
             android:name=".SensorActivity"
             android:exported="false" />
         <activity
+            android:name=".bluetooth_testActivity"
+            android:exported="false" />
+        <activity
             android:name=".PlantRegisterForFragmentActivity"
             android:exported="false" />
         <activity
@@ -39,7 +42,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".TempConnectActivity"
+        <activity
+            android:name=".TempConnectActivity"
             android:exported="false"/>
         <activity
             android:name=".MJ_MainActivity"

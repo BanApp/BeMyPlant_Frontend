@@ -102,97 +102,21 @@ class LoginFragment : Fragment() {
         realm.executeTransaction{
             with(it.createObject(PlantModel::class.java)){
                 this.P_Name = "Rose"
-                this.P_Birth = "2023-10-23"
+                this.P_Birth = "2023-11-01"
                 this.P_Race = "Rosaceae"
-//                this.P_Image =
-                this.P_Registration = "P_0001"
+                this.P_Image = ByteArray(2) // ?
+                this.P_Registration = "231101-7654321"
             }
         }
 
-//        realm2.executeTransaction{
-//            with(it.createObject(Diary::class.java)){
-//                this.Title = "Rose2"
-//                this.Content = "Rosaceae2"
-//            }
-//        }
-
-
-//        // sdhan :realm DB control : DB 초기화 or 지우기
-//        realm.executeTransaction {
-//            //전부지우기
-//            it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
-//            //첫번째 줄 지우기
-////            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
-//        }
-
-        // sdhan :realm DB control : 불러오기
         val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "Rose").findFirst()
-//        val vo2 = realm.where(Diary::class.java).equalTo("P_Name", "Rose2").findFirst()
 
         if (vo != null) {
-            Log.d("++++++++++++++++++++++++++", vo.P_Name)
-            Log.d("++++++++++++++++++++++++++", vo.P_Birth)
-            Log.d("++++++++++++++++++++++++++", vo.P_Race)
-            Log.d("++++++++++++++++++++++++++", vo.P_Registration)
+            println(vo.P_Birth)
         }
-
-//        if (vo2 != null) {
-//            Log.d("++++++++++++++++++++++++++", vo2.Title)
-//        }
-
-//        realm.executeTransaction {
-//            //첫번째 줄을 가져와라
-//            val data = it.where(PlantModel::class.java).findFirst()
-//            Log.d("start", "start !!!!")
-//            if (data != null) {
-//                Log.d("PlantModel P_Name :", data.P_Name)
-//            }
-//            Log.d("end", "end !!!!")
-//        }
-
-        
-        // sdhan : 날짜
-//        val dateFormat = "yyyy-MM-dd HH:mm"
-        val dateFormat = "yyyy-MM-dd"
-        val dateFormat2 = "yyMMdd"
-        val date = Date(System.currentTimeMillis())
-        val simpleDateFormat = SimpleDateFormat(dateFormat)
-        val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
-
-        val simpleDate: String = simpleDateFormat.format(date)
-        val simpleDate2: String = simpleDateFormat2.format(date)
-        Log.d("++++++++++++", "++++++++++++++++++++++++++")
-        Log.d("++++++++++++", simpleDate)
-        Log.d("++++++++++++", simpleDate2)
-
-        // sdhan : 랜덤함수
-        val range = (1000000..9999999)  // 1000000 <= n <= 9999999
-        val randomNum = range.random()
-
-        // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-        // sdhan : 등록번호 = 날짜 + 랜덤숫자
-        val regNum = "${simpleDate2}-${randomNum}"
-        Log.d("++++++++++++", "++++++++++++++++++++++++++")
-        Log.d("++++++++++++", "++++++++++++++++++++++++++")
-        Log.d("++++++++++++", "++++++++++++++++++++++++++")
-        Log.d("++++++++++++", regNum)
-
 
         binding.startButton.setOnClickListener {
             val loginData = getLoginData()
-
-            if (vo != null) {
-                val P_Name = vo.P_Name
-                val P_Birth = vo.P_Birth
-                val P_Race = vo.P_Race
-                val P_Registration = vo.P_Registration
-                val bundle = bundleOf(
-                    "P_Name" to P_Name,
-                    "P_Birth" to P_Birth,
-                    "P_Race" to P_Race,
-                    "P_Registration" to P_Registration
-                )
-            }
 
             if (loginData.username.isEmpty()){
                 showToast(requireContext(),"아이디를 입력하세요")
@@ -201,18 +125,6 @@ class LoginFragment : Fragment() {
             } else {
                 login(loginData)
             }
-//            realm.executeTransaction {
-//                //첫번째 줄을 가져와라
-//                val data = it.where(PlantModel::class.java).findFirst()
-//                Log.d("start", "start !!!!")
-//                if (data != null) {
-//                    Log.d("PlantModel P_Name :", data.P_Name)
-//                    Log.d("PlantModel P_Name :", data.P_Birth)
-//                    Log.d("PlantModel P_Name :", data.P_Race)
-//                    Log.d("PlantModel P_Name :", data.P_Registration)
-//                }
-//                Log.d("end", "end !!!!")
-//            }
         }
     }
 
@@ -246,24 +158,36 @@ class LoginFragment : Fragment() {
 
                         val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "Rose").findFirst()
 
-                        val P_Name = vo?.P_Name
-                        val P_Birth = vo?.P_Birth
-                        val P_Race = vo?.P_Race
-                        val P_Registration = vo?.P_Registration
+                        if (vo != null) {
+                            val P_Name = vo.P_Name
+                            val P_Birth = vo.P_Birth
+                            val P_Race = vo.P_Race
+                            val P_Registration = vo.P_Registration
 
-//                        Log.d("+++++++", "+++++++")
-//                        if (P_Birth != null) {
-//                            Log.d("P_Birth", P_Birth)
-//                        }
+                            // main 화면으로 전환
+                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            intent.putExtra("P_Name", P_Name)
+                            intent.putExtra("P_Birth", P_Birth)
+                            intent.putExtra("P_Race", P_Race)
+                            intent.putExtra("P_Registration", P_Registration)
 
-                        // main 화면으로 전환
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra("P_Name", P_Name)
-                        intent.putExtra("P_Birth", P_Birth)
-                        intent.putExtra("P_Race", P_Race)
-                        intent.putExtra("P_Registration", P_Registration)
+                            requireActivity().startActivity(intent)
+                        } else {
+                            val P_Name = "식물 없음"
+                            val P_Birth = "2023-11-01"
+                            val P_Race = "종 없음"
+                            val P_Registration = "미등록"
 
-                        requireActivity().startActivity(intent)
+                            // main 화면으로 전환
+                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            intent.putExtra("P_Name", P_Name)
+                            intent.putExtra("P_Birth", P_Birth)
+                            intent.putExtra("P_Race", P_Race)
+                            intent.putExtra("P_Registration", P_Registration)
+
+                            requireActivity().startActivity(intent)
+                        }
+
                     }
                 } else {
                     // 로그인 실패

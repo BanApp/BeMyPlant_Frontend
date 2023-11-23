@@ -81,9 +81,13 @@ class PlantImageSelect1Fragment : Fragment() {
                             Log.d("식물 이미지생성 결과", "원소 없음 !!")
                         }
 
-                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to imageURLs.plant_image_urls)
-                        Log.d("bundle-f1", bundle.toString())
-                        findNavController().navigate(R.id.plantImageSelect2Fragment, bundle)
+                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to imageURLs.plant_image_urls)
+                        Log.d("bundle-f1", bundle.getString("plantName").toString())
+                        Log.d("bundle-f1", bundle.getString("plantSpecies").toString())
+                        Log.d("bundle-f1", bundle.getString("plantColor").toString())
+                        Log.d("bundle-f1", bundle.getString("potColor").toString())
+                        Log.d("bundle-f1", bundle.getStringArrayList("plantImageURLs").toString())
+                        findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment, bundle)
 
                     }
                 }

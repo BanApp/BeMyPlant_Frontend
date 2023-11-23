@@ -45,7 +45,8 @@ class UserImageSelect1Fragment : Fragment() {
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
-//    private lateinit var imageURLs: List<String>
+    private lateinit var plantImageURLs: List<String>
+    private lateinit var userImageURLs: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,21 +89,27 @@ class UserImageSelect1Fragment : Fragment() {
             progressDialog.show()
 
             lifecycleScope.launch {
-                var imageURLs = userImageGenerate(imageGenerateRequestData, progressDialog)
-                if (imageURLs == null) {
+                var userImageURLs = userImageGenerate(imageGenerateRequestData, progressDialog)
+                if (userImageURLs == null) {
                     // bad request
                     Log.d("식물 이미지생성", "식물 이미지 생성 결과 null")
                 } else {
                     Log.d("식물 이미지생성", "식물 이미지 생성완료 ")
 
-                    val imageURLs = imageURLs
+                    val userImageURLs = userImageURLs
 
-                    Log.d("식물 이미지생성결과", imageURLs.user_image_urls.toString())
+                    Log.d("식물 이미지생성결과", userImageURLs.user_image_urls.toString())
 
-                    if (imageURLs.user_image_urls == null) {
+                    if (userImageURLs.user_image_urls == null) {
                         Log.d("식물 이미지생성 결과", "원소 없음 !!")
                     }
-                    val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "imageURLs" to imageURLs.user_image_urls)
+                    val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs.user_image_urls)
+                    Log.d("bundle-f3", bundle.getString("plantName").toString())
+                    Log.d("bundle-f3", bundle.getString("plantSpecies").toString())
+                    Log.d("bundle-f3", bundle.getString("plantColor").toString())
+                    Log.d("bundle-f3", bundle.getString("potColor").toString())
+                    Log.d("bundle-f3", bundle.getStringArrayList("plantImageURLs").toString())
+                    Log.d("bundle-f3", bundle.getStringArrayList("userImageURLs").toString())
                     findNavController().navigate(
                         R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,
                         bundle
@@ -162,7 +169,7 @@ class UserImageSelect1Fragment : Fragment() {
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()
-//        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
     }
 
     companion object {

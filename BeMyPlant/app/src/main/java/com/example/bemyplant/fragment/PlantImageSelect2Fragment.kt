@@ -41,7 +41,7 @@ class PlantImageSelect2Fragment : Fragment() {
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
-    private lateinit var imageURLs: List<String>
+    private lateinit var plantImageURLs: List<String>
     private var selectedImage: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,34 +53,34 @@ class PlantImageSelect2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         getImageGenerateData() // 이전 화면으로부터 넘어오는 데이터저장 (plantName, plantSpecies, plantColor, potCOlor)
-        Log.d("식물 이미지 가져옴", imageURLs.toString())
+        Log.d("식물 이미지 가져옴", plantImageURLs.toString())
 
         binding.tagText.text = "#${plantSpecies}#${plantColor}#${potColor} 화분"
 
         var shownImageCount = 0
-        var imageURLsCount = imageURLs.size
+        var plantImageURLsCount = plantImageURLs.size
 
-        Log.d("식물 이미지 개수", imageURLs.size.toString())
+        Log.d("식물 이미지 개수", plantImageURLs.size.toString())
 
         // 이미지 2개만 고치기
         setTwoImages(
-            imageURLs[shownImageCount],
-            imageURLs[shownImageCount + 1]
+            plantImageURLs[shownImageCount],
+            plantImageURLs[shownImageCount + 1]
         )
         shownImageCount += 2
         Log.d("식물 이미지 업데이트", "업데이트 완료")
 
         binding.refreshButton.setOnClickListener {
             Log.d("식물 이미지 업데이트 횟수", shownImageCount.toString())
-            if ((shownImageCount + 2) <= imageURLsCount) { // 둘 다 변경 가능하면 변경
+            if ((shownImageCount + 2) <= plantImageURLsCount) { // 둘 다 변경 가능하면 변경
                 setTwoImages(
-                    imageURLs[shownImageCount],
-                    imageURLs[shownImageCount + 1]
+                    plantImageURLs[shownImageCount],
+                    plantImageURLs[shownImageCount + 1]
                 )
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 2
-            } else if ((shownImageCount + 1 ) <= imageURLsCount) { // 하나라도 변경 가능하면 변경
-                setOneImages(imageURLs[shownImageCount]) //button1 수정
+            } else if ((shownImageCount + 1 ) <= plantImageURLsCount) { // 하나라도 변경 가능하면 변경
+                setOneImages(plantImageURLs[shownImageCount]) //button1 수정
                 //binding.plantImageButton2.setImageBitmap((imageURLs[shownImageCount]))
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 1
@@ -125,7 +125,12 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to "http://www.google.com")
+                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs)
+                Log.d("bundle-f2", bundle.getString("plantName").toString())
+                Log.d("bundle-f2", bundle.getString("plantSpecies").toString())
+                Log.d("bundle-f2", bundle.getString("plantColor").toString())
+                Log.d("bundle-f2", bundle.getString("potColor").toString())
+                Log.d("bundle-f2", bundle.getStringArrayList("plantImageURLs").toString())
                 findNavController().navigate(
                     R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment,
                     bundle
@@ -142,7 +147,7 @@ class PlantImageSelect2Fragment : Fragment() {
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()
-        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
     }
 
     private fun showToast(context: Context, message: String) {

@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         // sdhan : LoginFragment에서 intent 통해 전달 받은 값
         val mainIntent = getIntent()
 
-        var P_Birth: String
+        var P_Birth: String = ""
 
         val P_Name = mainIntent.getStringExtra("P_Name").toString()
         P_Birth = mainIntent.getStringExtra("P_Birth").toString()
@@ -168,25 +168,24 @@ class MainActivity : AppCompatActivity() {
         plantName.text = P_Name // 이름
         plantRace = P_Race // 품종
         plantRegistration = P_Registration //주민등록번호
-        P_Birth = "2023-01-01"
 
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
+        Log.d("ssdfsdfsdfsdf :::", P_Birth)
         // sdhan : D-Day 계산
         var sampleDate = P_Birth
-        var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
-        var today = Calendar.getInstance()
-        var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
-        textView_dDayValue.text = calculateDate.toString()
+        if (sampleDate != null) {
+            var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
+            var today = Calendar.getInstance()
+            var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
+            textView_dDayValue.text = calculateDate.toString()
+        } else {
+            textView_dDayValue.text = "0"
+        }
 
 //        var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
 //        var today = Calendar.getInstance()
 //        var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
-
-
-
-
-
 
         if (newPlantImageResId != 0) { // 현재 이미지와 다른 이미지값이 들어온다면
             currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
