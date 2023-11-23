@@ -75,11 +75,19 @@ class UserImageSelect2Fragment : Fragment() {
         Log.d("사용자 이미지 개수", imageURLs.size.toString())
 
         // 이미지 2개만 고치기
-        setTwoImages(
-            imageURLs[shownImageCount],
-            imageURLs[shownImageCount + 1]
-        )
-        shownImageCount += 2
+//        setTwoImages(
+//            imageURLs[shownImageCount],
+//            imageURLs[shownImageCount + 1]
+//        )
+//        shownImageCount += 2
+        // 테스트코드
+        if (imageURLs.isNotEmpty() && imageURLsCount >= 2) {
+            setTwoImages(
+                imageURLs[shownImageCount],
+                imageURLs[shownImageCount + 1]
+            )
+            shownImageCount += 2
+        }
 
         binding.refreshButton.setOnClickListener {
             Log.d("식물 이미지 업데이트 횟수", shownImageCount.toString())

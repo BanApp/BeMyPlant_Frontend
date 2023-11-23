@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
     private var param2: String? = null
     /*저장된 값 userId, userPw*/
 
-    lateinit var realm : Realm
+    private lateinit var realm : Realm
 //    lateinit var realm2 : Realm
 
 

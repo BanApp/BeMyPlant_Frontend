@@ -17,15 +17,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class SettingActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService
@@ -40,6 +46,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var modifySensorButton: Button
     private lateinit var defaultUserImage: Bitmap
     private lateinit var user_image: Bitmap
+    lateinit var realm : Realm
+
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
@@ -261,6 +269,9 @@ class SettingActivity : AppCompatActivity() {
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, null)
 
+
+
+
         // 팝업 창의 뷰로 사용할 XML 레이아웃 설정
         builder.setView(dialogView)
 
@@ -270,6 +281,37 @@ class SettingActivity : AppCompatActivity() {
         dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes).setOnClickListener {
             // 2. 식물 삭제
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
+            // sdhan :realm DB control : DB 초기화 or 지우기
+            Realm.init(this)
+            val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+                .name("appdb.realm") // 생성할 realm 파일 이름 지정
+                .deleteRealmIfMigrationNeeded()
+                .modules(PlantModule())
+                .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+                .build()
+            realm = Realm.getInstance(configPlant)
+
+            realm.executeTransaction {
+                //전부지우기
+                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                //첫번째 줄 지우기
+    //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+            }
+            val dateFormat = "yyyy-MM-dd"
+            val date = Date(System.currentTimeMillis())
+            val simpleDateFormat = SimpleDateFormat(dateFormat)
+            val simpleDate: String = simpleDateFormat.format(date)
+            Log.i("iiiii : ", simpleDate)
+            realm.executeTransaction{
+                with(it.createObject(PlantModel::class.java)){
+                    this.P_Name = ""
+                    this.P_Birth = simpleDate
+                    this.P_Race = ""
+//                this.P_Image =
+                    this.P_Registration = ""
+                }
+            }
+
             // 비동기로 처리 ? (고려중)
 
             // 식물 이미지 변경 (+)
