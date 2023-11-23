@@ -67,11 +67,15 @@ class MainActivity : AppCompatActivity() {
                         val strangeTemp = statusResponse?.most_important_feature
                         val statusImageResource = if (statusTemp == 0) {
                             Log.d("123", statusTemp.toString())
-                            R.drawable.good_status1
+//                            R.drawable.good_status1
+                            R.drawable.ic_launcher_foreground
+
                         } else {
                             Log.d("123", statusTemp.toString())
-                            R.drawable.bad_status
+//                            R.drawable.bad_status
+                            R.drawable.ic_launcher_foreground
                         }
+
                         for (imageView in statusImages) {
                             imageView.setImageResource(statusImageResource)
                         }

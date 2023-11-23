@@ -17,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
+import com.example.bemyplant.data.GenerateUserImageRequest
+import com.example.bemyplant.data.GenerateUserImageResponse
 import com.example.bemyplant.databinding.FragmentUserImageSelect1Binding
 import com.example.bemyplant.network.RetrofitService
 import kotlinx.coroutines.CompletableDeferred
@@ -95,16 +97,16 @@ class UserImageSelect1Fragment : Fragment() {
 
                     val imageURLs = imageURLs
 
-                    Log.d("식물 이미지생성결과", imageURLs.user_image_urls.toString())
+//                    Log.d("식물 이미지생성결과", imageURLs.user_image_urls.toString())
 
-                    if (imageURLs.user_image_urls == null) {
-                        Log.d("식물 이미지생성 결과", "원소 없음 !!")
-                    }
+//                    if (imageURLs.user_image_urls == null) {
+//                        Log.d("식물 이미지생성 결과", "원소 없음 !!")
+//                    }
 //            val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to "http://www.google.com")
                     val bundle = bundleOf(
                         "gender" to gender,
                         "characteristic" to characteristic,
-                        "imageURLs" to imageURLs.user_image_urls
+//                        "imageURLs" to imageURLs.user_image_urls
                     )
                     findNavController().navigate(
                         R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,
