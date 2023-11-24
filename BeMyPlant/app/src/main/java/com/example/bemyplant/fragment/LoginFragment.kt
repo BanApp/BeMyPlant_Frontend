@@ -3,7 +3,6 @@ package com.example.bemyplant.fragment
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -20,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.MainActivity
+import com.example.bemyplant.R
 import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.databinding.FragmentLoginBinding
 import com.example.bemyplant.model.PlantModel
@@ -31,9 +31,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.*
 
 
@@ -132,7 +129,7 @@ class LoginFragment : Fragment() {
 //        println("+++++++++++++++++++")
 //        println(loadImage(plantImageURL))
 
-        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "rose49").findFirst()
+        val vo = realm.where(PlantModel::class.java).findFirst()
 
         if (vo != null) {
             println("+++++++++++++++++++")
@@ -249,33 +246,38 @@ class LoginFragment : Fragment() {
                         editor?.putString("token", token)
                         editor?.apply()
 
-                        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "rose49").findFirst()
+                        val vo = realm.where(PlantModel::class.java).findFirst()
 
                         if (vo != null) {
-                            val P_Name = vo.P_Name
-                            val P_Birth = vo.P_Birth
-                            val P_Race = vo.P_Race
-                            val P_Registration = vo.P_Registration
+                            var P_Name = vo.P_Name
+                            var P_Birth = vo.P_Birth
+                            var P_Race = vo.P_Race
+//                            var P_Image = vo.P_Image
+                            var P_Registration = vo.P_Registration
+
 
                             // main 화면으로 전환
                             val intent = Intent(requireActivity(), MainActivity::class.java)
                             intent.putExtra("P_Name", P_Name)
                             intent.putExtra("P_Birth", P_Birth)
                             intent.putExtra("P_Race", P_Race)
+//                            intent.putExtra("P_Image", P_Image)
                             intent.putExtra("P_Registration", P_Registration)
 
                             requireActivity().startActivity(intent)
                         } else {
-                            val P_Name = "식물 없음"
-                            val P_Birth = "1900-01-01"
-                            val P_Race = "종 없음"
-                            val P_Registration = "미등록"
+                            var P_Name = "식물 없음"
+                            var P_Birth = "1900-01-01"
+                            var P_Race = "종 없음"
+                            var P_Image = R.drawable.delete_plant
+                            var P_Registration = "미등록"
 
                             // main 화면으로 전환
                             val intent = Intent(requireActivity(), MainActivity::class.java)
                             intent.putExtra("P_Name", P_Name)
                             intent.putExtra("P_Birth", P_Birth)
                             intent.putExtra("P_Race", P_Race)
+                            intent.putExtra("P_Image", P_Image)
                             intent.putExtra("P_Registration", P_Registration)
 
                             requireActivity().startActivity(intent)

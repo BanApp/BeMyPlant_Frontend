@@ -297,20 +297,6 @@ class SettingActivity : AppCompatActivity() {
                 //첫번째 줄 지우기
     //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
             }
-            val dateFormat = "yyyy-MM-dd"
-            val date = Date(System.currentTimeMillis())
-            val simpleDateFormat = SimpleDateFormat(dateFormat)
-            val simpleDate: String = simpleDateFormat.format(date)
-            Log.i("iiiii : ", simpleDate)
-            realm.executeTransaction{
-                with(it.createObject(PlantModel::class.java)){
-                    this.P_Name = ""
-                    this.P_Birth = simpleDate
-                    this.P_Race = ""
-//                this.P_Image =
-                    this.P_Registration = ""
-                }
-            }
 
             // 비동기로 처리 ? (고려중)
 

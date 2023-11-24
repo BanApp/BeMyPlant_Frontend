@@ -86,7 +86,7 @@ class PlantImageSelect1Fragment : Fragment() {
                         Log.d("bundle-f1", bundle.getString("plantSpecies").toString())
                         Log.d("bundle-f1", bundle.getString("plantColor").toString())
                         Log.d("bundle-f1", bundle.getString("potColor").toString())
-                        Log.d("bundle-f1", bundle.getByteArray("plantImageURLs").toString())
+                        Log.d("bundle-f1", bundle.getStringArrayList("plantImageURLs").toString())
                         findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment, bundle)
 
                     }

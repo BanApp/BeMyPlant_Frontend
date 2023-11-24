@@ -17,12 +17,12 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -33,7 +33,8 @@ import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import io.realm.RealmList
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -41,6 +42,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.concurrent.thread
+
 
 private lateinit var imageURLs: List<String>
 private lateinit var gender: String
@@ -202,17 +204,25 @@ class UserImageSelect2Fragment : Fragment() {
             Log.d("plantImageURLs", plantImageURLs.toString())
             Log.d("regNum", regNum)
 
+            // List<String> to ByteArray
+            val baos = ByteArrayOutputStream()
+            val out = DataOutputStream(baos)
+            for (element in plantImageURLs) {
+                out.writeUTF(element)
+            }
+            val bytes = baos.toByteArray()
+
             realm.executeTransaction{
                 with(it.createObject(PlantModel::class.java)){
                     this.P_Name = plantName
                     this.P_Birth = bitrhDate
                     this.P_Race = plantSpecies
-//                    this.P_Image = plantImageURLs as ByteArray
+                    this.P_Image = bytes
                     this.P_Registration = regNum
                 }
             }
 
-            val vo = realm.where(PlantModel::class.java).equalTo("P_Name", plantName).findFirst()
+            val vo = realm.where(PlantModel::class.java).findFirst()
 
             if (vo != null) {
                 Log.d("realm : "+"vo.P_Name", vo.P_Name)

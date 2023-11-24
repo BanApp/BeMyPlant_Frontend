@@ -2,8 +2,10 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
@@ -18,9 +20,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.fragment.FlowerIdFragment
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,8 +45,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainFlower: ImageButton
     private lateinit var plantName: TextView
     private lateinit var plantRace: String
+    private lateinit var plantBirth: String
     private lateinit var plantRegistration: String
     private val retrofitService = RetrofitService().apiService2
+    private lateinit var realm: Realm
+
+    private lateinit var P_Name : String
+    private lateinit var P_Birth : String
+    private lateinit var P_Race : String
+//    private lateinit var P_Image : ByteArray
+    private lateinit var P_Registration : String
 
     // ----------- 상태에 따른 이미지 및 텍스트 변경
     private fun updateStatus() {
@@ -122,9 +136,19 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         updateStatus()
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
 
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
@@ -155,25 +179,123 @@ class MainActivity : AppCompatActivity() {
         val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
 
         // sdhan : LoginFragment에서 intent 통해 전달 받은 값
-        val mainIntent = getIntent()
+//        val mainIntent = getIntent()
+//        val P_Name = mainIntent.getStringExtra("P_Name").toString()
+//        var P_Birth = mainIntent.getStringExtra("P_Birth").toString()
+//        val P_Race = mainIntent.getStringExtra("P_Race").toString()
+//        var P_Image = mainIntent.getByteArrayExtra("P_Image")
+//        val P_Registration = mainIntent.getStringExtra("P_Registration").toString()
 
-//        var P_Birth: String = ""
+        P_Name = ""
+        P_Birth = ""
+        P_Race = ""
+//        var P_Image = ByteArray(5)
+        P_Registration = ""
 
-        val P_Name = mainIntent.getStringExtra("P_Name").toString()
-        var P_Birth = mainIntent.getStringExtra("P_Birth").toString()
-//        val P_Birth = "2021-01-01"
-        val P_Race = mainIntent.getStringExtra("P_Race").toString()
-        val P_Registration = mainIntent.getStringExtra("P_Registration").toString()
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        val deletePlant = R.drawable.delete_plant
 
-        plantName.text = P_Name // 이름
-        plantRace = P_Race // 품종
-        plantRegistration = P_Registration //주민등록번호
+        if (vo != null) {
+            P_Name = vo.P_Name
+            P_Birth = vo.P_Birth
+            P_Race = vo.P_Race
+//            P_Image = vo.P_Image
+            P_Registration = vo.P_Registration
+        } else {
+            P_Name = ""
+            P_Birth = ""
+            P_Race = ""
+//            P_Image = ByteArray(5)
+            P_Registration = ""
+        }
+
+
+//        if (vo != null) {
+////            var P_Name = ""
+////            var P_Birth = ""
+////            var P_Race = ""
+////            var P_Image = byteArrayOf()
+////            var P_Registration = ""
+//
+//            P_Name = vo.P_Name
+//            P_Birth = vo.P_Birth
+//            P_Race = vo.P_Race
+//            P_Image = vo.P_Image
+//            P_Registration = vo.P_Registration
+//
+//            plantName.text = P_Name // 이름
+//            plantBirth = P_Birth // 생일
+//            plantRace = P_Race // 품종
+//            var bitmap = BitmapFactory.decodeByteArray(P_Image,0,P_Image.size) // sdhan :바이트(Byte)를 비트맵(Bitmap)으로 변환
+//            mainFlower.setImageBitmap(bitmap)
+//            plantRegistration = P_Registration // 주민등록번호
+//
+//        } else {
+////            var P_Name = ""
+////            var P_Birth = ""
+////            var P_Race = ""
+////            var P_Image = byteArrayOf()
+////            var P_Registration = ""
+//
+//            plantName.text = "?"
+//            plantBirth = "?"
+//            plantRace = "?"
+//            mainFlower.setImageResource(deletePlant)
+//            plantRegistration = "?"
+//        }
+
+        if (P_Name != null) {
+            plantName.text = P_Name // 이름
+        } else {
+            plantName.text = "?"
+        }
+
+        if (P_Birth != null) {
+            plantBirth = P_Birth // 생일
+        } else {
+            plantBirth = "?"
+        }
+        println("@@@@@@@@@@@")
+        println("plantBirth")
+        println(plantBirth)
+
+        if (P_Race != null) {
+            plantRace = P_Race // 품종
+        } else {
+            plantRace = "?"
+        }
+
+//        val deletePlant = R.drawable.delete_plant
+
+//        if (P_Image != null) {
+//            val bitmap = BitmapFactory.decodeByteArray(P_Image,0,P_Image.size) // sdhan :바이트(Byte)를 비트맵(Bitmap)으로 변환
+//            mainFlower.setImageBitmap(bitmap)
+////            mainFlower.setImageResource(R.drawable.ic_launcher_foreground)
+//        } else {
+//            mainFlower.setImageResource(deletePlant)
+//        }
+
+        if (P_Registration != null) {
+            plantRegistration = P_Registration // 주민등록번호
+        } else {
+            plantRegistration = "?"
+        }
 
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
         // sdhan : D-Day 계산
         var sampleDate = P_Birth
-        if (P_Birth != "1900-01-01") {
+        if (sampleDate != null) {
+
+        } else {
+            sampleDate = "1900-01-01"
+        }
+
+//        println("@@@@@@@@@@@")
+//        println("sampleDate")
+//        println(sampleDate)
+
+        if (sampleDate != "1900-01-01") {
             var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
             var today = Calendar.getInstance()
             var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
@@ -181,6 +303,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             textView_dDayValue.text = "?"
         }
+
 
 //        var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
 //        var today = Calendar.getInstance()
@@ -216,6 +339,7 @@ class MainActivity : AppCompatActivity() {
                     val bundle = Bundle()
                     bundle.putParcelable("plantImage", mainFlower.drawable.toBitmap())
                     bundle.putString("plantName", plantName.text.toString())
+                    bundle.putString("plantBirth", plantBirth)
                     bundle.putString("plantRace", plantRace)
                     bundle.putString("plantRegistration", plantRegistration)
 
