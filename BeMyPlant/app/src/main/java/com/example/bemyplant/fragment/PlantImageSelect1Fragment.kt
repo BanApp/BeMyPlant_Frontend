@@ -2,16 +2,14 @@ package com.example.bemyplant.fragment
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
@@ -31,8 +29,10 @@ class PlantImageSelect1Fragment : Fragment() {
     private val retrofitService = RetrofitService().apiService2
 
     //private lateinit var binding: FragmentPlantRegisterBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -66,27 +66,27 @@ class PlantImageSelect1Fragment : Fragment() {
                 progressDialog.show()
 
                 lifecycleScope.launch {
-                    var imageURLs = plantImageGenerate(imageGenerateRequestData, progressDialog)
-                    if (imageURLs == null) {
+                    var plantImageURLs = plantImageGenerate(imageGenerateRequestData, progressDialog)
+                    if (plantImageURLs == null) {
                         // bad request
                         Log.d("식물 이미지생성", "식물 이미지 생성 결과 null")
                     } else {
                         Log.d("식물 이미지생성", "식물 이미지 생성완료 ")
 
-                        val imageURLs = imageURLs
+                        val plantImageURLs = plantImageURLs
 
-                        Log.d("식물 이미지생성결과", imageURLs.plant_image_urls.toString())
+                        Log.d("식물 이미지생성결과", plantImageURLs.plant_image_urls.toString())
 
-                        if (imageURLs.plant_image_urls == null) {
+                        if (plantImageURLs.plant_image_urls == null) {
                             Log.d("식물 이미지생성 결과", "원소 없음 !!")
                         }
 
-                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to imageURLs.plant_image_urls)
+                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs.plant_image_urls)
                         Log.d("bundle-f1", bundle.getString("plantName").toString())
                         Log.d("bundle-f1", bundle.getString("plantSpecies").toString())
                         Log.d("bundle-f1", bundle.getString("plantColor").toString())
                         Log.d("bundle-f1", bundle.getString("potColor").toString())
-                        Log.d("bundle-f1", bundle.getStringArrayList("plantImageURLs").toString())
+                        Log.d("bundle-f1", bundle.getByteArray("plantImageURLs").toString())
                         findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment, bundle)
 
                     }

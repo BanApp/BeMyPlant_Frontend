@@ -1,39 +1,39 @@
 package com.example.bemyplant.fragment
 
-import android.content.SharedPreferences
-import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.bemyplant.MainActivity
-import com.example.bemyplant.R
-import com.example.bemyplant.databinding.FragmentLoginBinding
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
 import android.util.Log
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
-import com.example.bemyplant.PlantRegisterForFragmentActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.bemyplant.MainActivity
 import com.example.bemyplant.data.LoginData
-import com.example.bemyplant.data.LoginResponse
-import com.example.bemyplant.data.SignUpData
-import com.example.bemyplant.model.Diary
+import com.example.bemyplant.databinding.FragmentLoginBinding
 import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.module.DiaryModule
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import java.text.SimpleDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.*
 
 
@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        Realm.init(requireContext())
+//        Realm.init(requireContext())
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("appdb.realm") // 생성할 realm 파일 이름 지정
@@ -69,6 +69,8 @@ class LoginFragment : Fragment() {
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
         realm = Realm.getInstance(configPlant)
+//        Realm.setDefaultConfiguration(configPlant)
+
 
 //        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
 //            .name("dairydb.realm") // 생성할 realm 파일 이름 지정
@@ -99,20 +101,50 @@ class LoginFragment : Fragment() {
             }
         }
 
-        realm.executeTransaction{
-            with(it.createObject(PlantModel::class.java)){
-                this.P_Name = "Rose"
-                this.P_Birth = "2023-11-01"
-                this.P_Race = "Rosaceae"
-                this.P_Image = ByteArray(2) // ?
-                this.P_Registration = "231101-7654321"
-            }
-        }
+        var plantImageURL: String?
+        plantImageURL = "https://i.namu.wiki/i/1kbHf_bcKUZ2Lzr9vJsKfu52TT_-10gfUI772kAG18xTs7Xx0Poko3GlUPH0kHpn49dzImSVf4PoKTJxhuQFzESahQEnOLUck3fIhaYVzQaOxZwoEeZYUakBl3TLzOOg33lIFLTZevkBAj-d0DlPcA.svg"
 
-        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "Rose").findFirst()
+        var binaryData: ByteArray? = null
+        binaryData = byteArrayOf(0x00,0x01,0x001)
+
+//        loadImage(plantImageURL)
+//
+//        Thread {
+//            loadImage(plantImageURL)
+//            println(loadImage(plantImageURL))
+//        }.start()
+
+//        imageLoadFromURL(plantImageURL)
+
+//        realm.executeTransaction{
+//            with(it.createObject(PlantModel::class.java)){
+//                this.P_Name = "Rose"
+//                this.P_Birth = "2023-11-01"
+//                this.P_Race = "Rosaceae"
+//                this.P_Image = binaryData
+//                this.P_Registration = "231101-7654321"
+//            }
+//        }
+
+//        var plantImageBinary: ByteArray = imageLoadFromURL(plantImageURL)
+//        var plantImageString: Bitmap = imageLoadFromURL(plantImageURL)
+//        println("+++++++++++++++++++")
+//        println("+++++++++++++++++++")
+//        println(loadImage(plantImageURL))
+
+        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "rose49").findFirst()
 
         if (vo != null) {
+            println("+++++++++++++++++++")
+            println(vo.P_Name)
+            println("+++++++++++++++++++")
             println(vo.P_Birth)
+            println("+++++++++++++++++++")
+//            println(vo.P_Image)
+            println("+++++++++++++++++++")
+//            println(vo.P_Image.toString())
+            println("+++++++++++++++++++")
+            println(vo.P_Registration)
         }
 
         binding.startButton.setOnClickListener {
@@ -126,6 +158,67 @@ class LoginFragment : Fragment() {
                 login(loginData)
             }
         }
+
+    }
+
+//    private fun loadImage(imageUrl: String) : Bitmap? {
+//        val bmp: Bitmap? = null
+//        try {
+//
+//            val url = URL(imageUrl)
+//            val stream = url.openStream()
+//
+//            return BitmapFactory.decodeStream(stream)
+//
+//        } catch (e: MalformedURLException) {
+//            e.printStackTrace()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return bmp
+//    }
+
+    private fun imageLoadFromURL(imageUrl: String) {
+        // Glide를 사용하여 이미지 로드
+        Glide.with(requireContext())
+            .asBitmap()
+            .load(imageUrl)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    // 이미지 로드가 완료
+                    Log.d("이미지 로드", "성공")
+                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+                    val transparentBitmap = makeTransparentBitmap(resource)
+                    if (transparentBitmap != null) {
+                        Log.d("이미지 투명", "성공")
+                    } else {
+                        Log.d("이미지 투명", "실패")
+                    }
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // 이미지 로드가 취소되거나 해제된 경우 호출
+                }
+            })
+    }
+
+    fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {
+        val width = sourceBitmap.width
+        val height = sourceBitmap.height
+
+        val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+
+        // 배경을 투명하게 설정
+        canvas.drawColor(Color.TRANSPARENT)
+
+        // 원본 비트맵을 그림
+        canvas.drawBitmap(sourceBitmap, 0f, 0f, null)
+
+        return resultBitmap
     }
 
     private fun showToast(context: Context, message: String) {
@@ -156,7 +249,7 @@ class LoginFragment : Fragment() {
                         editor?.putString("token", token)
                         editor?.apply()
 
-                        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "Rose").findFirst()
+                        val vo = realm.where(PlantModel::class.java).equalTo("P_Name", "rose49").findFirst()
 
                         if (vo != null) {
                             val P_Name = vo.P_Name
@@ -174,7 +267,7 @@ class LoginFragment : Fragment() {
                             requireActivity().startActivity(intent)
                         } else {
                             val P_Name = "식물 없음"
-                            val P_Birth = "2023-11-01"
+                            val P_Birth = "1900-01-01"
                             val P_Race = "종 없음"
                             val P_Registration = "미등록"
 

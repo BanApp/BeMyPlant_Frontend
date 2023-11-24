@@ -157,10 +157,10 @@ class MainActivity : AppCompatActivity() {
         // sdhan : LoginFragment에서 intent 통해 전달 받은 값
         val mainIntent = getIntent()
 
-        var P_Birth: String = ""
+//        var P_Birth: String = ""
 
         val P_Name = mainIntent.getStringExtra("P_Name").toString()
-        P_Birth = mainIntent.getStringExtra("P_Birth").toString()
+        var P_Birth = mainIntent.getStringExtra("P_Birth").toString()
 //        val P_Birth = "2021-01-01"
         val P_Race = mainIntent.getStringExtra("P_Race").toString()
         val P_Registration = mainIntent.getStringExtra("P_Registration").toString()
@@ -171,16 +171,15 @@ class MainActivity : AppCompatActivity() {
 
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
-        Log.d("ssdfsdfsdfsdf :::", P_Birth)
         // sdhan : D-Day 계산
         var sampleDate = P_Birth
-        if (sampleDate != null) {
+        if (P_Birth != "1900-01-01") {
             var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)
             var today = Calendar.getInstance()
             var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
             textView_dDayValue.text = calculateDate.toString()
         } else {
-            textView_dDayValue.text = "0"
+            textView_dDayValue.text = "?"
         }
 
 //        var date = SimpleDateFormat("yyyy-MM-dd").parse(sampleDate)

@@ -30,7 +30,10 @@ import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentUserImageSelect2Binding
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.RealmList
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -48,7 +51,7 @@ private var selectedImage: Bitmap? = null
 class UserImageSelect2Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     val binding by lazy{FragmentUserImageSelect2Binding.inflate(layoutInflater)}
-//    lateinit var realm : Realm
+
     private lateinit var plantName: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
@@ -56,15 +59,33 @@ class UserImageSelect2Fragment : Fragment() {
     private lateinit var plantImageURLs: List<String>
     private lateinit var userImageURLs: List<String>
 
+    private lateinit var realm : Realm
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {}
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
+
         // 이전화면에서 넘어온 데이터 저장 (성별, 특징, url)
         gender = arguments?.getString("gender").toString()
         characteristic = arguments?.getString("characteristic").toString()
@@ -156,6 +177,52 @@ class UserImageSelect2Fragment : Fragment() {
 
             getImageGenerateData()
 
+            // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+            val dateFormat = "yyyy-MM-dd"
+            val now = Date(System.currentTimeMillis())
+            val simpleDateFormat = SimpleDateFormat(dateFormat)
+            val bitrhDate: String = simpleDateFormat.format(now)
+
+            // sdhan : 등록번호용 날짜형식 생성
+            val dateFormat2 = "yyMMdd"
+            val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+            val regDate: String = simpleDateFormat2.format(now)
+
+            // sdhan : 랜덤함수
+            val range = (1000000..9999999)  // 100000 <= n <= 999999
+            println(range.random())
+
+            // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+            // sdhan : 등록번호 = 날짜 + 랜덤숫자
+            val regNum = "${regDate}-${range.random()}"
+
+            Log.d("plantName", plantName)
+            Log.d("bitrhDate", bitrhDate)
+            Log.d("plantSpecies", plantSpecies)
+            Log.d("plantImageURLs", plantImageURLs.toString())
+            Log.d("regNum", regNum)
+
+            realm.executeTransaction{
+                with(it.createObject(PlantModel::class.java)){
+                    this.P_Name = plantName
+                    this.P_Birth = bitrhDate
+                    this.P_Race = plantSpecies
+//                    this.P_Image = plantImageURLs as ByteArray
+                    this.P_Registration = regNum
+                }
+            }
+
+            val vo = realm.where(PlantModel::class.java).equalTo("P_Name", plantName).findFirst()
+
+            if (vo != null) {
+                Log.d("realm : "+"vo.P_Name", vo.P_Name)
+                Log.d("realm : "+"vo.P_Birth", vo.P_Birth)
+                Log.d("realm : "+"vo.P_Race", vo.P_Race)
+//                Log.d("realm : "+"vo.P_Image", vo.P_Image.toString())
+                Log.d("realm : "+"vo.P_Registration", vo.P_Registration)
+            }
+
+
 //            realm.executeTransaction{
 //                with(it.createObject(PlantModel::class.java)){
 //                    val date = Date()
@@ -171,7 +238,7 @@ class UserImageSelect2Fragment : Fragment() {
 //                    this.P_Registration = regist_num
 //                }
 //            }
-            val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs)
+            val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs, "gender" to gender, "characteristic" to characteristic)
             Log.d("bundle-f4", bundle.getString("plantName").toString())
             Log.d("bundle-f4", bundle.getString("plantSpecies").toString())
             Log.d("bundle-f4", bundle.getString("plantColor").toString())

@@ -103,7 +103,7 @@ class UserImageSelect1Fragment : Fragment() {
                     if (userImageURLs.user_image_urls == null) {
                         Log.d("식물 이미지생성 결과", "원소 없음 !!")
                     }
-                    val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs.user_image_urls)
+                    val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs.user_image_urls, "gender" to gender, "characteristic" to characteristic)
                     Log.d("bundle-f3", bundle.getString("plantName").toString())
                     Log.d("bundle-f3", bundle.getString("plantSpecies").toString())
                     Log.d("bundle-f3", bundle.getString("plantColor").toString())

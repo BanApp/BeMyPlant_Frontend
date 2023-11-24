@@ -9,15 +9,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentMainBinding
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
+import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class MainFragment : Fragment() {
     val binding by lazy{FragmentMainBinding.inflate((layoutInflater))}
+    private lateinit var realm : Realm
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
 
     }
 
@@ -37,8 +52,15 @@ class MainFragment : Fragment() {
 
         binding.appNameText.text = changeAppNameText
 
-
-
+        binding.deleteButton.setOnClickListener{
+            realm.executeTransaction {
+                //전부지우기
+                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                //첫번째 줄 지우기
+                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+            }
+            Toast.makeText(requireContext(),"식물 정보가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
+        }
 
         binding.loginButton.setOnClickListener{
             findNavController().navigate(R.id.action_mainFragment2_to_loginFragment3)
