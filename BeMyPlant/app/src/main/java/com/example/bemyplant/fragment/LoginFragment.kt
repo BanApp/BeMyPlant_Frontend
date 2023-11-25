@@ -16,7 +16,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
@@ -101,8 +103,10 @@ class LoginFragment : Fragment() {
         var plantImageURL: String?
         plantImageURL = "https://i.namu.wiki/i/1kbHf_bcKUZ2Lzr9vJsKfu52TT_-10gfUI772kAG18xTs7Xx0Poko3GlUPH0kHpn49dzImSVf4PoKTJxhuQFzESahQEnOLUck3fIhaYVzQaOxZwoEeZYUakBl3TLzOOg33lIFLTZevkBAj-d0DlPcA.svg"
 
-        var binaryData: ByteArray? = null
-        binaryData = byteArrayOf(0x00,0x01,0x001)
+        // TODO : URL 가지고 와서 Bitmap으로 저장후 그 주소를 realm에 넣는 방식?
+
+//        var binaryData: ByteArray? = null
+//        binaryData = byteArrayOf(0x00,0x01,0x001)
 
 //        loadImage(plantImageURL)
 //
@@ -112,6 +116,8 @@ class LoginFragment : Fragment() {
 //        }.start()
 
 //        imageLoadFromURL(plantImageURL)
+
+
 
 //        realm.executeTransaction{
 //            with(it.createObject(PlantModel::class.java)){
@@ -137,7 +143,7 @@ class LoginFragment : Fragment() {
             println("+++++++++++++++++++")
             println(vo.P_Birth)
             println("+++++++++++++++++++")
-//            println(vo.P_Image)
+            println(vo.P_Image.toString(Charsets.UTF_8))
             println("+++++++++++++++++++")
 //            println(vo.P_Image.toString())
             println("+++++++++++++++++++")
@@ -175,7 +181,7 @@ class LoginFragment : Fragment() {
 //        return bmp
 //    }
 
-    private fun imageLoadFromURL(imageUrl: String) {
+    private fun     imageLoadFromURL(imageUrl: String) {
         // Glide를 사용하여 이미지 로드
         Glide.with(requireContext())
             .asBitmap()

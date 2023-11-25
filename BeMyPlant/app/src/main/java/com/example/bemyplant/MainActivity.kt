@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainFlower: ImageButton
     private lateinit var plantName: TextView
+    private lateinit var statusText: TextView
     private lateinit var plantRace: String
     private lateinit var plantBirth: String
     private lateinit var plantRegistration: String
@@ -162,6 +163,9 @@ class MainActivity : AppCompatActivity() {
 
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
+
+        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        statusText.text =  "???"
 
 
         // main image 설정

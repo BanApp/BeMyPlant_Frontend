@@ -29,27 +29,6 @@
         app:layout_constraintVertical_bias="0.307" />
 
     <android.widget.Button
-        android:id="@+id/deleteButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="-50dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/button_green2"
-        android:fontFamily="@font/notosans_medium"
-        android:gravity="center"
-        android:text="삭제"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/appFontSmallSize2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appNameText"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <android.widget.Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

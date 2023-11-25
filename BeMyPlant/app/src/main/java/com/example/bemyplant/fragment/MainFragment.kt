@@ -52,16 +52,6 @@ class MainFragment : Fragment() {
 
         binding.appNameText.text = changeAppNameText
 
-        binding.deleteButton.setOnClickListener{
-            realm.executeTransaction {
-                //전부지우기
-                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
-                //첫번째 줄 지우기
-                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
-            }
-            Toast.makeText(requireContext(),"식물 정보가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
-        }
-
         binding.loginButton.setOnClickListener{
             findNavController().navigate(R.id.action_mainFragment2_to_loginFragment3)
         }

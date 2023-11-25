@@ -192,7 +192,6 @@ class UserImageSelect2Fragment : Fragment() {
 
             // sdhan : 랜덤함수
             val range = (1000000..9999999)  // 100000 <= n <= 999999
-            println(range.random())
 
             // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
             // sdhan : 등록번호 = 날짜 + 랜덤숫자
