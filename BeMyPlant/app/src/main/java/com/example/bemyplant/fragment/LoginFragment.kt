@@ -266,11 +266,11 @@ class LoginFragment : Fragment() {
 
                             requireActivity().startActivity(intent)
                         } else {
-                            var P_Name = "식물 없음"
+                            var P_Name = ""
                             var P_Birth = "1900-01-01"
-                            var P_Race = "종 없음"
+                            var P_Race = ""
                             var P_Image = R.drawable.delete_plant
-                            var P_Registration = "미등록"
+                            var P_Registration = ""
 
                             // main 화면으로 전환
                             val intent = Intent(requireActivity(), MainActivity::class.java)

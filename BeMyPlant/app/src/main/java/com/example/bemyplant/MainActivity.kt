@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var P_Name : String
     private lateinit var P_Birth : String
     private lateinit var P_Race : String
-//    private lateinit var P_Image : ByteArray
+    private lateinit var P_Image : ByteArray
     private lateinit var P_Registration : String
 
     // ----------- 상태에 따른 이미지 및 텍스트 변경
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         val statusData = StatusData("Seoul")
         val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        val statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        var statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         val statusImages = arrayOf(
             findViewById<ImageView>(R.id.statusImage1),
             findViewById<ImageView>(R.id.statusImage2),
@@ -93,15 +93,28 @@ class MainActivity : AppCompatActivity() {
                         for (imageView in statusImages) {
                             imageView.setImageResource(statusImageResource)
                         }
-                        //상태에 따른 텍스트 변경
-                        if (statusTemp == 0) {
-                            statusText.text = "Good"
-                            strangeConText.visibility = View.INVISIBLE
 
+                        var vo = realm.where(PlantModel::class.java).findFirst()
+
+                        if (vo != null) {
+                            println("############" + vo.P_Name)
+                            if (vo.P_Name == null || vo.P_Name == "") {
+                                statusText.text =  "???"
+                            } else {
+                                //상태에 따른 텍스트 변경
+                                if (statusTemp == 0) {
+                                    statusText.text = "Good"
+                                    strangeConText.visibility = View.INVISIBLE
+
+                                } else {
+                                    statusText.text = "Bad"
+                                    strangeCondition.visibility = View.VISIBLE
+                                }
+                            }
                         } else {
-                            statusText.text = "Bad"
-                            strangeCondition.visibility = View.VISIBLE
+                            statusText.text =  "???"
                         }
+
                         if (strangeTemp == "airHumid"){
                             strangeConText.text = "습도이상"
 
@@ -113,17 +126,14 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }else{
+                    statusText.text =  "???"
                     val errorBody = response.errorBody()?.string()
                     Log.e("Error_Response", errorBody ?: "error body X")
                 }
-
-
-
             }catch (e:Exception){
+                statusText.text =  "???"
                 Log.e("API_Connection", "API 연결 실패")
                 e.printStackTrace()
-
-
             }
         }
     }
@@ -189,84 +199,83 @@ class MainActivity : AppCompatActivity() {
         P_Name = ""
         P_Birth = ""
         P_Race = ""
-//        var P_Image = ByteArray(5)
+        var P_Image = ByteArray(5)
         P_Registration = ""
 
         var vo = realm.where(PlantModel::class.java).findFirst()
         val deletePlant = R.drawable.delete_plant
 
-        if (vo != null) {
-            P_Name = vo.P_Name
-            P_Birth = vo.P_Birth
-            P_Race = vo.P_Race
-//            P_Image = vo.P_Image
-            P_Registration = vo.P_Registration
-        } else {
-            P_Name = ""
-            P_Birth = ""
-            P_Race = ""
-//            P_Image = ByteArray(5)
-            P_Registration = ""
-        }
-
-
 //        if (vo != null) {
-////            var P_Name = ""
-////            var P_Birth = ""
-////            var P_Race = ""
-////            var P_Image = byteArrayOf()
-////            var P_Registration = ""
-//
 //            P_Name = vo.P_Name
 //            P_Birth = vo.P_Birth
 //            P_Race = vo.P_Race
-//            P_Image = vo.P_Image
+////            P_Image = vo.P_Image
 //            P_Registration = vo.P_Registration
-//
-//            plantName.text = P_Name // 이름
-//            plantBirth = P_Birth // 생일
-//            plantRace = P_Race // 품종
-//            var bitmap = BitmapFactory.decodeByteArray(P_Image,0,P_Image.size) // sdhan :바이트(Byte)를 비트맵(Bitmap)으로 변환
-//            mainFlower.setImageBitmap(bitmap)
-//            plantRegistration = P_Registration // 주민등록번호
-//
 //        } else {
-////            var P_Name = ""
-////            var P_Birth = ""
-////            var P_Race = ""
-////            var P_Image = byteArrayOf()
-////            var P_Registration = ""
-//
-//            plantName.text = "?"
-//            plantBirth = "?"
-//            plantRace = "?"
-//            mainFlower.setImageResource(deletePlant)
-//            plantRegistration = "?"
+//            P_Name = ""
+//            P_Birth = ""
+//            P_Race = ""
+////            P_Image = ByteArray(5)
+//            P_Registration = ""
 //        }
 
-        if (P_Name != null) {
+
+        if (vo != null) {
+//            var P_Name = ""
+//            var P_Birth = ""
+//            var P_Race = ""
+//            var P_Image = byteArrayOf()
+//            var P_Registration = ""
+
+            P_Name = vo.P_Name
+            P_Birth = vo.P_Birth
+            P_Race = vo.P_Race
+            P_Image = vo.P_Image
+            P_Registration = vo.P_Registration
+
             plantName.text = P_Name // 이름
-        } else {
-            plantName.text = "?"
-        }
-
-        if (P_Birth != null) {
             plantBirth = P_Birth // 생일
-        } else {
-            plantBirth = "?"
-        }
-        println("@@@@@@@@@@@")
-        println("plantBirth")
-        println(plantBirth)
-
-        if (P_Race != null) {
             plantRace = P_Race // 품종
+            var bitmap = BitmapFactory.decodeByteArray(P_Image,0,P_Image.size) // sdhan :바이트(Byte)를 비트맵(Bitmap)으로 변환
+            mainFlower.setImageBitmap(bitmap)
+            plantRegistration = P_Registration // 주민등록번호
+
         } else {
-            plantRace = "?"
+//            var P_Name = ""
+//            var P_Birth = ""
+//            var P_Race = ""
+//            var P_Image = byteArrayOf()
+//            var P_Registration = ""
+
+            plantName.text = ""
+            plantBirth = "???"
+            plantRace = ""
+            mainFlower.setImageResource(deletePlant)
+            plantRegistration = ""
         }
 
-//        val deletePlant = R.drawable.delete_plant
-
+//        if (P_Name != null) {
+//            plantName.text = P_Name // 이름
+//        } else {
+//            plantName.text = "?"
+//        }
+//
+//        if (P_Birth != null) {
+//            plantBirth = P_Birth // 생일
+//        } else {
+//            plantBirth = "?"
+//        }
+//        println("@@@@@@@@@@@")
+//        println("plantBirth")
+//        println(plantBirth)
+//
+//        if (P_Race != null) {
+//            plantRace = P_Race // 품종
+//        } else {
+//            plantRace = "?"
+//        }
+//
+//
 //        if (P_Image != null) {
 //            val bitmap = BitmapFactory.decodeByteArray(P_Image,0,P_Image.size) // sdhan :바이트(Byte)를 비트맵(Bitmap)으로 변환
 //            mainFlower.setImageBitmap(bitmap)
@@ -274,19 +283,21 @@ class MainActivity : AppCompatActivity() {
 //        } else {
 //            mainFlower.setImageResource(deletePlant)
 //        }
-
-        if (P_Registration != null) {
-            plantRegistration = P_Registration // 주민등록번호
-        } else {
-            plantRegistration = "?"
-        }
+//
+//        if (P_Registration != null) {
+//            plantRegistration = P_Registration // 주민등록번호
+//        } else {
+//            plantRegistration = "?"
+//        }
 
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
         // sdhan : D-Day 계산
         var sampleDate = P_Birth
         if (sampleDate != null) {
-
+            if (sampleDate == ""){
+                sampleDate = "1900-01-01"
+            }
         } else {
             sampleDate = "1900-01-01"
         }
@@ -301,7 +312,7 @@ class MainActivity : AppCompatActivity() {
             var calculateDate = (today.time.time - date.time) / (1000 * 60 * 60 * 24)
             textView_dDayValue.text = calculateDate.toString()
         } else {
-            textView_dDayValue.text = "?"
+            textView_dDayValue.text = "???"
         }
 
 
