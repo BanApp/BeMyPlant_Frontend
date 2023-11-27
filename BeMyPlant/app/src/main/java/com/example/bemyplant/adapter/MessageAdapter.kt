@@ -1,16 +1,19 @@
 package com.example.bemyplant.adapter
 
-import com.example.bemyplant.data.ChatMsg
+import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import android.util.Log
 import com.example.bemyplant.R
+import com.example.bemyplant.data.ChatMsg
 class MessageAdapter(
     private val itemList: ArrayList<ChatMsg>,
     private val currentUser: String,
+    private val image: Bitmap,
 ) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     companion object {
@@ -21,10 +24,12 @@ class MessageAdapter(
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageContent: TextView = itemView.findViewById(R.id.messageContent)
         private val sendTime: TextView = itemView.findViewById(R.id.sendTime)
+        private val image: ImageView = itemView.findViewById(R.id.image)
 
         fun bindMessage(message: ChatMsg) {
             messageContent.text = message.content
             sendTime.text = message.sendTime
+            image.setImageBitmap(message.image)
 
             val msgContents = message.content
             val tag3 = "MessageContents"
