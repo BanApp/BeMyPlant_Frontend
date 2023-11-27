@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bemyplant.data.SensorData
 import com.example.bemyplant.network.ApiService
 import com.example.bemyplant.network.RetrofitService
 import com.github.mikephil.charting.charts.LineChart
@@ -28,21 +27,26 @@ class SensorActivity : AppCompatActivity() {
     //private lateinit var binding : ActivitySensorBinding
     private val retrofitService = RetrofitService().apiService
     private lateinit var regenButton: ImageButton
-    private lateinit var temper: TextView
-    private lateinit var humid: TextView
-    private lateinit var light: TextView
-    private lateinit var soilHumid: TextView
+    private lateinit var temper: Button
+    private lateinit var humid: Button
+    private lateinit var light: Button
+    private lateinit var soilHumid: Button
     private lateinit var completeButton: ImageButton
+    
+    private lateinit var todaySoilHumids: List<Float>
+    private lateinit var todayTempers: List<Float>
+    private lateinit var todayHumids: List<Float>
+    private lateinit var todayLights: List<Float>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sensor)
 
         regenButton = findViewById(R.id.imageButton_sensor_regen)
-        temper =findViewById(R.id.textView_sensor_temperature)
-        humid = findViewById(R.id.textView_sensor_humidity)
-        light = findViewById(R.id.textView_sensor_light)
-        soilHumid = findViewById(R.id.textView_sensor_soilHumidity)
+        temper =findViewById(R.id.Button_sensor_temperature)
+        humid = findViewById(R.id.Button_sensor_humidity)
+        light = findViewById(R.id.Button_sensor_light)
+        soilHumid = findViewById(R.id.Button_sensor_soilHumidity)
 
         completeButton = findViewById(R.id.imageButton_sensor_complete)
 
@@ -62,53 +66,15 @@ class SensorActivity : AppCompatActivity() {
         setNewSensorData()
 
         // [그래프 작성 1] test - 임시 더미 데이터로 그래프 작성
+//        var values = listOf(22, 33, 31, 0, 1, 77, 1) //더미 데이터, 6일 전 부터
+//        var labels = listOf("mon", "tue", "wed", "thu", "fri", "sat")
+//
+//        drawChart(values, labels)
+
+        // getHealthInfo()로 health data n개 추출 -> drawChart()로 그래프 그리기
         var values = listOf(22, 33, 31, 0, 1, 77, 1) //더미 데이터, 6일 전 부터
         var labels = listOf("mon", "tue", "wed", "thu", "fri", "sat")
-
         drawChart(values, labels)
-
-        // [그래프 작성 2]
-        // getHealthInfo()로 health data n개 추출 -> drawChart()로 그래프 그리기
-
-
-        // [그래프 작성 3(이전 아키텍처)] 농촌 진흥청 api 사용
-        /*
-        CoroutineScope(Dispatchers.Main).launch {
-            val retrofit = Retrofit.Builder()
-                .baseUrl("http://api.nongsaro.go.kr/service/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            val apiService: ApiService = retrofit.create(ApiService::class.java)
-
-            val response = withContext(Dispatchers.IO) {
-                apiService.getGardenDetail("키값", "디테일번호(품종)")
-            }
-
-            val sensorDataList = response.body()
-            sensorDataList?.watercycleSummerCode?.let { Log.d("waterCycleSummer", it) }
-
-            //getSensorData()
-        }
-        */
-
-        // 주어진 데이터 리스트에서 특정 간격으로 데이터를 추출하여 평균 계산
-    }
-
-    private fun <T> calculateAverage(data: List<SensorData>?, interval: Int, selector: (T) -> Double): Double {
-        var sum = 0.0
-        var count = 0
-
-        if (data != null) {
-            for (i in data.indices step interval) {
-                //data[i]와 api 비교 -> 차이값만큼 비교
-                var diff = 3 //차이값
-                sum += diff
-                //sum += data[i]
-                count++
-            }
-        }
-        return if (count > 0) sum / count else 0.0
     }
 
     private fun drawChart(values: List<Int>, labels: List<String>) {
@@ -130,6 +96,67 @@ class SensorActivity : AppCompatActivity() {
         // TODO: 2. health, graph 정보 -> rest api call하는 function 작성 (백엔드 호출 )
     }
 */
+
+    private fun getSensorDatas() {
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val Tag: String = "sensor"
+        Log.d(Tag, "token: $token")
+
+        // 토큰 부재 시 초기화면(MJ_main)으로 전환
+        if (token.isNullOrEmpty()){
+            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            // api call to get sensor data
+            val response = retrofitService.getSensorData(1, "Bearer " + token)
+            // HTTP 오류 코드에 대한 처리
+            if (response.code() == 401) {
+                // 401 Unauthorized 오류 처리
+                // 첫 화면으로 (로그인 시도 화면) 이동
+                val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+                startActivity(homeIntent)
+            } else {
+                // TODO: 센서 데이터 api call - 다른 HTTP 오류 코드에 대한 처리
+            }
+
+            val Tag: String = "sensor"
+            Log.d(Tag, "sensor raw-response: $response")
+
+            if (response.isSuccessful) {
+                val sensorDataList = response.body()
+                // 1. date값
+                //가장 최근 시간
+                if (!sensorDataList.isNullOrEmpty()) {
+                    val mostRecentData = sensorDataList.firstOrNull()
+
+                    Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+                    Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+                    Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+                    Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
+
+                    runOnUiThread {
+                        humid.text = "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
+                        light.text =
+                            "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
+                        soilHumid.text =
+                            "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+                        temper.text = "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
+
+                        // 화면 갱신
+                        humid.invalidate()
+                        light.invalidate()
+                        soilHumid.invalidate()
+                        temper.invalidate()
+                    }
+
+
+                }
+            }
+        }
+    }
+
 
     // setNewSensorData function calls sensor API & set textViews(temper, humid, light, soilHumid).
     private fun setNewSensorData() {

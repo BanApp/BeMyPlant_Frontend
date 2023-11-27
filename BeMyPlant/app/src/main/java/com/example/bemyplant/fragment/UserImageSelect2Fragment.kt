@@ -28,8 +28,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentUserImageSelect2Binding
-import java.io.File
-import java.io.FileOutputStream
 import java.io.OutputStream
 import java.net.URL
 import kotlin.concurrent.thread
@@ -58,7 +56,7 @@ class UserImageSelect2Fragment : Fragment() {
         imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
 
         binding.tagText.text = "#${gender}#${characteristic}"
-        
+
         var shownImageCount = 0
         var imageURLsCount = imageURLs.size
         Log.d("사용자 이미지 개수", imageURLs.size.toString())
@@ -118,7 +116,8 @@ class UserImageSelect2Fragment : Fragment() {
             }
             else{
                 Log.d("selectedImage-else", selectedImage.toString())
-                saveBitmapToFile(requireContext(), selectedImage!!)
+                //saveBitmapToFile(requireContext(), selectedImage!!)
+                // TODO: 정현: selectedImage -> db에 넣기 (지금 selectedIamge는 bitmap임 이거 bytearray로 바꿔서 넣기)
 
                 val intent = Intent(requireActivity(), TempConnectActivity::class.java)
                 requireActivity().startActivity(intent)
@@ -172,9 +171,9 @@ class UserImageSelect2Fragment : Fragment() {
                 outputStream = imageUri?.let { resolver.openOutputStream(it) }
             }
         } else {
-            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val image = File(storageDir, "BEMYPLANT_USER_IMAGE.jpg")
-            outputStream = FileOutputStream(image)
+            //val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            //val image = File(storageDir, "BEMYPLANT_USER_IMAGE.jpg")
+            //outputStream = FileOutputStream(image)
         }
 
         outputStream?.let {

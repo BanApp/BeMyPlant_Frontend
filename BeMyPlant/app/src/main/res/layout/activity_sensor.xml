@@ -59,8 +59,8 @@
         app:layout_constraintVertical_bias="0.28"
         tools:layout_editor_absoluteX="0dp">
 
-        <TextView
-            android:id="@+id/textView_sensor_temperature"
+        <Button
+            android:id="@+id/Button_sensor_temperature"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_pink"
@@ -68,10 +68,10 @@
             android:gravity="center"
             android:text="온도\n31℃"
             android:textColor="#000000"
-            android:textSize="22dp"></TextView>
+            android:textSize="22dp"></Button>
 
-        <TextView
-            android:id="@+id/textView_sensor_humidity"
+        <Button
+            android:id="@+id/Button_sensor_humidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_purple"
@@ -79,10 +79,10 @@
             android:gravity="center"
             android:text="습도\n15%"
             android:textColor="#000000"
-            android:textSize="22dp"></TextView>
+            android:textSize="22dp"></Button>
 
-        <TextView
-            android:id="@+id/textView_sensor_light"
+        <Button
+            android:id="@+id/Button_sensor_light"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_yellow"
@@ -90,10 +90,10 @@
             android:gravity="center"
             android:text="조도\n31LUX"
             android:textColor="#000000"
-            android:textSize="22dp"></TextView>
+            android:textSize="22dp"></Button>
 
-        <TextView
-            android:id="@+id/textView_sensor_soilHumidity"
+        <Button
+            android:id="@+id/Button_sensor_soilHumidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_blue"
@@ -101,7 +101,7 @@
             android:gravity="center"
             android:text="토양습도\n4%"
             android:textColor="#000000"
-            android:textSize="20dp"></TextView>
+            android:textSize="20dp"></Button>
 
     </GridLayout>
 
