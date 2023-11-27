@@ -12,7 +12,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="준비된 센서를\n등록해 볼까요? "
         android:textColor="@color/black"
-        android:textSize="44sp"
+        android:textSize="@dimen/appFontMediumSize"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,10 +36,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sensorResigeterText"
-        app:layout_constraintVertical_bias="0.166"
+        app:layout_constraintVertical_bias="0.053"
         app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.Button
@@ -55,10 +55,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sensorResigeterText"
-        app:layout_constraintVertical_bias="0.166"
+        app:layout_constraintVertical_bias="0.053"
         app:layout_constraintWidth_percent="0.33" />
 
     <android.widget.Button
@@ -86,7 +86,7 @@
         android:fontFamily="@font/notosans_medium"
         android:text="LED 불이 들어오는지 확인해주세요😉\n불이 들어온다면, 센서 등록 완료 ! "
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="@dimen/appFontSmallSize2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,13 +95,13 @@
 
     <android.widget.Button
         android:id="@+id/finishButton"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="36dp"
         android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="완료"
+        android:text="@string/finish"
         android:textColor="@color/white"
         android:textSize="@dimen/appButtonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"

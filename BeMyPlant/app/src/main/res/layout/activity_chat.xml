@@ -57,12 +57,13 @@
 
         <android.widget.Button
             android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="전송"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:background="@drawable/button_green"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
     </android.widget.LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView

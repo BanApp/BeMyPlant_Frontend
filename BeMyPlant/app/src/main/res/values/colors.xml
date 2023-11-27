@@ -17,5 +17,6 @@
     <color name="yellow">#FFD748</color>"
     <color name="hint_gray">#B8B8B8</color>
     <color name="gray2">#848484</color>
+    <color name = "transparent">#00000000</color>
 
 </resources>

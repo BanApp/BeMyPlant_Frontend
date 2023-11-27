@@ -4,13 +4,16 @@ import android.content.Context
 import android.util.Log
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.view.View
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -29,7 +32,7 @@ data class PlantImage(val resourceId: Int, val description: String) // TODO: DB 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var currentPlantImage: PlantImage // TODO: DB 연동 후 삭제
-
+    private lateinit var regenerateButton: ImageButton
     private lateinit var mainFlower: ImageButton
     private lateinit var plantName: TextView
     private lateinit var plantRace: String
@@ -49,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         )
         val strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
         val strangeConText = findViewById<TextView>(R.id.strangeConText)
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = retrofitService.getWeatherAndStatus(statusData, "Bearer $token")
@@ -59,37 +61,37 @@ class MainActivity : AppCompatActivity() {
                         val statusResponse = response.body()
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
-                        val statusImageResource = if (statusTemp != 0) {
-                            Log.d("123", statusTemp.toString())
-                            R.drawable.good_status1
+                        if (statusTemp != 0){
+                            val statusImageResource = arrayOf(R.drawable.good_status1 , R.drawable.good_status2, R.drawable.good_status3)
+                            val randomIndex = (0 until statusImageResource.size).random()
+                            for (image in statusImages){
+                                image.setImageResource(statusImageResource[randomIndex])
+                            }
                         } else {
-                            Log.d("123", statusTemp.toString())
-                            R.drawable.bad_status
+                            val statusImageResource = arrayOf(R.drawable.bad_status)
+                            for (image in statusImages){
+                                image.setImageResource(statusImageResource[0])
+                            }
                         }
-                        for (imageView in statusImages) {
-                            imageView.setImageResource(statusImageResource)
-                        }
+
                         //상태에 따른 텍스트 변경
                         if (statusTemp != 0) {
                             statusText.text = "Good"
                             strangeConText.visibility = View.INVISIBLE
 
                         } else {
+                            statusText.setTextColor(ContextCompat.getColor(applicationContext!!,R.color.coral))
                             statusText.text = "Bad"
                             strangeCondition.visibility = View.VISIBLE
 
-                            if (strangeTemp == "airHumid") {
-                                strangeConText.text = "공기습도이상"
-                            } else if (strangeTemp == "airTemp") {
-                                strangeConText.text = "온도이상"
-                            } else if (strangeTemp == "lightIntensity"){
-                                strangeConText.text = "조도이상"
-                            } else if (strangeTemp == "soilHumid"){
-                                strangeConText.text = "토양습도이상"
+                            when (strangeTemp) {
+                                "airHumid" -> strangeConText.text = "공기습도이상"
+                                "airTemp" -> strangeConText.text = "온도이상"
+                                "lightIntensity" -> strangeConText.text = "조도이상"
+                                "soilHumid" -> strangeConText.text = "토양습도이상"
                             }
                         }
                     }
-
                     }else{
                     val errorBody = response.errorBody()?.string()
                     Log.e("Error_Response", errorBody ?: "error body X")
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
 
@@ -134,10 +136,16 @@ class MainActivity : AppCompatActivity() {
         plantRace = "해바라기" // 품종
         plantRegistration = "1010-1010" //주민등록번호
             
-            
+
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
         currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+
+        // 새로고침 버튼
+        regenerateButton.setOnClickListener {
+            updateStatus()
+
+        }
 
 
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
@@ -193,11 +201,17 @@ class MainActivity : AppCompatActivity() {
         //------------------------상태에 관한 텍스트 클릭시 , 센서 화면으로 이동
         //TODO: 새로고침 버튼 구현
         val healthText = findViewById<TextView>(R.id.textView_main_healthValue)
+        val healthTitle = findViewById<TextView>(R.id.textView_main_healthFrame)
 
         healthText.setOnClickListener {
             // "LinearLayout" 클릭 시 SensorActivity로 이동
             val sensorIntent = Intent(this@MainActivity, SensorActivity::class.java)
             startActivity(sensorIntent)
+        }
+        healthTitle.setOnClickListener{
+            val sensorIntent = Intent(this@MainActivity, SensorActivity::class.java)
+            startActivity(sensorIntent)
+
         }
         //------------------------하단바
 

@@ -16,7 +16,7 @@
         android:baselineAligned="false"
         android:padding="2dp"
         android:text="@{android.text.format.DateFormat.format('HH:mm:ss', viewModel.message.sendTime)}"
-        android:textSize="8sp"
+        android:textSize="10sp"
         android:visibility="visible"/>
 
     <TextView
@@ -26,6 +26,6 @@
         android:padding="8dp"
         android:gravity="right"
         android:text="메세지 내용"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:visibility="visible" />
 </LinearLayout>
