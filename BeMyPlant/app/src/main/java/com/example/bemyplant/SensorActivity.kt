@@ -32,7 +32,7 @@ class SensorActivity : AppCompatActivity() {
     private lateinit var light: Button
     private lateinit var soilHumid: Button
     private lateinit var completeButton: ImageButton
-    
+
     private lateinit var todaySoilHumids: List<Float>
     private lateinit var todayTempers: List<Float>
     private lateinit var todayHumids: List<Float>
@@ -43,10 +43,10 @@ class SensorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sensor)
 
         regenButton = findViewById(R.id.imageButton_sensor_regen)
-        temper =findViewById(R.id.Button_sensor_temperature)
-        humid = findViewById(R.id.Button_sensor_humidity)
-        light = findViewById(R.id.Button_sensor_light)
-        soilHumid = findViewById(R.id.Button_sensor_soilHumidity)
+        temper =findViewById(R.id.textView_sensor_temperature)
+        humid = findViewById(R.id.textView_sensor_humidity)
+        light = findViewById(R.id.textView_sensor_light)
+        soilHumid = findViewById(R.id.textView_sensor_soilHumidity)
 
         completeButton = findViewById(R.id.imageButton_sensor_complete)
 

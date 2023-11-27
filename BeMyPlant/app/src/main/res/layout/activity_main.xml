@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background2"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
 
@@ -26,10 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_gravity="bottom"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
         app:itemIconTint="@drawable/menu_item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -187,17 +188,18 @@
                 android:layout_alignBottom="@id/imageView_main_healthFrame"
                 android:gravity="center"
                 android:paddingLeft="15dp"
-                android:text="@string/health"
+                android:text="_??"
                 android:textColor="@color/main_health_color"
                 android:textSize="32dp"
                 android:textStyle="bold" />
 
 
-            <ImageView
-                android:id="@+id/imageView_main_healthRegenerate"
+            <ImageButton
+                android:id="@+id/regenerateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="41dp"
-                android:paddingLeft="30dp"
+                android:paddingLeft="5dp"
+                android:background="@color/transparent"
                 android:src="@drawable/autorenew" />
 
         </LinearLayout>
@@ -209,23 +211,27 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="centerInside"
-        android:src="@drawable/flower"
+        android:src="@color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/mainFlower"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.614" />
+
+
+
+
 
     <ImageView
         android:id="@+id/statusImage2"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="328dp"
-        android:src="@drawable/flower"
+        android:layout_marginTop="268dp"
         android:scaleType="centerInside"
+        android:src="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toEndOf="@+id/mainFlower"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -233,14 +239,13 @@
         android:id="@+id/statusImage3"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="432dp"
         android:scaleType="centerInside"
-        android:src="@drawable/flower"
+        android:src="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/screenFrame" />
-    -->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/strangeCondition"

@@ -60,7 +60,7 @@
         tools:layout_editor_absoluteX="0dp">
 
         <Button
-            android:id="@+id/Button_sensor_temperature"
+            android:id="@+id/textView_sensor_temperature"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_pink"
@@ -71,7 +71,7 @@
             android:textSize="22dp"></Button>
 
         <Button
-            android:id="@+id/Button_sensor_humidity"
+            android:id="@+id/textView_sensor_humidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_purple"
@@ -82,7 +82,7 @@
             android:textSize="22dp"></Button>
 
         <Button
-            android:id="@+id/Button_sensor_light"
+            android:id="@+id/textView_sensor_light"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_yellow"
@@ -93,7 +93,7 @@
             android:textSize="22dp"></Button>
 
         <Button
-            android:id="@+id/Button_sensor_soilHumidity"
+            android:id="@+id/textView_sensor_soilHumidity"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/border_blue"

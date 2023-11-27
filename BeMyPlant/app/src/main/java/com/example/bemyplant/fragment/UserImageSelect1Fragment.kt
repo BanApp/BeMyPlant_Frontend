@@ -43,10 +43,10 @@ class UserImageSelect1Fragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        binding.skipButton.setOnClickListener {
-            val intent = Intent(requireActivity(), TempConnectActivity::class.java)
-            requireActivity().startActivity(intent)
-        }
+//        binding.skipButton.setOnClickListener {
+//            val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+//            requireActivity().startActivity(intent)
+//        }
 
         binding.nextButton.setOnClickListener {
             var gender:String = ""
