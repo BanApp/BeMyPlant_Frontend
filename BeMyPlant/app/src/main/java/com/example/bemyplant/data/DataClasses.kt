@@ -1,5 +1,4 @@
 package com.example.bemyplant.data
-import java.util.Date
 
 data class LoginData(
     val username: String,
@@ -59,7 +58,7 @@ data class ChatRequest(
 )
 
 data class ChatResponse(
-    val response: String 
+    val response: String
 )
 
 data class StatusResponse(
@@ -73,6 +72,27 @@ data class StatusResponse(
 
 data class StatusData(
     val city: String
+)
+
+data class GeneratePlantImageRequest(
+    val color: String,
+    val species: String,
+    val pot_color: String
+)
+
+
+data class GeneratePlantImageResponse (
+    val plant_image_urls: List<String>
+)
+
+data class GenerateUserImageRequest (
+    val gender: String,
+    val characteristic: String,
+)
+
+
+data class GenerateUserImageResponse (
+    val user_image_urls: List<String>
 )
 
 data class GardenResponse(
@@ -167,5 +187,3 @@ data class GardenResponse(
 
 
 )
-
-
