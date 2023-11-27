@@ -7,6 +7,14 @@
     android:gravity="start"
     android:padding="5dp"
     android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/image"
+        android:padding="8dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp">
+    </ImageView>
+
     <TextView
         android:id="@+id/messageContent"
         android:layout_width="wrap_content"
