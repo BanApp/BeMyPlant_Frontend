@@ -58,12 +58,10 @@ class SettingActivity : AppCompatActivity() {
         // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
         getUserAccount()
 
-        // TODO: 사용자 이미지 변경할 것
+        // TODO: (정현) 사용자 이미지 가져올 것 -> userImage 넣기
 
 
-
-
-        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
+        // TODO: (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정 (만약 null이면)
 
         // (1) 로그아웃 버튼 클릭 시 처리
         logoutButton.setOnClickListener{
