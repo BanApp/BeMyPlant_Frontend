@@ -95,7 +95,7 @@
 
     <android.widget.Button
         android:id="@+id/finishButton"
-        android:layout_width="130dp"
+        android:layout_width="110dp"
         android:layout_height="55dp"
         android:layout_marginBottom="36dp"
         android:background="@drawable/button_green"

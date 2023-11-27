@@ -46,11 +46,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/plantNameText">
                 <LinearLayout
+                    android:layout_marginTop="10dp"
                     android:id="@+id/question1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="36dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -70,10 +70,10 @@
                     <EditText
                         android:id="@+id/question1Edit"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="47dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
                         android:textSize="20sp"
@@ -109,10 +109,10 @@
 
                     <EditText
                         android:id="@+id/question2Edit"
-                        android:layout_height="50dp"
+                        android:layout_height="47dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
                         android:layout_width="match_parent"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
@@ -149,12 +149,12 @@
                         app:layout_constraintHorizontal_bias="0.058" />
 
                     <EditText
-                        android:padding="10dp"
+                        android:paddingLeft="5dp"
                         android:id="@+id/question3Edit"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="47dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
                         android:textSize="20sp"
@@ -192,11 +192,11 @@
 
                     <EditText
                         android:id="@+id/question4Edit"
-                        android:padding="10dp"
+                        android:paddingLeft="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="47dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
                         android:textSize="20sp"
@@ -210,10 +210,10 @@
 
             <android.widget.Button
                 android:id="@+id/nextButton"
-                android:layout_width="150dp"
-                android:layout_height="70dp"
+                android:layout_width="110dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_green"
                 android:fontFamily="@font/notosans_medium"

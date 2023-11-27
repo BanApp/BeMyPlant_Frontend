@@ -15,7 +15,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="사용자님과 딱 맞는\n이미지를 선택해주세요!"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="@dimen/appFontMediumSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

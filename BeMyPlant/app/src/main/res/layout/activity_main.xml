@@ -188,7 +188,7 @@
                 android:layout_alignBottom="@id/imageView_main_healthFrame"
                 android:gravity="center"
                 android:paddingLeft="15dp"
-                android:text="__"
+                android:text="_??"
                 android:textColor="@color/main_health_color"
                 android:textSize="32dp"
                 android:textStyle="bold" />

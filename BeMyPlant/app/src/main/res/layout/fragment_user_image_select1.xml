@@ -15,7 +15,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="사용자님에 대한\n질문에 답해주세요 ️📝"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="@dimen/appFontMediumSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -65,7 +65,7 @@
             android:fontFamily="@font/notosans_bold"
             android:text=" Q. 성별을 골라주세요."
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="@dimen/appFontSmallSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.058" />
 
@@ -118,9 +118,9 @@
             android:layout_height="0dp"
             android:layout_weight="1.2"
             android:fontFamily="@font/notosans_bold"
-            android:text=" Q. 특징을 적어주세요"
+            android:text=" Q. 특징을 적어주세요."
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="@dimen/appFontSmallSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.058" />
 
