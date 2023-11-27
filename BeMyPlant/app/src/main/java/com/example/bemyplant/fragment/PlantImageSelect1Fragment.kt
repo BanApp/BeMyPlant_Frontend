@@ -38,10 +38,10 @@ class PlantImageSelect1Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.nextButton.setOnClickListener{
-            val plantName = binding.editTextPlantNamePlantImgSelect.text.toString()
-            val plantSpecies = binding.editTextPlantSpeciesPlantImgSelect.text.toString()
-            val plantColor = binding.editTextPlantColorPlantImgSelect.text.toString()
-            val potColor = binding.editTextPotColorPlantImgSelect.text.toString()
+            val plantName = binding.question1Edit.text.toString()
+            val plantSpecies = binding.question2Edit.text.toString()
+            val plantColor = binding.question3Edit.text.toString()
+            val potColor = binding.question4Edit.text.toString()
 
 
             if (plantName == "" ){
