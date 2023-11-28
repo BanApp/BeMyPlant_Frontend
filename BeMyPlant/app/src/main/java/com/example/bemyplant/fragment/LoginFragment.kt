@@ -46,12 +46,10 @@ class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var realm: Realm
+    private lateinit var P_Name2 : String
+
     /*저장된 값 userId, userPw*/
-
-    private lateinit var realm : Realm
-//    lateinit var realm2 : Realm
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -68,7 +66,8 @@ class LoginFragment : Fragment() {
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
         realm = Realm.getInstance(configPlant)
-//        Realm.setDefaultConfiguration(configPlant)
+
+        var vo = realm.where(PlantModel::class.java).findFirst()
 
 
 //        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
@@ -100,55 +99,8 @@ class LoginFragment : Fragment() {
             }
         }
 
-        var plantImageURL: String?
-        plantImageURL = "https://i.namu.wiki/i/1kbHf_bcKUZ2Lzr9vJsKfu52TT_-10gfUI772kAG18xTs7Xx0Poko3GlUPH0kHpn49dzImSVf4PoKTJxhuQFzESahQEnOLUck3fIhaYVzQaOxZwoEeZYUakBl3TLzOOg33lIFLTZevkBAj-d0DlPcA.svg"
-
         // TODO : URL 가지고 와서 Bitmap으로 저장후 그 주소를 realm에 넣는 방식?
 
-//        var binaryData: ByteArray? = null
-//        binaryData = byteArrayOf(0x00,0x01,0x001)
-
-//        loadImage(plantImageURL)
-//
-//        Thread {
-//            loadImage(plantImageURL)
-//            println(loadImage(plantImageURL))
-//        }.start()
-
-//        imageLoadFromURL(plantImageURL)
-
-
-
-//        realm.executeTransaction{
-//            with(it.createObject(PlantModel::class.java)){
-//                this.P_Name = "Rose"
-//                this.P_Birth = "2023-11-01"
-//                this.P_Race = "Rosaceae"
-//                this.P_Image = binaryData
-//                this.P_Registration = "231101-7654321"
-//            }
-//        }
-
-//        var plantImageBinary: ByteArray = imageLoadFromURL(plantImageURL)
-//        var plantImageString: Bitmap = imageLoadFromURL(plantImageURL)
-//        println("+++++++++++++++++++")
-//        println("+++++++++++++++++++")
-//        println(loadImage(plantImageURL))
-
-        val vo = realm.where(PlantModel::class.java).findFirst()
-
-        if (vo != null) {
-            println("+++++++++++++++++++")
-            println(vo.P_Name)
-            println("+++++++++++++++++++")
-            println(vo.P_Birth)
-            println("+++++++++++++++++++")
-            println(vo.P_Image.toString(Charsets.UTF_8))
-            println("+++++++++++++++++++")
-//            println(vo.P_Image.toString())
-            println("+++++++++++++++++++")
-            println(vo.P_Registration)
-        }
 
         binding.startButton.setOnClickListener {
             val loginData = getLoginData()
@@ -162,66 +114,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-    }
-
-//    private fun loadImage(imageUrl: String) : Bitmap? {
-//        val bmp: Bitmap? = null
-//        try {
-//
-//            val url = URL(imageUrl)
-//            val stream = url.openStream()
-//
-//            return BitmapFactory.decodeStream(stream)
-//
-//        } catch (e: MalformedURLException) {
-//            e.printStackTrace()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//        return bmp
-//    }
-
-    private fun     imageLoadFromURL(imageUrl: String) {
-        // Glide를 사용하여 이미지 로드
-        Glide.with(requireContext())
-            .asBitmap()
-            .load(imageUrl)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    // 이미지 로드가 완료
-                    Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-                    val transparentBitmap = makeTransparentBitmap(resource)
-                    if (transparentBitmap != null) {
-                        Log.d("이미지 투명", "성공")
-                    } else {
-                        Log.d("이미지 투명", "실패")
-                    }
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    // 이미지 로드가 취소되거나 해제된 경우 호출
-                }
-            })
-    }
-
-    fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {
-        val width = sourceBitmap.width
-        val height = sourceBitmap.height
-
-        val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(resultBitmap)
-
-        // 배경을 투명하게 설정
-        canvas.drawColor(Color.TRANSPARENT)
-
-        // 원본 비트맵을 그림
-        canvas.drawBitmap(sourceBitmap, 0f, 0f, null)
-
-        return resultBitmap
     }
 
     private fun showToast(context: Context, message: String) {
@@ -245,6 +137,8 @@ class LoginFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "로그인이 되었습니다.")
 
+//                        println("1111111111")
+
                         // 토큰 정보 저장 (SharedPreferences)
                         val token = response.body()?.token
                         val sharedPreferences = context?.getSharedPreferences("Prefs", Context.MODE_PRIVATE)
@@ -252,42 +146,8 @@ class LoginFragment : Fragment() {
                         editor?.putString("token", token)
                         editor?.apply()
 
-                        val vo = realm.where(PlantModel::class.java).findFirst()
-
-                        if (vo != null) {
-                            var P_Name = vo.P_Name
-                            var P_Birth = vo.P_Birth
-                            var P_Race = vo.P_Race
-//                            var P_Image = vo.P_Image
-                            var P_Registration = vo.P_Registration
-
-
-                            // main 화면으로 전환
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.putExtra("P_Name", P_Name)
-                            intent.putExtra("P_Birth", P_Birth)
-                            intent.putExtra("P_Race", P_Race)
-//                            intent.putExtra("P_Image", P_Image)
-                            intent.putExtra("P_Registration", P_Registration)
-
-                            requireActivity().startActivity(intent)
-                        } else {
-                            var P_Name = ""
-                            var P_Birth = "1900-01-01"
-                            var P_Race = ""
-                            var P_Image = R.drawable.delete_plant
-                            var P_Registration = ""
-
-                            // main 화면으로 전환
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.putExtra("P_Name", P_Name)
-                            intent.putExtra("P_Birth", P_Birth)
-                            intent.putExtra("P_Race", P_Race)
-                            intent.putExtra("P_Image", P_Image)
-                            intent.putExtra("P_Registration", P_Registration)
-
-                            requireActivity().startActivity(intent)
-                        }
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        requireActivity().startActivity(intent)
 
                     }
                 } else {

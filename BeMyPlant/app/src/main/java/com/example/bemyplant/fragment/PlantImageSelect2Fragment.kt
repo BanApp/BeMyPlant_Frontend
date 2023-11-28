@@ -22,6 +22,11 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import java.io.ByteArrayOutputStream
 import kotlin.concurrent.thread
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,9 +48,20 @@ class PlantImageSelect2Fragment : Fragment() {
     private lateinit var potColor: String
     private lateinit var plantImageURLs: List<String>
     private var selectedImage: Bitmap? = null
+    private lateinit var realm: Realm
+//    private var imgSelected : ByteArray = byteArrayOf()
+    private lateinit var imgSelected : ByteArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
     }
 
     override fun onCreateView(
@@ -125,12 +141,22 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs)
+                imgSelected = bitmapToByteArray(selectedImage!!)
+//                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs)
+                val bundle = bundleOf(
+                    "plantName" to plantName,
+                    "plantSpecies" to plantSpecies,
+                    "plantColor" to plantColor,
+                    "potColor" to potColor,
+                    "plantImageURLs" to plantImageURLs,
+                    "imgSelected" to imgSelected
+                )
                 Log.d("bundle-f2", bundle.getString("plantName").toString())
                 Log.d("bundle-f2", bundle.getString("plantSpecies").toString())
                 Log.d("bundle-f2", bundle.getString("plantColor").toString())
                 Log.d("bundle-f2", bundle.getString("potColor").toString())
                 Log.d("bundle-f2", bundle.getStringArrayList("plantImageURLs").toString())
+                Log.d("bundle-f2", bundle.getByteArray("imgSelected").toString())
                 findNavController().navigate(
                     R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment,
                     bundle
@@ -179,6 +205,7 @@ class PlantImageSelect2Fragment : Fragment() {
         Glide.with(requireContext())
             .asBitmap()
             .load(imageUrl)
+            .override(200,200)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
@@ -225,6 +252,14 @@ class PlantImageSelect2Fragment : Fragment() {
                         binding.plantImageButton1.visibility = View.VISIBLE
                         binding.plantImageButton1.setImageBitmap(bitmap)
                     }
+                    var transBitmapToByteArray = bitmapToByteArray(bitmap)
+//                    realm.executeTransaction{
+//                        with(it.createObject(PlantModel::class.java)){
+//                            if (transBitmapToByteArray != null) {
+//                                this.P_Image = transBitmapToByteArray
+//                            }
+//                        }
+//                    }
                 }
 
                 override fun onImageLoadFailed() {
@@ -282,6 +317,13 @@ class PlantImageSelect2Fragment : Fragment() {
 
         // TODO: 만일 받아온 이미지가 null이라면 .. 처리
     }
+
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        return stream.toByteArray()
+    }
+
     private fun setOneImages(url1: String) {
         binding.textOverlay1.visibility = View.VISIBLE
         binding.plantImageButton1.visibility = View.INVISIBLE

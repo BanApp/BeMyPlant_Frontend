@@ -60,6 +60,8 @@ class UserImageSelect2Fragment : Fragment() {
     private lateinit var potColor: String
     private lateinit var plantImageURLs: List<String>
     private lateinit var userImageURLs: List<String>
+    private lateinit var imgSelected : ByteArray
+
 
     private lateinit var realm : Realm
 
@@ -165,9 +167,52 @@ class UserImageSelect2Fragment : Fragment() {
                 Log.d("selectedImage-else", selectedImage.toString())
                 saveBitmapToFile(requireContext(), selectedImage!!)
 
+                getImageGenerateData()
+
+                // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                val dateFormat = "yyyy-MM-dd"
+                val now = Date(System.currentTimeMillis())
+                val simpleDateFormat = SimpleDateFormat(dateFormat)
+                val bitrhDate: String = simpleDateFormat.format(now)
+
+                // sdhan : 등록번호용 날짜형식 생성
+                val dateFormat2 = "yyMMdd"
+                val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+                val regDate: String = simpleDateFormat2.format(now)
+
+                // sdhan : 랜덤함수
+                val range = (1000000..9999999)  // 100000 <= n <= 999999
+
+                // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                // sdhan : 등록번호 = 날짜 + 랜덤숫자
+                val regNum = "${regDate}-${range.random()}"
+
+                Log.d("plantName", plantName)
+                Log.d("bitrhDate", bitrhDate)
+                Log.d("plantSpecies", plantSpecies)
+                Log.d("plantImageURLs", plantImageURLs.toString())
+                Log.d("regNum", regNum)
+
+                // List<String> to ByteArray
+                val baos = ByteArrayOutputStream()
+                val out = DataOutputStream(baos)
+                for (element in plantImageURLs) {
+                    out.writeUTF(element)
+                }
+                val bytes = baos.toByteArray()
+
+                realm.executeTransaction{
+                    with(it.createObject(PlantModel::class.java)){
+                        this.P_Name = plantName
+                        this.P_Birth = bitrhDate
+                        this.P_Race = plantSpecies
+                        this.P_Image = bytes
+                        this.P_Registration = regNum
+                    }
+                }
+
                 val intent = Intent(requireActivity(), TempConnectActivity::class.java)
                 requireActivity().startActivity(intent)
-
             }
         }
         return binding.root
@@ -204,19 +249,26 @@ class UserImageSelect2Fragment : Fragment() {
             Log.d("regNum", regNum)
 
             // List<String> to ByteArray
-            val baos = ByteArrayOutputStream()
-            val out = DataOutputStream(baos)
-            for (element in plantImageURLs) {
-                out.writeUTF(element)
+//            val baos = ByteArrayOutputStream()
+//            val out = DataOutputStream(baos)
+//            for (element in plantImageURLs) {
+//                out.writeUTF(element)
+//            }
+//            val bytes = baos.toByteArray()
+
+            realm.executeTransaction {
+                //전부지우기
+                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                //첫번째 줄 지우기
+                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
             }
-            val bytes = baos.toByteArray()
 
             realm.executeTransaction{
                 with(it.createObject(PlantModel::class.java)){
                     this.P_Name = plantName
                     this.P_Birth = bitrhDate
                     this.P_Race = plantSpecies
-                    this.P_Image = bytes
+                    this.P_Image = imgSelected
                     this.P_Registration = regNum
                 }
             }
@@ -227,7 +279,7 @@ class UserImageSelect2Fragment : Fragment() {
                 Log.d("realm : "+"vo.P_Name", vo.P_Name)
                 Log.d("realm : "+"vo.P_Birth", vo.P_Birth)
                 Log.d("realm : "+"vo.P_Race", vo.P_Race)
-//                Log.d("realm : "+"vo.P_Image", vo.P_Image.toString())
+                Log.d("realm : "+"vo.P_Image", vo.P_Image.toString())
                 Log.d("realm : "+"vo.P_Registration", vo.P_Registration)
             }
 
@@ -247,13 +299,24 @@ class UserImageSelect2Fragment : Fragment() {
 //                    this.P_Registration = regist_num
 //                }
 //            }
-            val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs, "userImageURLs" to userImageURLs, "gender" to gender, "characteristic" to characteristic)
-            Log.d("bundle-f4", bundle.getString("plantName").toString())
-            Log.d("bundle-f4", bundle.getString("plantSpecies").toString())
-            Log.d("bundle-f4", bundle.getString("plantColor").toString())
-            Log.d("bundle-f4", bundle.getString("potColor").toString())
-            Log.d("bundle-f4", bundle.getStringArrayList("plantImageURLs").toString())
-            Log.d("bundle-f4", bundle.getStringArrayList("userImageURLs").toString())
+            val bundle = bundleOf(
+                "plantName" to plantName,
+                "plantSpecies" to plantSpecies,
+                "plantColor" to plantColor,
+                "potColor" to potColor,
+                "plantImageURLs" to plantImageURLs,
+                "imgSelected" to imgSelected,
+                "userImageURLs" to userImageURLs,
+                "gender" to gender,
+                "characteristic" to characteristic
+            )
+//            Log.d("bundle-f4", bundle.getString("plantName").toString())
+//            Log.d("bundle-f4", bundle.getString("plantSpecies").toString())
+//            Log.d("bundle-f4", bundle.getString("plantColor").toString())
+//            Log.d("bundle-f4", bundle.getString("potColor").toString())
+//            Log.d("bundle-f4", bundle.getStringArrayList("plantImageURLs").toString())
+//            Log.d("bundle-f4", bundle.getStringArrayList("userImageURLs").toString())
+//            Log.d("bundle-f3", bundle.getByteArray("userImageURLs").toString())
             val intent = Intent(requireActivity(), TempConnectActivity::class.java)
             requireActivity().startActivity(intent)
         }
@@ -267,6 +330,7 @@ class UserImageSelect2Fragment : Fragment() {
         potColor = arguments?.getString("potColor").toString()
         plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
         userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
+        imgSelected = arguments?.getByteArray("imgSelected") ?: byteArrayOf()
     }
 
     fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {

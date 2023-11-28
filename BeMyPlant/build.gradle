@@ -11,7 +11,7 @@ buildscript {
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0' // Kotlin 버전 변경
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.7.5'
         //classpath "io.realm:realm-gradle-plugin:10.11.1"
-        classpath "io.realm:realm-gradle-plugin:10.13.3-transformer-api"
+        classpath "io.realm:realm-gradle-plugin:10.15.1"
 
     }
 }
