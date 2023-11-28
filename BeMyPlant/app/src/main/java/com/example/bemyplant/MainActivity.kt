@@ -166,8 +166,8 @@ class MainActivity : AppCompatActivity() {
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
         // sdhan : D-Day 계산
-//        var sampleDate = P_Birth
-        var sampleDate = "1900-01-02"
+        var sampleDate = P_Birth
+//        var sampleDate = "1900-01-02"
         if (sampleDate != null) {
             if (sampleDate == ""){
                 sampleDate = "1900-01-01"
