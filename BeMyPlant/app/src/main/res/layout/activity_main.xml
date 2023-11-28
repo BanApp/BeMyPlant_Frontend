@@ -208,8 +208,8 @@
 
     <ImageView
         android:id="@+id/statusImage1"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:scaleType="centerInside"
         android:src="@color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/mainFlower"
@@ -225,8 +225,8 @@
 
     <ImageView
         android:id="@+id/statusImage2"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="268dp"
         android:scaleType="centerInside"
         android:src="@color/transparent"
@@ -237,8 +237,8 @@
 
     <ImageView
         android:id="@+id/statusImage3"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="432dp"
         android:scaleType="centerInside"
         android:src="@color/transparent"
