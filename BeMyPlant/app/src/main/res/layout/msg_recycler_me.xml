@@ -8,6 +8,14 @@
     android:padding="5dp"
     android:orientation="horizontal">
 
+    <ImageView
+        android:id="@+id/sendImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="이미지"
+        android:visibility="visible"
+        />
+
     <TextView
         android:id="@+id/sendTime"
         android:layout_width="wrap_content"

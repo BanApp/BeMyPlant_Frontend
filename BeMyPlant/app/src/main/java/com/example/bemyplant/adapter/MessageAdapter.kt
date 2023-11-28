@@ -1,5 +1,7 @@
 package com.example.bemyplant.adapter
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.example.bemyplant.data.ChatMsg
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.example.bemyplant.R
+import kotlinx.coroutines.withContext
+
 class MessageAdapter(
     private val itemList: ArrayList<ChatMsg>,
     private val currentUser: String,
@@ -21,10 +27,14 @@ class MessageAdapter(
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageContent: TextView = itemView.findViewById(R.id.messageContent)
         private val sendTime: TextView = itemView.findViewById(R.id.sendTime)
+        private val sendImage: ImageView = itemView.findViewById(R.id.sendImage)
+
 
         fun bindMessage(message: ChatMsg) {
+
             messageContent.text = message.content
             sendTime.text = message.sendTime
+            sendImage.setImageBitmap(message.sendImage)
 
             val msgContents = message.content
             val tag3 = "MessageContents"

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.text.Layout.Directions
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -19,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.fragment.FlowerIdFragment
+import com.example.bemyplant.fragment.PlantImageSelect1Fragment
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
@@ -76,6 +80,8 @@ class MainActivity : AppCompatActivity() {
 
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         statusText.text =  "???"
+        currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image")
+
 
 
         P_Name = ""
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
-        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
+//        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
 
 
 //        realm.executeTransaction{
@@ -125,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 //        var vo: PlantModel? = realm.where(PlantModel::class.java).findFirst()
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
-        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+//        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 
 
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
@@ -154,6 +160,7 @@ class MainActivity : AppCompatActivity() {
             var transImageToBitmap = byteArrayToBitmap(P_Image)
             mainFlower.setImageBitmap(transImageToBitmap)
             plantRegistration = P_Registration // 주민등록번호
+            currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 //
         } else {
             plantName.text = ""
@@ -195,8 +202,24 @@ class MainActivity : AppCompatActivity() {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
 
-            when (currentPlantImage.resourceId){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
-                R.drawable.delete_plant -> {
+            when (currentPlantImage){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
+                PlantImage(R.drawable.delete_plant, "Default Image") -> {
+
+
+                    val plantImageSelect1Fragment = PlantImageSelect1Fragment()
+                    fragmentTransaction.add(R.id.plantImageSelect1Fragment, plantImageSelect1Fragment)
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    screenFrame.bringToFront()
+
+//                    val plantImageSelect1Fragment = PlantImageSelect1Fragment()
+//                    supportFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.plantImageSelect1Fragment, plantImageSelect1Fragment)
+//                        .commit()
+//                    findNavController().navigate(Directions.action_mainFragment2_to_loginFragment3)
+//                    findNavController().navigate(R.id.action_mainFragment2_to_loginFragment3)
+
 
                     //val fragment = PlantRegisterFragment()
                     /*fragmentTransaction.replace(R.id.screenFrame, fragment) // R.id.fragmentContainer는 Fragment를 표시할 레이아웃의 ID입니다.
