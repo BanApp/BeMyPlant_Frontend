@@ -28,8 +28,6 @@ class PlantImageSelect1Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect1Binding.inflate((layoutInflater))}
     private val retrofitService = RetrofitService().apiService2
 
-    //private lateinit var binding: FragmentPlantRegisterBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -92,7 +90,6 @@ class PlantImageSelect1Fragment : Fragment() {
                     }
                 }
             }
-            //findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment)
         }
         return binding.root
     }

@@ -84,7 +84,7 @@ class ImageSelectFragment : Fragment() {
 
                 realm.executeTransaction{
                     with(it.createObject(PlantModel::class.java)){
-                        this.P_Birth = bitrhDate
+                        this.plantBirth = bitrhDate
                     }
                 }
 
@@ -103,7 +103,7 @@ class ImageSelectFragment : Fragment() {
                 val regNum = "${simpleDate2}-${range}"
                 realm.executeTransaction{
                     with(it.createObject(PlantModel::class.java)){
-                        this.P_Registration = regNum
+                        this.plantRegNum = regNum
                     }
                 }
 

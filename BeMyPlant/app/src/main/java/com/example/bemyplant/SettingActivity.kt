@@ -30,8 +30,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class SettingActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService
@@ -142,7 +140,7 @@ class SettingActivity : AppCompatActivity() {
         val Tag: String = "sensor"
         //Log.d(Tag, "token: $token")
         val mainIntent = getIntent()
-        val P_Name = mainIntent.getStringExtra("P_Name").toString()
+        val plantName = mainIntent.getStringExtra("plantName").toString()
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
         if (token.isNullOrEmpty()){
@@ -158,7 +156,7 @@ class SettingActivity : AppCompatActivity() {
                 val UserData = response.body()
 
                 runOnUiThread {
-                    realNameTextView.text = response.body()?.r_name + "(${P_Name} 주인님)"
+                    realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
                     uidTextView.text = response.body()?.username
                     // 화면 갱신
                     realNameTextView.invalidate()

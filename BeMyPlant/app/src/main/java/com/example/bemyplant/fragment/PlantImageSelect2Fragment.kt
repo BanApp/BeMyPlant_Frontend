@@ -29,16 +29,6 @@ import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
 import kotlin.concurrent.thread
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PlantImageSelect2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PlantImageSelect2Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
     // TODO: Rename and change types of parameters
@@ -49,8 +39,7 @@ class PlantImageSelect2Fragment : Fragment() {
     private lateinit var plantImageURLs: List<String>
     private var selectedImage: Bitmap? = null
     private lateinit var realm: Realm
-//    private var imgSelected : ByteArray = byteArrayOf()
-    private lateinit var imgSelected : ByteArray
+    private lateinit var plantImgSelected : ByteArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,13 +116,7 @@ class PlantImageSelect2Fragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            // selectedImage, plantName, plantSpecies을 번들로 넘김
-//
-//            val bundle = bundleOf(
-//                "selectedImage" to selectedImage,
-//                "plantName" to plantName,
-//                "plantSpecies" to plantSpecies
-//            )
+
             if (selectedImage == null) {
                 showToast(requireContext(), "식물 이미지를 선택해주세요")
             }
@@ -141,22 +124,21 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-                imgSelected = bitmapToByteArray(selectedImage!!)
-//                val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs)
+                plantImgSelected = bitmapToByteArray(selectedImage!!)
                 val bundle = bundleOf(
                     "plantName" to plantName,
                     "plantSpecies" to plantSpecies,
                     "plantColor" to plantColor,
                     "potColor" to potColor,
                     "plantImageURLs" to plantImageURLs,
-                    "imgSelected" to imgSelected
+                    "plantImgSelected" to plantImgSelected
                 )
                 Log.d("bundle-f2", bundle.getString("plantName").toString())
                 Log.d("bundle-f2", bundle.getString("plantSpecies").toString())
                 Log.d("bundle-f2", bundle.getString("plantColor").toString())
                 Log.d("bundle-f2", bundle.getString("potColor").toString())
                 Log.d("bundle-f2", bundle.getStringArrayList("plantImageURLs").toString())
-                Log.d("bundle-f2", bundle.getByteArray("imgSelected").toString())
+                Log.d("bundle-f2", bundle.getByteArray("plantImgSelected").toString())
                 findNavController().navigate(
                     R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment,
                     bundle
@@ -253,13 +235,6 @@ class PlantImageSelect2Fragment : Fragment() {
                         binding.plantImageButton1.setImageBitmap(bitmap)
                     }
                     var transBitmapToByteArray = bitmapToByteArray(bitmap)
-//                    realm.executeTransaction{
-//                        with(it.createObject(PlantModel::class.java)){
-//                            if (transBitmapToByteArray != null) {
-//                                this.P_Image = transBitmapToByteArray
-//                            }
-//                        }
-//                    }
                 }
 
                 override fun onImageLoadFailed() {
@@ -286,34 +261,6 @@ class PlantImageSelect2Fragment : Fragment() {
                 }
             })
         }
-
-        // image download from url & set image to UI component
-//        imageLoadFromURL(url1, object : ImageLoadCallback {
-//            override fun onImageLoaded(bitmap: Bitmap) {
-//                // Use the loaded bitmap here
-//                Log.d("이미지 url->비트맵", "1 성공")
-//                binding.textOverlay1.visibility = View.INVISIBLE
-//                binding.plantImageButton1.setImageBitmap(bitmap)
-//            }
-//
-//            override fun onImageLoadFailed() {
-//                Log.d("이미지 url->비트맵", "1 실패")
-//            }
-//        })
-//
-//        imageLoadFromURL(url2, object : ImageLoadCallback {
-//            override fun onImageLoaded(bitmap: Bitmap) {
-//                // Use the loaded bitmap here
-//                Log.d("이미지 url->비트맵", "2 성공")
-//                binding.textOverlay1.visibility = View.INVISIBLE
-//                binding.plantImageButton2.setImageBitmap(bitmap)
-//            }
-//
-//            override fun onImageLoadFailed() {
-//                Log.d("이미지 url->비트맵", "2 실패")
-//            }
-//        })
-
 
         // TODO: 만일 받아온 이미지가 null이라면 .. 처리
     }

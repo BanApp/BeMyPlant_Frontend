@@ -47,7 +47,7 @@ class UserImageSelect1Fragment : Fragment() {
     private lateinit var potColor: String
     private lateinit var plantImageURLs: List<String>
     private lateinit var userImageURLs: List<String>
-    private lateinit var imgSelected : ByteArray
+    private lateinit var plantImgSelected : ByteArray
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +111,7 @@ class UserImageSelect1Fragment : Fragment() {
                         "plantColor" to plantColor,
                         "potColor" to potColor,
                         "plantImageURLs" to plantImageURLs,
-                        "imgSelected" to imgSelected,
+                        "plantImgSelected" to plantImgSelected,
                         "userImageURLs" to userImageURLs.user_image_urls,
                         "gender" to gender,
                         "characteristic" to characteristic
@@ -183,7 +183,7 @@ class UserImageSelect1Fragment : Fragment() {
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()
         plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
-        imgSelected = arguments?.getByteArray("imgSelected") ?: byteArrayOf()
+        plantImgSelected = arguments?.getByteArray("plantImgSelected") ?: byteArrayOf()
     }
 
     companion object {

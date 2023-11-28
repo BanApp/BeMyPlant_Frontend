@@ -117,13 +117,7 @@ class ChatActivity : AppCompatActivity() {
         realm = Realm.getInstance(configPlant)
 
 //        var vo = realm.where(PlantModel::class.java).findFirst()
-//
-//        var P_Image: ByteArray = byteArrayOf()
-//
-//        if (vo != null) {
-//            P_Image = vo.P_Image
-//        }
-//        byteArrayToBitmap(P_Image)
+
         var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
         var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
 
@@ -140,7 +134,6 @@ class ChatActivity : AppCompatActivity() {
                     // 이미지 로드가 완료
                     Log.d("이미지 로드", "성공")
                     // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-//                    imageGen = byteArrayToBitmap(P_Image)!!
                     imageGen1 = resource
                 }
 
