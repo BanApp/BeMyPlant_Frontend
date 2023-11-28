@@ -206,7 +206,7 @@ class UserImageSelect2Fragment : Fragment() {
 
                 realm.executeTransaction{
                     with(it.createObject(PlantModel::class.java)){
-                        this.palntName = plantName
+                        this.plantName = plantName
                         this.plantBirth = bitrhDate
                         this.plantRace = plantSpecies
                         this.plantImage = bytes
@@ -260,7 +260,7 @@ class UserImageSelect2Fragment : Fragment() {
 
             realm.executeTransaction{
                 with(it.createObject(PlantModel::class.java)){
-                    this.palntName = plantName
+                    this.plantName = plantName
                     this.plantBirth = bitrhDate
                     this.plantRace = plantSpecies
                     this.plantImage = plantImgSelected
@@ -272,7 +272,7 @@ class UserImageSelect2Fragment : Fragment() {
             val vo = realm.where(PlantModel::class.java).findFirst()
 
             if (vo != null) {
-                Log.d("realm : "+"vo.palntName", vo.palntName)
+                Log.d("realm : "+"vo.plantName", vo.plantName)
                 Log.d("realm : "+"vo.plantBirth", vo.plantBirth)
                 Log.d("realm : "+"vo.plantRace", vo.plantRace)
                 Log.d("realm : "+"vo.plantImage", vo.plantImage.toString())

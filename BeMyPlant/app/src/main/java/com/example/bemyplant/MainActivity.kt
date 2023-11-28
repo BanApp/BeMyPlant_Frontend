@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.fragment.FlowerIdFragment
-import com.example.bemyplant.fragment.PlantImageSelect1Fragment
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val deletePlant = R.drawable.delete_plant
         if (vo != null) {
 
-            plantName = vo.palntName
+            plantName = vo.plantName
             plantBirth = vo.plantBirth
             plantRace = vo.plantRace
             plantImage = vo.plantImage
@@ -277,8 +276,8 @@ class MainActivity : AppCompatActivity() {
                         var vo = realm.where(PlantModel::class.java).findFirst()
 
                         if (vo != null) {
-                            println("############" + vo.palntName)
-                            if (vo.palntName == null || vo.palntName == "") {
+                            println("############" + vo.plantName)
+                            if (vo.plantName == null || vo.plantName == "") {
                                 statusText.text =  "???"
                             } else {
                                 //상태에 따른 텍스트 변경
