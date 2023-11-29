@@ -22,6 +22,9 @@
         android:theme="@style/Theme.BeMyPlant"
         tools:targetApi="33">
         <activity
+            android:name=".PlantImageTempActivity"
+            android:exported="false" />
+        <activity
             android:name=".SensorActivity"
             android:exported="false" />
         <activity
@@ -36,8 +39,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".TempConnectActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".TempConnectActivity"
+            android:exported="false" />
         <activity
             android:name=".MJ_MainActivity"
             android:exported="true">

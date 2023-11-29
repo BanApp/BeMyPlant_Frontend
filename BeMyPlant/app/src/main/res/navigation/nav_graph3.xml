@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph3"
+    app:startDestination="@id/plantImageSelect1Fragment2">
+
+    <fragment
+        android:id="@+id/plantImageSelect1Fragment2"
+        android:name="com.example.bemyplant.fragment.PlantImageSelect1Fragment"
+        android:label="fragment_plant_image_select1"
+        tools:layout="@layout/fragment_plant_image_select1" >
+        <action
+            android:id="@+id/action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2"
+            app:destination="@id/plantImageSelect2Fragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/plantImageSelect2Fragment2"
+        android:name="com.example.bemyplant.fragment.PlantImageSelect2Fragment"
+        android:label="fragment_plant_image_select2"
+        tools:layout="@layout/fragment_plant_image_select2" />
+</navigation>

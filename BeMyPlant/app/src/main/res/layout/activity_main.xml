@@ -38,8 +38,9 @@
 
     <ImageButton
         android:id="@+id/mainFlower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:src="@drawable/flower"
         app:backgroundTint="#DFF4C7"
@@ -160,18 +161,14 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal"
-
             android:paddingLeft="30dp"
-            android:paddingRight="5dp">
+            android:paddingRight="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/mainFlower">
 
             <TextView
                 android:id="@+id/textView_main_healthFrame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/linearLayout_main_health"
-                android:layout_alignTop="@id/linearLayout_main_health"
-                android:layout_alignRight="@id/linearLayout_main_health"
-                android:layout_alignBottom="@id/linearLayout_main_health"
                 android:gravity="center"
                 android:text="@string/health_format"
                 android:textColor="#000000"
@@ -188,7 +185,7 @@
                 android:layout_alignBottom="@id/imageView_main_healthFrame"
                 android:gravity="center"
                 android:paddingLeft="15dp"
-                android:text="_??"
+                android:text="__??"
                 android:textColor="@color/main_health_color"
                 android:textSize="32dp"
                 android:textStyle="bold" />
@@ -198,8 +195,8 @@
                 android:id="@+id/regenerateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="41dp"
-                android:paddingLeft="5dp"
                 android:background="@color/transparent"
+                android:paddingLeft="5dp"
                 android:src="@drawable/autorenew" />
 
         </LinearLayout>

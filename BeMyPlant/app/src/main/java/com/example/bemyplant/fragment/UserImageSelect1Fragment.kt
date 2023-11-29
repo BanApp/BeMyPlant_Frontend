@@ -88,7 +88,7 @@ class UserImageSelect1Fragment : Fragment() {
 
                     val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "imageURLs" to imageURLs.user_image_urls)
                     Log.d("bundle-f1", bundle.toString())
-                    findNavController().navigate(R.id.userImageSelect2Fragment, bundle)
+                    findNavController().navigate(R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,bundle)
 
                 }
             }
@@ -124,7 +124,7 @@ class UserImageSelect1Fragment : Fragment() {
                     // 이미지 받아오기 실패
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "사용자 이미지 생성 실패")
-                        findNavController().navigate(R.id.plantImageSelect1Fragment)
+                        //findNavController().navigate()
                         deferred.complete(null)
                     }
                 }

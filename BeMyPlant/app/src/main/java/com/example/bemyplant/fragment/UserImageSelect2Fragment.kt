@@ -22,9 +22,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.bemyplant.PlantImageTempActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentUserImageSelect2Binding
@@ -118,8 +120,7 @@ class UserImageSelect2Fragment : Fragment() {
                 Log.d("selectedImage-else", selectedImage.toString())
                 //saveBitmapToFile(requireContext(), selectedImage!!)
                 // TODO: 정현: selectedImage -> db에 넣기 (지금 selectedIamge는 bitmap임 이거 bytearray로 바꿔서 넣기)
-
-                val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+                val intent = Intent(requireActivity(), PlantImageTempActivity::class.java)
                 requireActivity().startActivity(intent)
 
             }
@@ -130,7 +131,7 @@ class UserImageSelect2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.nextButton.setOnClickListener{
-            val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+            val intent = Intent(requireActivity(), PlantImageTempActivity::class.java)
             requireActivity().startActivity(intent)
         }
     }
