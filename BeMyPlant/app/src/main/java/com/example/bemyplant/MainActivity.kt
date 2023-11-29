@@ -2,9 +2,9 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,7 +15,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -161,6 +160,8 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         strangeConText = findViewById<TextView>(R.id.strangeConText)
         strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
+        plantRace = "해바라기"
+        plantRegistration = "2023-11-29"
         statusImages = arrayOf(
             findViewById<ImageView>(R.id.statusImage1),
             findViewById<ImageView>(R.id.statusImage2),
@@ -262,7 +263,7 @@ class MainActivity : AppCompatActivity() {
 
                     val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
                     // 액티비티 이동
-                    val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
+                    //val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
                     startActivity(plantRegisterIntent)
 
                     //fragmentTransaction.add(R.id.screenFrame, fragment)
@@ -455,7 +456,4 @@ class MainActivity : AppCompatActivity() {
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
-}
-
-
 }

@@ -42,7 +42,7 @@
         android:layout_height="250dp"
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
-        android:src="@drawable/delete_plant"
+        android:src="@drawable/image_plant"
         app:backgroundTint="#DFF4C7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
