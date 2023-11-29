@@ -145,13 +145,16 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
                 val contents = contentEditText.text.toString()
                 val image = diaryImage.drawable.toBitmap()
                 if (image==null){
-                    showToast(requireContext(),"그림을 입력해주세요.")
+                    showToast(requireContext(),"사진을 입력해주세요.")
+                    return
                 }
                 if (title.isEmpty()){
                     showToast(requireContext(),"제목을 입력해주세요.")
+                    return
                 }
                 if (contents.isEmpty()){
                     showToast(requireContext(),"내용을 입력해주세요.")
+                    return
                 }
 
                 else{
