@@ -6,6 +6,10 @@ import com.example.bemyplant.data.GeneratePlantImageRequest
 import com.example.bemyplant.data.GeneratePlantImageResponse
 import com.example.bemyplant.data.GenerateUserImageRequest
 import com.example.bemyplant.data.GenerateUserImageResponse
+//import com.example.bemyplant.data.GeneratePlantImageRequest
+//import com.example.bemyplant.data.GeneratePlantImageResponse
+//import com.example.bemyplant.data.GenerateUserImageRequest
+//import com.example.bemyplant.data.GenerateUserImageResponse
 import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.LoginResponse
 import com.example.bemyplant.data.SensorData

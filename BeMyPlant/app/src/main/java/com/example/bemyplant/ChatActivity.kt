@@ -4,48 +4,56 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.adapter.MessageAdapter
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
     private lateinit var sendButton: Button
     private lateinit var messageAdapterMe: MessageAdapter
     private lateinit var messageAdapterOther: MessageAdapter
-
     private val itemListMe = ArrayList<ChatMsg>()
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
     private val retrofitService = RetrofitService().apiService2
-    private lateinit var defaultUserImage: Bitmap
-    private lateinit var user_image: Bitmap
-    private lateinit var plant_image: Bitmap
+    lateinit var realm: Realm
+    lateinit var imageGen1 : Bitmap
+    lateinit var imageGen2 : Bitmap
+    lateinit var plantImgBitmap : Bitmap
+    lateinit var userImgBitmap : Bitmap
+
+
+    private fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 
     private fun getTime(): String {
         val now = System.currentTimeMillis()
@@ -54,27 +62,27 @@ class ChatActivity : AppCompatActivity() {
         return dateFormat.format(date)
     }
 
-    private fun renderingMessage(message: String, user:String, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
+    private fun renderingMessage(message: String, user:String, userBitmapImage:Bitmap, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
         Log.d("chatbot", "[function] message: $message")
         Log.d("chatbot", "[function] user: $user")
-        val transparentBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-        transparentBitmap.eraseColor(Color.TRANSPARENT)
+
+        var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
 
         if (message.isNotEmpty()) {
             if (user == "jo") {
-                itemListMe.add(ChatMsg(message, currentUser, getTime(), user_image))
+                itemListMe.add(ChatMsg(message, currentUser, getTime(), userBitmapImage))
                 messageAdapterMe.notifyDataSetChanged()
                 recyclerViewMe.scrollToPosition(itemListMe.size - 1)
 
+
                 // 빈 문자열 추가
-                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, "", transparentBitmap))
-                // findViewById<ImageView>(R.id.plantImage).visibility = View.INVISIBLE
+                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
+//                com.google.android.material.R.drawable.navigation_empty_icon
                 messageAdapterOther.notifyDataSetChanged()
                 recyclerViewOther.scrollToPosition(itemListMe.size - 1)
             } else {
-                //findViewById<ImageView>(R.id.plantImage).visibility = View.VISIBLE
                 Log.d("chatbot", "[function] other user enter")
-                itemListOther.add(ChatMsg(message, user, getTime(), plant_image))
+                itemListOther.add(ChatMsg(message, user, getTime(), userBitmapImage))
                 Log.d("chatbot", "[function] (1) itemListOther.add")
                 messageAdapterOther.notifyDataSetChanged()
                 Log.d("chatbot", "[function] (2) messageAdapterOther")
@@ -82,7 +90,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("chatbot", "[function] (3) recyclerViewOther")
 
                 // 빈 문자열 추가
-                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, "", transparentBitmap))
+                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
                 Log.d("chatbot", "[function] (4) itemListOther.add")
                 messageAdapterMe.notifyDataSetChanged()
                 Log.d("chatbot", "[function] (5) messageAdapterOtherjmj0801")
@@ -93,38 +101,89 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        lifecycleScope.launch {
-            defaultUserImage = drawableResourceToBitmap(this@ChatActivity, R.drawable.user_image)!!
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
+
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+
+        if (vo != null) {
+            plantImgBitmap = byteArrayToBitmap(vo.plantImage)
+            userImgBitmap = byteArrayToBitmap(vo.userImage)
+        } else {
+            if (emptyImg != null) {
+                plantImgBitmap = emptyImg
+                userImgBitmap = emptyImg
+            }
         }
-        //user_image = defaultUserImage
 
-        // 사용자 이미지 가져오기
-        // TODO: (정현) 사용자 이미지 가져오기 (user_image에 넣으면 됨) -  bitmap임
-        // TODO: (정현) 식물 이미지 가져오기 (plant_image 넣으면 됨) - bitmap임
-        // user_image = bitmap
-//        val storageDir: File? = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-//        val filename = "BMEYPLANT_USER_IMAGE.jpg"
-//        val file = File(storageDir, filename)
-//        Log.d("이미지 read 경로", file.absolutePath)
-//        val userImageFromFile = readBitmapFromExternalStorage(file)
-//        if (userImageFromFile != null) {
-//            user_image = userImageFromFile
-//        }
-//        else{
-//            user_image = defaultUserImage
-//        }
 
+        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
+        var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
+
+
+        Glide.with(this)
+            .asBitmap()
+            .load(urldown)
+            .override(200,200)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    // 이미지 로드가 완료
+                    Log.d("이미지 로드", "성공")
+                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+                    imageGen1 = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    TODO("Not yet implemented")
+                }
+            })
+
+        Glide.with(this)
+            .asBitmap()
+            .load(urldown2)
+            .override(200,200)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    // 이미지 로드가 완료
+                    Log.d("이미지 로드", "성공")
+                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+//                    imageGen = byteArrayToBitmap(P_Image)!!
+                    imageGen2 = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    TODO("Not yet implemented")
+                }
+            })
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
 
+
         bottomNavigationView.selectedItemId = R.id.menu_chat
-        //val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
@@ -164,8 +223,8 @@ class ChatActivity : AppCompatActivity() {
         val recyclerViewMe = findViewById<RecyclerView>(R.id.recycler_view_me)
         val recyclerViewOther = findViewById<RecyclerView>(R.id.recycler_view_other)
 
-        messageAdapterMe = MessageAdapter(itemListMe, currentUser, user_image)
-        messageAdapterOther = MessageAdapter(itemListOther, "other", user_image)
+        messageAdapterMe = MessageAdapter(itemListMe, currentUser)
+        messageAdapterOther = MessageAdapter(itemListOther, "other")
 
         recyclerViewMe.adapter = messageAdapterMe
         recyclerViewOther.adapter = messageAdapterOther
@@ -176,8 +235,9 @@ class ChatActivity : AppCompatActivity() {
         ///*
         sendButton.setOnClickListener {
             val message = messageEditText.text.toString()
-            CoroutineScope(Dispatchers.Main).launch { // 메인 스레드에서 코루틴 실행
-                renderingMessage(message, "jo", recyclerViewMe, recyclerViewOther)
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 스레드에서 코루틴 실행
+                renderingMessage(message, "jo", userImgBitmap, recyclerViewMe, recyclerViewOther)
 
                 val chatData = ChatRequest(message)
                 val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
@@ -213,7 +273,7 @@ class ChatActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val responseString = response.body()?.response
                     if (responseString != null) {
-                        renderingMessage(responseString, "otherUser", recyclerViewMe, recyclerViewOther)
+                        renderingMessage(responseString, "otherUser", plantImgBitmap, recyclerViewMe, recyclerViewOther)
                     }
                 }
 
@@ -221,49 +281,58 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-
-    fun readBitmapFromExternalStorage(file: File): Bitmap? {
-        return try {
-            BitmapFactory.decodeFile(file.absolutePath)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-
-    fun drawableResourceToBitmap(context: Context, drawableResId: Int): Bitmap? {
-        return runBlocking {
-            withContext(Dispatchers.IO) {
-                // Drawable을 가져옵니다.
-                val drawable = ContextCompat.getDrawable(context, drawableResId)
-
-                // Drawable을 Bitmap으로 변환합니다.
-                drawableToBitmap(drawable)
-            }
-        }
-    }
-
-    // 변환 함수
-    fun drawableToBitmap(drawable: Drawable?): Bitmap? {
-        if (drawable == null) {
-            return null
-        }
-
-        if (drawable is BitmapDrawable) {
-            return drawable.bitmap
-        }
-
-        val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-
-        return bitmap
-    }
 }
+
+            /*lifecycleScope.launch {
+                val result = sendMessage(message)
+
+                result.onSuccess { response ->
+                    // 성공한 경우 response를 사용하여 처리
+                    val Tag : String = "chatbot"
+                    Log.d(Tag, "chatbot processing seccuess")
+                    renderingMessage(response)
+                }
+
+                result.onFailure { exception ->
+                    // 실패한 경우 exception을 사용하여 처리
+                    val Tag : String = "chatbot"
+                    Log.d(Tag, "chatbot processing failed: ${exception.message}")
+
+                }
+            }
+
+        }*/
+
+    /*private suspend fun sendMessage(message: String): Result<String> {
+        val chatData = ChatRequest(message)
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+
+        // 토큰 부재 시 초기화면(MJ_main)으로 전환
+        if (token.isNullOrEmpty()) {
+            val homeIntent = Intent(this@ChatActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+            return Result.failure(Exception("Token is missing"))
+        }
+
+
+        try {
+            // API 요청 보내기
+            val response = retrofitService.chat(chatData, token)
+
+            return if (response.isSuccessful) {
+                // API 요청 성공
+                Result.success(response.body()?.response ?: "")
+            } else {
+                // 챗봇 처리 실패
+                val errorBody = response.errorBody()?.string()
+                Result.failure(Exception("Chatbot processing failed: $errorBody"))
+
+            }
+        } catch (e: Exception) {
+            // API 요청 실패
+            return Result.failure(e)
+        }
+    }*/
+
 

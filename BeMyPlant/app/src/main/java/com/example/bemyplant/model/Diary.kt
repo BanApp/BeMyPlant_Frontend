@@ -31,7 +31,9 @@ open class Diary : RealmObject() {
         return "title:" + Title + '\n' + "WeatherCode" + WeatherCode+ "cre_date" + Cr_Date + "up_date"+ UP_Date + "content:" + Content
     }
 
-}class DiaryRealmManager(val realm: Realm) {
+}
+
+class DiaryRealmManager(val realm: Realm) {
     /*fun hasData(date: String): Diary? {
         return realm.where(Diary::class.java).equalTo("name", date).findFirst()
     }*/

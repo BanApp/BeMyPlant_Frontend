@@ -64,29 +64,33 @@ class PlantImageSelect1Fragment : Fragment() {
                 progressDialog.show()
 
                 lifecycleScope.launch {
-                    var imageURLs = plantImageGenerate(imageGenerateRequestData, progressDialog)
-                    if (imageURLs == null) {
+                    var plantImageURLs = plantImageGenerate(imageGenerateRequestData, progressDialog)
+                    if (plantImageURLs == null) {
                         // bad request
                         Log.d("식물 이미지생성", "식물 이미지 생성 결과 null")
                     } else {
                         Log.d("식물 이미지생성", "식물 이미지 생성완료 ")
 
-                        val imageURLs = imageURLs
+                        val plantImageURLs = plantImageURLs
 
-                        Log.d("식물 이미지생성결과", imageURLs.plant_image_urls.toString())
+                        Log.d("식물 이미지생성결과", plantImageURLs.plant_image_urls.toString())
 
-                        if (imageURLs.plant_image_urls == null) {
+                        if (plantImageURLs.plant_image_urls == null) {
                             Log.d("식물 이미지생성 결과", "원소 없음 !!")
                         }
 
-                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to imageURLs.plant_image_urls)
-                        Log.d("bundle-f1", bundle.toString())
+                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs.plant_image_urls)
+                        Log.d("bundle-f1", bundle.getString("plantName").toString())
+                        Log.d("bundle-f1", bundle.getString("plantSpecies").toString())
+                        Log.d("bundle-f1", bundle.getString("plantColor").toString())
+                        Log.d("bundle-f1", bundle.getString("potColor").toString())
+                        Log.d("bundle-f1", bundle.getStringArrayList("plantImageURLs").toString())
                         findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2, bundle)
 
                     }
                 }
             }
-            //findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2,bundle)
+            //findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment)
         }
         return binding.root
     }
