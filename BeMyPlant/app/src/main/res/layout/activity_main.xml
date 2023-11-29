@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/flower"
+        android:src="@drawable/delete_plant"
         app:backgroundTint="#DFF4C7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -279,6 +279,7 @@
             android:textSize="20sp"
             tools:layout_editor_absoluteX="194dp"
             tools:layout_editor_absoluteY="148dp" />
+
 
     </LinearLayout>
 
