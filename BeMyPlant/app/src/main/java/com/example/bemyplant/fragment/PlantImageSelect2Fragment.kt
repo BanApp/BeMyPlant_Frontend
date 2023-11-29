@@ -1,6 +1,7 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
+import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
 import kotlin.concurrent.thread
 
@@ -114,9 +116,8 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-                findNavController().navigate(
-                    R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment
-                 )
+                val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+                requireActivity().startActivity(intent)
             }
         }
 

@@ -104,7 +104,7 @@ class SignUp2Fragment : Fragment() {
                         val editor = sharedPreferences?.edit()
                         editor?.putString("token", token)
                         editor?.apply()
-                        findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
+                        findNavController().navigate(R.id.action_s2Fragment_to_userImageSelect1Fragment)
                     }
                 } else {
                     // 로그인 실패
@@ -157,7 +157,7 @@ class SignUp2Fragment : Fragment() {
                     // 회원 가입 실패
                     withContext(Dispatchers.Main) {
 
-                        showToast(requireContext(), "회원가입 실패")
+                        showToast(requireContext(), "")
                         showToast(requireContext(), response.errorBody()!!.string())
                     }
                 }

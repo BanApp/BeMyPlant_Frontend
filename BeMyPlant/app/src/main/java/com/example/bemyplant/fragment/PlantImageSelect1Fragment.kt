@@ -81,12 +81,12 @@ class PlantImageSelect1Fragment : Fragment() {
 
                         val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "imageURLs" to imageURLs.plant_image_urls)
                         Log.d("bundle-f1", bundle.toString())
-                        findNavController().navigate(R.id.plantImageSelect2Fragment, bundle)
+                        findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2, bundle)
 
                     }
                 }
             }
-            //findNavController().navigate(R.id.action_plantImageSelect1Fragment_to_plantImageSelect2Fragment)
+            //findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2,bundle)
         }
         return binding.root
     }
@@ -114,7 +114,7 @@ class PlantImageSelect1Fragment : Fragment() {
                     // 이미지 받아오기 실패
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "식물 이미지 생성 실패")
-                        findNavController().navigate(R.id.plantImageSelect1Fragment)
+                        findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2)
                         deferred.complete(null)
                     }
                 }

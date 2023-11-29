@@ -53,11 +53,12 @@ class SensorRegisterFragment : Fragment() {
         return binding.root
         // Inflate the layout for this fragment
     }
+    //센서 설명에 대한 팝업창 연결
     private fun popupExplainFragment(layoutResId: Int) {
         val dialog = Dialog(requireContext())
         dialog.setContentView(layoutResId)
-        val layoutParams = ViewGroup.LayoutParams(1000, 900)
-        dialog.window?.setLayout(layoutParams.width, layoutParams.height)
+//        val layoutParams = ViewGroup.LayoutParams(850 , 600)
+//        dialog.window?.setLayout(layoutParams.width, layoutParams.height)
         dialog.show()
     }
 

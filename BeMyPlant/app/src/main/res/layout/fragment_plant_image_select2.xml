@@ -40,14 +40,13 @@
 
     <ImageButton
         android:id="@+id/plantImageButton1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/image_select"
+        android:src="@drawable/image_select"
         android:scaleType="centerInside"
         android:contentDescription="plant1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tagText"
         app:layout_constraintVertical_bias="0.077"
@@ -61,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
-
         android:fontFamily="@font/notosans_medium"
         android:text="Creating..."
         android:textColor="@color/charcoal"
@@ -75,14 +73,13 @@
 
     <ImageButton
         android:id="@+id/plantImageButton2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="plant2"
         android:background="@drawable/image_select"
-        android:scaleType="centerInside"
+        android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.981"
         app:layout_constraintStart_toStartOf="parent"

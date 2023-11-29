@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="500dp"
-    android:layout_height="450dp"
+    android:layout_width="350dp"
+    android:layout_height="300dp"
     android:layout_gravity="center"
-    android:background="@color/gray"
+    android:background="@color/gray2"
     tools:context=".fragment.ExplainSensor2Fragment">
 
     <ImageView
