@@ -46,11 +46,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/plantNameText">
                 <LinearLayout
+                    android:layout_marginTop="10dp"
                     android:id="@+id/question1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="36dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -69,13 +69,15 @@
                         app:layout_constraintHorizontal_bias="0.05" />
                     <EditText
                         android:id="@+id/question1Edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="370dp"
+                        android:layout_height="45dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -107,15 +109,16 @@
                         app:layout_constraintHorizontal_bias="0.05" />
 
                     <EditText
-
                         android:id="@+id/question2Edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="370dp"
+                        android:layout_height="45dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -148,15 +151,16 @@
                         app:layout_constraintHorizontal_bias="0.058" />
 
                     <EditText
-
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
                         android:id="@+id/question3Edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="370dp"
+                        android:layout_height="45dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -191,13 +195,15 @@
 
                     <EditText
                         android:id="@+id/question4Edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_width="370dp"
+                        android:layout_height="45dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/button_white2"
                         android:fontFamily="@font/notosans_bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.066"
                         app:layout_constraintStart_toStartOf="parent"
@@ -207,11 +213,12 @@
             </LinearLayout>
 
             <android.widget.Button
+
                 android:id="@+id/nextButton"
-                android:layout_width="150dp"
-                android:layout_height="70dp"
+                android:layout_width="110dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_green"
                 android:fontFamily="@font/notosans_medium"

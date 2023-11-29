@@ -42,25 +42,7 @@
         android:label="fragment_s2"
         tools:layout="@layout/fragment_sign_up2" >
         <action
-            android:id="@+id/action_s2Fragment_to_plantImageSelect1Fragment"
-            app:destination="@id/plantImageSelect1Fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/plantImageSelect1Fragment"
-        android:name="com.example.bemyplant.fragment.PlantImageSelect1Fragment"
-        android:label="fragment_plant_image_select1"
-        tools:layout="@layout/fragment_plant_image_select1" >
-        <action
-            android:id="@+id/action_plantImageSelect1Fragment_to_plantImageSelect2Fragment"
-            app:destination="@id/plantImageSelect2Fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/plantImageSelect2Fragment"
-        android:name="com.example.bemyplant.fragment.PlantImageSelect2Fragment"
-        android:label="fragment_plant_image_select2"
-        tools:layout="@layout/fragment_plant_image_select2" >
-        <action
-            android:id="@+id/action_plantImageSelect2Fragment_to_userImageSelect1Fragment"
+            android:id="@+id/action_s2Fragment_to_userImageSelect1Fragment"
             app:destination="@id/userImageSelect1Fragment" />
     </fragment>
     <fragment

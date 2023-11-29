@@ -16,7 +16,7 @@
         android:baselineAligned="false"
         android:padding="2dp"
         android:text="@{android.text.format.DateFormat.format('HH:mm:ss', viewModel.message.sendTime)}"
-        android:textSize="8sp"
+        android:textSize="10sp"
         android:visibility="visible"/>
 
     <TextView
@@ -28,4 +28,12 @@
         android:text="메세지 내용"
         android:textSize="15sp"
         android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/sendImage"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="이미지"
+        android:visibility="visible"
+        />
 </LinearLayout>

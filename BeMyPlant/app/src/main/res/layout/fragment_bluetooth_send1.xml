@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".fragment.BluetoothSend1Fragment">
 
+
     <TextView
         android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/notosans_bold"
         android:text="정보를✍\n입력해주세요!"
         android:textColor="@color/black"
         android:textSize="35sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,99 +24,109 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="410dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/mainText"
-        app:layout_constraintBottom_toTopOf="@+id/finishButton">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainText">
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
             android:text="wifi ssid:"
             android:textColor="@color/black"
-            android:fontFamily="@font/notosans_bold"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/editText_wifi_ssid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="와이파이 공유기의 이름을 입력해주세요"
             android:backgroundTint="@color/green_1"
             android:fontFamily="@font/notosans_medium"
-            android:textSize="15sp"/>
+            android:hint="와이파이 공유기의 이름을 입력해주세요"
+            android:textSize="14sp" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="wifi pwd:"
             android:fontFamily="@font/notosans_bold"
-            android:textSize="22sp" />
+            android:text="wifi pwd:"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <EditText
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/editText_wifi_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="와이파이 비밀번호를 입력해주세요"
             android:backgroundTint="@color/green_1"
             android:fontFamily="@font/notosans_medium"
-            android:textSize="15sp"/>
+            android:hint="와이파이 비밀번호를 입력해주세요"
+            android:textSize="14sp" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="user id:"
             android:fontFamily="@font/notosans_bold"
+            android:text="user id:"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/editText_user_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="BeMyPlant 계정 ID를 입력해주세요"
             android:backgroundTint="@color/green_1"
             android:fontFamily="@font/notosans_medium"
-            android:textSize="15sp"/>
+            android:hint="BeMyPlant 계정 ID를 입력해주세요"
+            android:textSize="14sp" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
             android:text="user pwd:"
             android:textColor="@color/black"
-            android:fontFamily="@font/notosans_bold"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:id="@+id/editText_user_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="BeMyPlant 계정 pwd를 입력해주세요"
             android:backgroundTint="@color/green_1"
             android:fontFamily="@font/notosans_medium"
-            android:textSize="15sp"/>
+            android:hint="BeMyPlant 계정 pwd를 입력해주세요"
+            android:textSize="14sp" />
+
+        <android.widget.Button
+            android:id="@+id/finishButton"
+            android:layout_width="110dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_green"
+            android:fontFamily="@font/notosans_medium"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/appButtonFontSize" />
 
     </LinearLayout>
 
-    <android.widget.Button
-        android:id="@+id/finishButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_green"
-        android:fontFamily="@font/notosans_medium"
-        android:gravity="center"
-        android:text="@string/finish"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintDimensionRatio="2.3:1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
         <!-- app:layout_constraintTop_toBottomOf="@+id/userPwEdit" -->
 
 

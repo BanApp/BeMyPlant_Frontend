@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,14 @@ import kotlinx.coroutines.withContext
 class UserImageSelect1Fragment : Fragment() {
     val binding by lazy{FragmentUserImageSelect1Binding.inflate(layoutInflater)}
     private val retrofitService = RetrofitService().apiService2
+    private lateinit var plantName: String
+    private lateinit var plantSpecies: String
+    private lateinit var plantColor: String
+    private lateinit var potColor: String
+    private lateinit var plantImageURLs: List<String>
+    private lateinit var userImageURLs: List<String>
+    private lateinit var plantImgSelected : ByteArray
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,7 @@ class UserImageSelect1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        getImageGenerateData()
         // Inflate the layout for this fragment
 
         binding.skipButton.setOnClickListener {
@@ -49,19 +59,25 @@ class UserImageSelect1Fragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            var gender:String = ""
+            var gender: String = ""
             val characteristic = binding.featureEdit.text.toString()
 
             val sexGroup: RadioGroup = binding.sexGroup
             val selectedRadioButtonId: Int = sexGroup.checkedRadioButtonId
             if (selectedRadioButtonId != -1) {
-                val selectedRadioButton: RadioButton = binding.root.findViewById<RadioButton>(selectedRadioButtonId)
+                val selectedRadioButton: RadioButton =
+                    binding.root.findViewById<RadioButton>(selectedRadioButtonId)
                 val selectedText: String = selectedRadioButton.text.toString()
                 gender = selectedText
             } else {
-                showToast(requireContext(),"성별을 선택해주세요")
+                showToast(requireContext(), "성별을 선택해주세요")
             }
-            // 특징은 적지 않아도 이미지 생성 가능
+
+            // 특징은 적지 않아도 이미지 생성 가능 (default string 지정)
+            if (characteristic == null){
+                characteristic = "웃고 있는, 단정한 머리, 검정 머리와 검정 눈"
+            }
+
             var imageGenerateRequestData = GenerateUserImageRequest(gender, characteristic)
             // API 요청 보냄
             // Show loading dialog
@@ -71,25 +87,42 @@ class UserImageSelect1Fragment : Fragment() {
             progressDialog.show()
 
             lifecycleScope.launch {
-                var imageURLs = userImageGenerate(imageGenerateRequestData, progressDialog)
-                if (imageURLs == null) {
+                var userImageURLs = userImageGenerate(imageGenerateRequestData, progressDialog)
+                if (userImageURLs == null) {
                     // bad request
                     Log.d("식물 이미지생성", "식물 이미지 생성 결과 null")
                 } else {
                     Log.d("식물 이미지생성", "식물 이미지 생성완료 ")
 
-                    val imageURLs = imageURLs
+                    val userImageURLs = userImageURLs
 
-                    Log.d("식물 이미지생성결과", imageURLs.user_image_urls.toString())
+                    Log.d("식물 이미지생성결과", userImageURLs.user_image_urls.toString())
 
-                    if (imageURLs.user_image_urls == null) {
+                    if (userImageURLs.user_image_urls == null) {
                         Log.d("식물 이미지생성 결과", "원소 없음 !!")
                     }
-
-                    val bundle = bundleOf("gender" to gender, "characteristic" to characteristic, "imageURLs" to imageURLs.user_image_urls)
-                    Log.d("bundle-f1", bundle.toString())
-                    findNavController().navigate(R.id.userImageSelect2Fragment, bundle)
-
+                    val bundle = bundleOf(
+                        "plantName" to plantName,
+                        "plantSpecies" to plantSpecies,
+                        "plantColor" to plantColor,
+                        "potColor" to potColor,
+                        "plantImageURLs" to plantImageURLs,
+                        "plantImgSelected" to plantImgSelected,
+                        "userImageURLs" to userImageURLs.user_image_urls,
+                        "gender" to gender,
+                        "characteristic" to characteristic
+                    )
+                    Log.d("bundle-f3", bundle.getString("plantName").toString())
+                    Log.d("bundle-f3", bundle.getString("plantSpecies").toString())
+                    Log.d("bundle-f3", bundle.getString("plantColor").toString())
+                    Log.d("bundle-f3", bundle.getString("potColor").toString())
+                    Log.d("bundle-f3", bundle.getStringArrayList("plantImageURLs").toString())
+                    Log.d("bundle-f3", bundle.getStringArrayList("userImageURLs").toString())
+                    Log.d("bundle-f3", bundle.getByteArray("userImageURLs").toString())
+                    findNavController().navigate(
+                        R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,
+                        bundle
+                    )
                 }
             }
 
@@ -124,7 +157,7 @@ class UserImageSelect1Fragment : Fragment() {
                     // 이미지 받아오기 실패
                     withContext(Dispatchers.Main) {
                         showToast(requireContext(), "사용자 이미지 생성 실패")
-                        findNavController().navigate(R.id.plantImageSelect1Fragment)
+                        //findNavController().navigate(R.id.plantImageSelect1Fragment)
                         deferred.complete(null)
                     }
                 }
@@ -144,6 +177,15 @@ class UserImageSelect1Fragment : Fragment() {
         return deferred.await()
     }
 
+    private fun getImageGenerateData() {
+        //Log.d("bundle-f2", arguments?.getStringArrayList("imageURLs").toString())
+        plantName = arguments?.getString("plantName").toString()
+        plantSpecies = arguments?.getString("plantSpecies").toString()
+        plantColor = arguments?.getString("plantColor").toString()
+        potColor = arguments?.getString("potColor").toString()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
+        plantImgSelected = arguments?.getByteArray("plantImgSelected") ?: byteArrayOf()
+    }
 
     companion object {
         @JvmStatic

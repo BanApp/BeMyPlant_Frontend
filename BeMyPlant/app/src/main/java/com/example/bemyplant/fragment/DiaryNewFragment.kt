@@ -31,7 +31,9 @@ import com.example.bemyplant.Day
 import com.example.bemyplant.R
 import com.example.bemyplant.model.Diary
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.module.DiaryModule
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
 
 
@@ -48,6 +50,7 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
     lateinit var contentEditText: EditText
     lateinit var diaryTitleEditText: EditText
     lateinit var diaryRealmManager: DiaryRealmManager
+    lateinit var realm: Realm
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,7 +81,14 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
         diaryImage = view.findViewById(R.id.imageView_diaryNew_plant)
         weatherSpinner = view.findViewById(R.id.spinner_diaryNew_weather)
         contentEditText = view.findViewById(R.id.editText_diaryNew_diaryContent)
-        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diarydb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configDiary)
+        diaryRealmManager = DiaryRealmManager(realm)
         val bundle = arguments
         if (bundle != null && bundle.containsKey("selectedDay")) {
             selectedDay = bundle.getParcelable<Day>("selectedDay")!!

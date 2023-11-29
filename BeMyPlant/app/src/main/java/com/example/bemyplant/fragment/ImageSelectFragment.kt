@@ -2,6 +2,7 @@ package com.example.bemyplant.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentImageSelectBinding
+import com.example.bemyplant.model.PlantModel
+import io.realm.Realm
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class SharedViewModel : ViewModel() {
     var imageText: String = ""
@@ -24,6 +29,7 @@ class ImageSelectFragment : Fragment() {
     private var flag: Boolean = false
     private var plantName: String = ""
     private var plantRace: String = ""
+    lateinit var realm : Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +76,37 @@ class ImageSelectFragment : Fragment() {
             } else  {
                 // TODO: (정현) 식물 DB에서 식물 정보 create (plantName, plantRace, newPlantImageResId, Plant Birth plantRegistration)
                 // 참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                val dateFormat = "yyyy-MM-dd"
+                val date = Date(System.currentTimeMillis())
+                val simpleDateFormat = SimpleDateFormat(dateFormat)
+                val bitrhDate: String = simpleDateFormat.format(date)
+
+                realm.executeTransaction{
+                    with(it.createObject(PlantModel::class.java)){
+                        this.plantBirth = bitrhDate
+                    }
+                }
+
+                // sdhan : 등록번호용 날짜형식 생성
+                val dateFormat2 = "yyyyMMdd"
+                val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+                val simpleDate2: String = simpleDateFormat2.format(date)
+                Log.d("++++++++++++", simpleDate2)
+
+                // sdhan : 랜덤함수
+                val range = (100000..999999)  // 100000 <= n <= 999999
+                println(range.random())
+
                 // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                // sdhan : 등록번호 = 날짜 + 랜덤숫자
+                val regNum = "${simpleDate2}-${range}"
+                realm.executeTransaction{
+                    with(it.createObject(PlantModel::class.java)){
+                        this.plantRegNum = regNum
+                    }
+                }
+
                 //findNavController().navigate(R.id.action_iSFragment2_to_sRFragment)
 
 

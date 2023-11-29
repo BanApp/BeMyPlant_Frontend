@@ -2,20 +2,32 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.adapter.MessageAdapter
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +44,11 @@ class ChatActivity : AppCompatActivity() {
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
     private val retrofitService = RetrofitService().apiService2
+    lateinit var realm: Realm
+    lateinit var imageGen1 : Bitmap
+    lateinit var imageGen2 : Bitmap
+    lateinit var plantImgBitmap : Bitmap
+    lateinit var userImgBitmap : Bitmap
 
 
     private fun showToast(context: Context, message: String) {
@@ -45,23 +62,27 @@ class ChatActivity : AppCompatActivity() {
         return dateFormat.format(date)
     }
 
-    private fun renderingMessage(message: String, user:String, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
+    private fun renderingMessage(message: String, user:String, userBitmapImage:Bitmap, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
         Log.d("chatbot", "[function] message: $message")
         Log.d("chatbot", "[function] user: $user")
 
+        var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+
         if (message.isNotEmpty()) {
             if (user == "jo") {
-                itemListMe.add(ChatMsg(message, currentUser, getTime()))
+                itemListMe.add(ChatMsg(message, currentUser, getTime(), userBitmapImage))
                 messageAdapterMe.notifyDataSetChanged()
                 recyclerViewMe.scrollToPosition(itemListMe.size - 1)
 
+
                 // 빈 문자열 추가
-                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, ""))
+                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
+//                com.google.android.material.R.drawable.navigation_empty_icon
                 messageAdapterOther.notifyDataSetChanged()
                 recyclerViewOther.scrollToPosition(itemListMe.size - 1)
             } else {
                 Log.d("chatbot", "[function] other user enter")
-                itemListOther.add(ChatMsg(message, user, getTime()))
+                itemListOther.add(ChatMsg(message, user, getTime(), userBitmapImage))
                 Log.d("chatbot", "[function] (1) itemListOther.add")
                 messageAdapterOther.notifyDataSetChanged()
                 Log.d("chatbot", "[function] (2) messageAdapterOther")
@@ -69,7 +90,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("chatbot", "[function] (3) recyclerViewOther")
 
                 // 빈 문자열 추가
-                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, ""))
+                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
                 Log.d("chatbot", "[function] (4) itemListOther.add")
                 messageAdapterMe.notifyDataSetChanged()
                 Log.d("chatbot", "[function] (5) messageAdapterOtherjmj0801")
@@ -80,18 +101,89 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
+
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+
+        if (vo != null) {
+            plantImgBitmap = byteArrayToBitmap(vo.plantImage)
+            userImgBitmap = byteArrayToBitmap(vo.userImage)
+        } else {
+            if (emptyImg != null) {
+                plantImgBitmap = emptyImg
+                userImgBitmap = emptyImg
+            }
+        }
+
+
+        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
+        var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
+
+
+        Glide.with(this)
+            .asBitmap()
+            .load(urldown)
+            .override(200,200)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    // 이미지 로드가 완료
+                    Log.d("이미지 로드", "성공")
+                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+                    imageGen1 = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    TODO("Not yet implemented")
+                }
+            })
+
+        Glide.with(this)
+            .asBitmap()
+            .load(urldown2)
+            .override(200,200)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    // 이미지 로드가 완료
+                    Log.d("이미지 로드", "성공")
+                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+//                    imageGen = byteArrayToBitmap(P_Image)!!
+                    imageGen2 = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    TODO("Not yet implemented")
+                }
+            })
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)
 
 
         bottomNavigationView.selectedItemId = R.id.menu_chat
-        //val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
                     // "홈" 메뉴 클릭 시 MainActivity로 이동
@@ -143,8 +235,9 @@ class ChatActivity : AppCompatActivity() {
         ///*
         sendButton.setOnClickListener {
             val message = messageEditText.text.toString()
-            CoroutineScope(Dispatchers.Main).launch { // 메인 스레드에서 코루틴 실행
-                renderingMessage(message, "jo", recyclerViewMe, recyclerViewOther)
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 스레드에서 코루틴 실행
+                renderingMessage(message, "jo", userImgBitmap, recyclerViewMe, recyclerViewOther)
 
                 val chatData = ChatRequest(message)
                 val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
@@ -180,7 +273,7 @@ class ChatActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val responseString = response.body()?.response
                     if (responseString != null) {
-                        renderingMessage(responseString, "otherUser", recyclerViewMe, recyclerViewOther)
+                        renderingMessage(responseString, "otherUser", plantImgBitmap, recyclerViewMe, recyclerViewOther)
                     }
                 }
 

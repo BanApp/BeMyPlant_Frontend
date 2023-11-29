@@ -1,7 +1,11 @@
 package com.example.bemyplant.data
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+
 data class ChatMsg(
-    val content : String,
-    val senderID : String,
-    val sendTime : String
+    var content : String,
+    var senderID : String,
+    var sendTime : String,
+    var sendImage : Bitmap?
 )
