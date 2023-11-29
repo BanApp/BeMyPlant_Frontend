@@ -2,6 +2,7 @@ package com.example.bemyplant
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,12 +11,14 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bemyplant.data.StatusData
+import com.example.bemyplant.data.checkIfSensorDataIsLatest
 import com.example.bemyplant.fragment.FlowerIdFragment
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -34,6 +37,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var plantName: TextView
     private lateinit var plantRace: String
     private lateinit var plantRegistration: String
+    private lateinit var statusText: TextView
+    private lateinit var statusImages: Array<ImageView>
+    private lateinit var strangeConText: TextView
+    private lateinit var strangeCondition: LinearLayout
     private val retrofitService = RetrofitService().apiService2
 
     // ----------- 상태에 따른 이미지 및 텍스트 변경
@@ -41,14 +48,6 @@ class MainActivity : AppCompatActivity() {
         val statusData = StatusData("Seoul")
         val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        val statusText = findViewById<TextView>(R.id.textView_main_healthValue)
-        val statusImages = arrayOf(
-            findViewById<ImageView>(R.id.statusImage1),
-            findViewById<ImageView>(R.id.statusImage2),
-            findViewById<ImageView>(R.id.statusImage3),
-        )
-        val strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
-        val strangeConText = findViewById<TextView>(R.id.strangeConText)
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -95,8 +94,6 @@ class MainActivity : AppCompatActivity() {
                     Log.e("Error_Response", errorBody ?: "error body X")
                 }
 
-
-
             }catch (e:Exception){
                 Log.e("API_Connection", "API 연결 실패")
                 e.printStackTrace()
@@ -110,17 +107,33 @@ class MainActivity : AppCompatActivity() {
         mainFlower.setImageResource(newPlantImageResId) // TODO: DB 연동 후 삭제
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
-        updateStatus()
+        checkIfSensorDataIsLatest(this) { isLatest ->
+            if (!isLatest) {
+                updateSensorError()
+            } else {
+                updateStatus()
+            }
+        }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
         mainFlower = findViewById<ImageButton>(R.id.mainFlower)
         plantName = findViewById<TextView>(R.id.textView_main_flowerName)
-
+        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        strangeConText = findViewById<TextView>(R.id.strangeConText)
+        strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
+        statusImages = arrayOf(
+            findViewById<ImageView>(R.id.statusImage1),
+            findViewById<ImageView>(R.id.statusImage2),
+            findViewById<ImageView>(R.id.statusImage3),
+        )
 
         // main image 설정
         //mainFlower.setImageResource(R.drawable.flower)
@@ -131,9 +144,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
-        plantRace = "해바라기" // 품종
-        plantRegistration = "1010-1010" //주민등록번호
-            
+
 
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
@@ -141,8 +152,13 @@ class MainActivity : AppCompatActivity() {
 
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
-            updateStatus()
-
+            checkIfSensorDataIsLatest(this) { isLatest ->
+                if (!isLatest) {
+                    updateSensorError()
+                } else {
+                    updateStatus()
+                }
+            }
         }
 
 
@@ -256,6 +272,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun updateSensorError() {
+        statusText.text = "???"
+        for (image in statusImages){
+            image.visibility = View.INVISIBLE
+        }
+        strangeCondition.visibility = View.VISIBLE
+        strangeConText.visibility = View.VISIBLE
+        strangeConText.text = "센서 연결을 다시 진행해주세요!"
 
     }
 }
