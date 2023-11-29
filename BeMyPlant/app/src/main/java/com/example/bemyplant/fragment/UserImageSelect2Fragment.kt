@@ -21,7 +21,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -53,10 +52,10 @@ class UserImageSelect2Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     val binding by lazy{FragmentUserImageSelect2Binding.inflate(layoutInflater)}
 
-    private lateinit var plantName: String
-    private lateinit var plantSpecies: String
-    private lateinit var plantColor: String
-    private lateinit var potColor: String
+    private lateinit var plantNameVar: String
+    private lateinit var plantSpeciesVar: String
+    private lateinit var plantColorVar: String
+    private lateinit var potColorVar: String
     private lateinit var plantImageURLs: List<String>
     private lateinit var userImageURLs: List<String>
     private lateinit var plantImgSelected : ByteArray
@@ -190,9 +189,9 @@ class UserImageSelect2Fragment : Fragment() {
                 // sdhan : 등록번호 = 날짜 + 랜덤숫자
                 val regNum = "${regDate}-${range.random()}"
 
-                Log.d("plantName", plantName)
+                Log.d("plantName", plantNameVar)
                 Log.d("bitrhDate", bitrhDate)
-                Log.d("plantSpecies", plantSpecies)
+                Log.d("plantSpecies", plantSpeciesVar)
                 Log.d("plantImageURLs", plantImageURLs.toString())
                 Log.d("regNum", regNum)
 
@@ -204,12 +203,18 @@ class UserImageSelect2Fragment : Fragment() {
                 }
                 val bytes = baos.toByteArray()
 
+                realm.executeTransaction {
+                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+                }
+
                 realm.executeTransaction{
                     with(it.createObject(PlantModel::class.java)){
-                        this.plantName = plantName
+
+                        this.plantName = plantNameVar
                         this.plantBirth = bitrhDate
-                        this.plantRace = plantSpecies
-                        this.plantImage = bytes
+                        this.plantRace = plantSpeciesVar
+                        this.plantImage = plantImgSelected
+                        this.userImage = userImgSelected
                         this.plantRegNum = regNum
                     }
                 }
@@ -223,78 +228,77 @@ class UserImageSelect2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nextButton.setOnClickListener{
-
-            getImageGenerateData()
-
-            // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
-            val dateFormat = "yyyy-MM-dd"
-            val now = Date(System.currentTimeMillis())
-            val simpleDateFormat = SimpleDateFormat(dateFormat)
-            val bitrhDate: String = simpleDateFormat.format(now)
-
-            // sdhan : 등록번호용 날짜형식 생성
-            val dateFormat2 = "yyMMdd"
-            val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
-            val regDate: String = simpleDateFormat2.format(now)
-
-            // sdhan : 랜덤함수
-            val range = (1000000..9999999)  // 100000 <= n <= 999999
-
-            // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-            // sdhan : 등록번호 = 날짜 + 랜덤숫자
-            val regNum = "${regDate}-${range.random()}"
-
-            Log.d("plantName", plantName)
-            Log.d("bitrhDate", bitrhDate)
-            Log.d("plantSpecies", plantSpecies)
-            Log.d("plantImageURLs", plantImageURLs.toString())
-            Log.d("regNum", regNum)
-
-            realm.executeTransaction {
-                //전부지우기
-                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
-                //첫번째 줄 지우기
-                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
-            }
-
-            realm.executeTransaction{
-                with(it.createObject(PlantModel::class.java)){
-                    this.plantName = plantName
-                    this.plantBirth = bitrhDate
-                    this.plantRace = plantSpecies
-                    this.plantImage = plantImgSelected
-                    this.userImage = userImgSelected
-                    this.plantRegNum = regNum
-                }
-            }
-
-            val vo = realm.where(PlantModel::class.java).findFirst()
-
-            if (vo != null) {
-                Log.d("realm : "+"vo.plantName", vo.plantName)
-                Log.d("realm : "+"vo.plantBirth", vo.plantBirth)
-                Log.d("realm : "+"vo.plantRace", vo.plantRace)
-                Log.d("realm : "+"vo.plantImage", vo.plantImage.toString())
-                Log.d("realm : "+"vo.userImage", vo.userImage.toString())
-                Log.d("realm : "+"vo.plantRegNum", vo.plantRegNum)
-            }
-
-
-            val bundle = bundleOf(
-                "plantName" to plantName,
-                "plantSpecies" to plantSpecies,
-                "plantColor" to plantColor,
-                "potColor" to potColor,
-                "plantImageURLs" to plantImageURLs,
-                "plantImgSelected" to plantImgSelected,
-                "userImageURLs" to userImageURLs,
-                "gender" to gender,
-                "characteristic" to characteristic
-            )
-            val intent = Intent(requireActivity(), TempConnectActivity::class.java)
-            requireActivity().startActivity(intent)
-        }
+//        binding.nextButton.setOnClickListener{
+//
+//            // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+//            val dateFormat = "yyyy-MM-dd"
+//            val now = Date(System.currentTimeMillis())
+//            val simpleDateFormat = SimpleDateFormat(dateFormat)
+//            val bitrhDate: String = simpleDateFormat.format(now)
+//
+//            // sdhan : 등록번호용 날짜형식 생성
+//            val dateFormat2 = "yyMMdd"
+//            val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+//            val regDate: String = simpleDateFormat2.format(now)
+//
+//            // sdhan : 랜덤함수
+//            val range = (1000000..9999999)  // 100000 <= n <= 999999
+//
+//            // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+//            // sdhan : 등록번호 = 날짜 + 랜덤숫자
+//            val regNum = "${regDate}-${range.random()}"
+//
+////            Log.d("plantName", plantName)
+////            Log.d("bitrhDate", bitrhDate)
+////            Log.d("plantSpecies", plantSpecies)
+////            Log.d("plantImageURLs", plantImageURLs.toString())
+////            Log.d("regNum", regNum)
+//
+////            realm.executeTransaction {
+////                //전부지우기
+////                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+////                //첫번째 줄 지우기
+////                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+////            }
+//
+////            realm.executeTransaction{
+////                with(it.createObject(PlantModel::class.java)){
+////                    this.plantName = plantName
+////                    this.plantBirth = bitrhDate
+////                    this.plantRace = plantSpecies
+////                    this.plantImage = plantImgSelected
+////                    this.userImage = userImgSelected
+////                    this.plantRegNum = regNum
+////                }
+////            }
+//
+//            val vo = realm.where(PlantModel::class.java).findFirst()
+//
+//            if (vo != null) {
+//                Log.d("realm : "+"vo.plantName", vo.plantName)
+//                Log.d("realm : "+"vo.plantBirth", vo.plantBirth)
+//                Log.d("realm : "+"vo.plantRace", vo.plantRace)
+//                Log.d("realm : "+"vo.plantImage", vo.plantImage.toString())
+//                Log.d("realm : "+"vo.userImage", vo.userImage.toString())
+//                Log.d("realm : "+"vo.plantRegNum", vo.plantRegNum)
+//            }
+//
+//
+////            val bundle = bundleOf(
+////                "plantName" to plantName,
+////                "plantSpecies" to plantSpecies,
+////                "plantColor" to plantColor,
+////                "potColor" to potColor,
+////                "plantImageURLs" to plantImageURLs,
+////                "plantImgSelected" to plantImgSelected,
+////                "userImageURLs" to userImageURLs,
+////                "gender" to gender,
+////                "characteristic" to characteristic
+////            )
+//
+//            val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+//            requireActivity().startActivity(intent)
+//        }
     }
 
     fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
@@ -304,10 +308,10 @@ class UserImageSelect2Fragment : Fragment() {
     }
 
     private fun getImageGenerateData() {
-        plantName = arguments?.getString("plantName").toString()
-        plantSpecies = arguments?.getString("plantSpecies").toString()
-        plantColor = arguments?.getString("plantColor").toString()
-        potColor = arguments?.getString("potColor").toString()
+        plantNameVar = arguments?.getString("plantName").toString()
+        plantSpeciesVar = arguments?.getString("plantSpecies").toString()
+        plantColorVar = arguments?.getString("plantColor").toString()
+        potColorVar = arguments?.getString("potColor").toString()
         plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
         userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
         plantImgSelected = arguments?.getByteArray("plantImgSelected") ?: byteArrayOf()

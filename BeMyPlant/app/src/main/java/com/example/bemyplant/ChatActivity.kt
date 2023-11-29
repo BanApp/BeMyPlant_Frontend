@@ -47,6 +47,8 @@ class ChatActivity : AppCompatActivity() {
     lateinit var realm: Realm
     lateinit var imageGen1 : Bitmap
     lateinit var imageGen2 : Bitmap
+    lateinit var plantImgBitmap : Bitmap
+    lateinit var userImgBitmap : Bitmap
 
 
     private fun showToast(context: Context, message: String) {
@@ -99,7 +101,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
@@ -116,7 +118,19 @@ class ChatActivity : AppCompatActivity() {
             .build()
         realm = Realm.getInstance(configPlant)
 
-//        var vo = realm.where(PlantModel::class.java).findFirst()
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+
+        if (vo != null) {
+            plantImgBitmap = byteArrayToBitmap(vo.plantImage)
+            userImgBitmap = byteArrayToBitmap(vo.userImage)
+        } else {
+            if (emptyImg != null) {
+                plantImgBitmap = emptyImg
+                userImgBitmap = emptyImg
+            }
+        }
+
 
         var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
         var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
@@ -221,8 +235,9 @@ class ChatActivity : AppCompatActivity() {
         ///*
         sendButton.setOnClickListener {
             val message = messageEditText.text.toString()
-            CoroutineScope(Dispatchers.Main).launch { // 메인 스레드에서 코루틴 실행
-                renderingMessage(message, "jo", imageGen1, recyclerViewMe, recyclerViewOther)
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 스레드에서 코루틴 실행
+                renderingMessage(message, "jo", userImgBitmap, recyclerViewMe, recyclerViewOther)
 
                 val chatData = ChatRequest(message)
                 val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
@@ -258,7 +273,7 @@ class ChatActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val responseString = response.body()?.response
                     if (responseString != null) {
-                        renderingMessage(responseString, "otherUser", imageGen2, recyclerViewMe, recyclerViewOther)
+                        renderingMessage(responseString, "otherUser", plantImgBitmap, recyclerViewMe, recyclerViewOther)
                     }
                 }
 

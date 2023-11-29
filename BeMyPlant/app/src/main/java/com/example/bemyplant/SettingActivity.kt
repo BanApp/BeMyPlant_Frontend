@@ -54,6 +54,14 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
+
         userImage = findViewById(R.id.imageView_setting_user)
         realNameTextView = findViewById(R.id.textView_setting_name)
         uidTextView = findViewById(R.id.settingUid)
@@ -65,7 +73,14 @@ class SettingActivity : AppCompatActivity() {
         getUserAccount()
 
         // TODO: 사용자 이미지 변경할 것
-        userImage.setImageResource(R.drawable.user_image)
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        if (vo != null) {
+            var userImageBitmap = byteArrayToBitmap(vo.userImage)
+            userImage.setImageBitmap(userImageBitmap)
+        } else {
+            userImage.setImageResource(R.drawable.user_image)
+        }
+
 
         // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 
@@ -280,14 +295,7 @@ class SettingActivity : AppCompatActivity() {
             // 2. 식물 삭제
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
             // sdhan :realm DB control : DB 초기화 or 지우기
-            Realm.init(this)
-            val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-                .name("appdb.realm") // 생성할 realm 파일 이름 지정
-                .deleteRealmIfMigrationNeeded()
-                .modules(PlantModule())
-                .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
-                .build()
-            realm = Realm.getInstance(configPlant)
+
 
             realm.executeTransaction {
                 //전부지우기
@@ -359,6 +367,10 @@ class SettingActivity : AppCompatActivity() {
         drawable.draw(canvas)
 
         return bitmap
+    }
+
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
 }

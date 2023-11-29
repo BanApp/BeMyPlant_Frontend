@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/sendImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:text="이미지"
         />
 
@@ -19,8 +19,8 @@
         android:id="@+id/messageContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:gravity="left"
+        android:padding="8dp"
         android:text="메세지 내용"
         android:textSize="15sp" />
     <TextView
