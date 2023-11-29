@@ -2,7 +2,6 @@ package com.example.bemyplant.fragment
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
-import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.data.GenerateUserImageRequest
 import com.example.bemyplant.data.GenerateUserImageResponse
 import com.example.bemyplant.databinding.FragmentUserImageSelect1Binding
@@ -50,7 +48,7 @@ class UserImageSelect1Fragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             var gender:String = ""
-            val characteristic = binding.featureEdit.text.toString()
+            var characteristic = binding.featureEdit.text.toString()
 
             val sexGroup: RadioGroup = binding.sexGroup
             val selectedRadioButtonId: Int = sexGroup.checkedRadioButtonId
@@ -61,7 +59,12 @@ class UserImageSelect1Fragment : Fragment() {
             } else {
                 showToast(requireContext(),"성별을 선택해주세요")
             }
-            // 특징은 적지 않아도 이미지 생성 가능
+
+            // 특징은 적지 않아도 이미지 생성 가능 (default string 지정)
+            if (characteristic == null){
+                characteristic = "웃고 있는, 단정한 머리, 검정 머리와 검정 눈"
+            }
+
             var imageGenerateRequestData = GenerateUserImageRequest(gender, characteristic)
             // API 요청 보냄
             // Show loading dialog
