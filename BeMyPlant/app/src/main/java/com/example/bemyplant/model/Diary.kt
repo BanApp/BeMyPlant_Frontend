@@ -82,4 +82,10 @@ open class Diary : RealmObject() {
         realm.commitTransaction()
     }
 
+    fun deleteAll() {
+        realm.beginTransaction()
+        realm.where(Diary::class.java).findAll().deleteAllFromRealm()
+        realm.commitTransaction()
+    }
+
 }
