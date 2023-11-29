@@ -68,7 +68,7 @@ class UserImageSelect1Fragment : Fragment() {
             }
 
             // 특징은 적지 않아도 이미지 생성 가능 (default string 지정)
-            if (characteristic == null){
+            if (characteristic == ""){
                 characteristic = "웃고 있는, 단정한 머리, 검정 머리와 검정 눈"
             }
 
