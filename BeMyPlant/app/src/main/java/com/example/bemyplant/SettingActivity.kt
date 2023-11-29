@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,6 +30,9 @@ import java.io.File
 
 class SettingActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService
+
+    private lateinit var diaryRealmManager: DiaryRealmManager
+
 
     private lateinit var userImage: ImageView
     private lateinit var realNameTextView: TextView
@@ -209,6 +213,9 @@ class SettingActivity : AppCompatActivity() {
             // 2. 회원 탈퇴 (rest API 로 계정 delete)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    // 다이어리 db 날리기
+                    diaryRealmManager.deleteAll()
+
                     val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
                     val token = sharedPreferences.getString("token", null)
 
@@ -269,6 +276,9 @@ class SettingActivity : AppCompatActivity() {
             // 2. 식물 삭제
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
             // 비동기로 처리 ? (고려중)
+
+            // 다이어리 db 삭제
+            diaryRealmManager.deleteAll()
 
             // 식물 이미지 변경 (+)
             val deletePlant = R.drawable.delete_plant
