@@ -10,7 +10,7 @@ class MJ_MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mj_main)
     }
-//주석
+//주석123
 //    fun replaceFragment(fragment: Fragment?) {
 //        Log.d("test", "replace Fragment function come ....");
 //        val fragmentManager: FragmentManager = supportFragmentManager
