@@ -19,7 +19,9 @@ import androidx.navigation.Navigation
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.module.DiaryModule
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 
 class DiaryViewFragment : Fragment(), View.OnClickListener {
@@ -39,6 +41,7 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
     lateinit var selectedContent: String
     lateinit var selectedDiaryTitle: String
     lateinit var weatherArray: Array<String>
+    lateinit var realm: Realm
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +61,14 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
         diaryImage = view.findViewById(R.id.imageView_diaryView_plant)
         weatherTextView = view.findViewById(R.id.textView_diaryView_weather)
         contentTextView = view.findViewById(R.id.textView_diaryView_diaryContent)
-        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diarydb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configDiary)
+        diaryRealmManager = DiaryRealmManager(realm)
         weatherArray = resources.getStringArray(R.array.spinner_array)
         val bundle = arguments
 

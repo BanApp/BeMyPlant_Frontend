@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -23,20 +24,35 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import java.io.ByteArrayOutputStream
 import kotlin.concurrent.thread
 
 class PlantImageSelect2Fragment : Fragment() {
-    val binding by lazy { FragmentPlantImageSelect2Binding.inflate((layoutInflater)) }
+    val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
+    // TODO: Rename and change types of parameters
     private lateinit var plantName: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
-    private lateinit var imageURLs: List<String>
+    private lateinit var plantImageURLs: List<String>
     private var selectedImage: Bitmap? = null
-
+    private lateinit var realm: Realm
+    private lateinit var plantImgSelected : ByteArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
     }
 
     override fun onCreateView(
@@ -44,34 +60,34 @@ class PlantImageSelect2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         getImageGenerateData() // 이전 화면으로부터 넘어오는 데이터저장 (plantName, plantSpecies, plantColor, potCOlor)
-        Log.d("식물 이미지 가져옴", imageURLs.toString())
+        Log.d("식물 이미지 가져옴", plantImageURLs.toString())
 
         binding.tagText.text = "#${plantSpecies}#${plantColor}#${potColor} 화분"
 
         var shownImageCount = 0
-        var imageURLsCount = imageURLs.size
+        var plantImageURLsCount = plantImageURLs.size
 
-        Log.d("식물 이미지 개수", imageURLs.size.toString())
+        Log.d("식물 이미지 개수", plantImageURLs.size.toString())
 
         // 이미지 2개만 고치기
         setTwoImages(
-            imageURLs[shownImageCount],
-            imageURLs[shownImageCount + 1]
+            plantImageURLs[shownImageCount],
+            plantImageURLs[shownImageCount + 1]
         )
         shownImageCount += 2
         Log.d("식물 이미지 업데이트", "업데이트 완료")
 
         binding.refreshButton.setOnClickListener {
             Log.d("식물 이미지 업데이트 횟수", shownImageCount.toString())
-            if ((shownImageCount + 2) <= imageURLsCount) { // 둘 다 변경 가능하면 변경
+            if ((shownImageCount + 2) <= plantImageURLsCount) { // 둘 다 변경 가능하면 변경
                 setTwoImages(
-                    imageURLs[shownImageCount],
-                    imageURLs[shownImageCount + 1]
+                    plantImageURLs[shownImageCount],
+                    plantImageURLs[shownImageCount + 1]
                 )
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 2
-            } else if ((shownImageCount + 1 ) <= imageURLsCount) { // 하나라도 변경 가능하면 변경
-                setOneImages(imageURLs[shownImageCount]) //button1 수정
+            } else if ((shownImageCount + 1 ) <= plantImageURLsCount) { // 하나라도 변경 가능하면 변경
+                setOneImages(plantImageURLs[shownImageCount]) //button1 수정
                 //binding.plantImageButton2.setImageBitmap((imageURLs[shownImageCount]))
                 Log.d("식물 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 1
@@ -102,13 +118,7 @@ class PlantImageSelect2Fragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            // selectedImage, plantName, plantSpecies을 번들로 넘김
-//
-//            val bundle = bundleOf(
-//                "selectedImage" to selectedImage,
-//                "plantName" to plantName,
-//                "plantSpecies" to plantSpecies
-//            )
+
             if (selectedImage == null) {
                 showToast(requireContext(), "식물 이미지를 선택해주세요")
             }
@@ -116,6 +126,21 @@ class PlantImageSelect2Fragment : Fragment() {
                 // TODO: (정현) 앱 내 식물 DB에 넣을 것 (식물 이름 종, 이미지, 생성 시간 ,식물 등록번호)
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                plantImgSelected = bitmapToByteArray(selectedImage!!)
+                val bundle = bundleOf(
+                    "plantName" to plantName,
+                    "plantSpecies" to plantSpecies,
+                    "plantColor" to plantColor,
+                    "potColor" to potColor,
+                    "plantImageURLs" to plantImageURLs,
+                    "plantImgSelected" to plantImgSelected
+                )
+                Log.d("bundle-f2", bundle.getString("plantName").toString())
+                Log.d("bundle-f2", bundle.getString("plantSpecies").toString())
+                Log.d("bundle-f2", bundle.getString("plantColor").toString())
+                Log.d("bundle-f2", bundle.getString("potColor").toString())
+                Log.d("bundle-f2", bundle.getStringArrayList("plantImageURLs").toString())
+                Log.d("bundle-f2", bundle.getByteArray("plantImgSelected").toString())
                 val intent = Intent(requireActivity(), TempConnectActivity::class.java)
                 requireActivity().startActivity(intent)
             }
@@ -130,7 +155,7 @@ class PlantImageSelect2Fragment : Fragment() {
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()
-        imageURLs = arguments?.getStringArrayList("imageURLs") ?: emptyList<String>()
+        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
     }
 
     private fun showToast(context: Context, message: String) {
@@ -162,6 +187,7 @@ class PlantImageSelect2Fragment : Fragment() {
         Glide.with(requireContext())
             .asBitmap()
             .load(imageUrl)
+            .override(200,200)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
@@ -208,6 +234,7 @@ class PlantImageSelect2Fragment : Fragment() {
                         binding.plantImageButton1.visibility = View.VISIBLE
                         binding.plantImageButton1.setImageBitmap(bitmap)
                     }
+                    var transBitmapToByteArray = bitmapToByteArray(bitmap)
                 }
 
                 override fun onImageLoadFailed() {
@@ -235,36 +262,15 @@ class PlantImageSelect2Fragment : Fragment() {
             })
         }
 
-        // image download from url & set image to UI component
-//        imageLoadFromURL(url1, object : ImageLoadCallback {
-//            override fun onImageLoaded(bitmap: Bitmap) {
-//                // Use the loaded bitmap here
-//                Log.d("이미지 url->비트맵", "1 성공")
-//                binding.textOverlay1.visibility = View.INVISIBLE
-//                binding.plantImageButton1.setImageBitmap(bitmap)
-//            }
-//
-//            override fun onImageLoadFailed() {
-//                Log.d("이미지 url->비트맵", "1 실패")
-//            }
-//        })
-//
-//        imageLoadFromURL(url2, object : ImageLoadCallback {
-//            override fun onImageLoaded(bitmap: Bitmap) {
-//                // Use the loaded bitmap here
-//                Log.d("이미지 url->비트맵", "2 성공")
-//                binding.textOverlay1.visibility = View.INVISIBLE
-//                binding.plantImageButton2.setImageBitmap(bitmap)
-//            }
-//
-//            override fun onImageLoadFailed() {
-//                Log.d("이미지 url->비트맵", "2 실패")
-//            }
-//        })
-
-
         // TODO: 만일 받아온 이미지가 null이라면 .. 처리
     }
+
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        return stream.toByteArray()
+    }
+
     private fun setOneImages(url1: String) {
         binding.textOverlay1.visibility = View.VISIBLE
         binding.plantImageButton1.visibility = View.INVISIBLE
@@ -286,8 +292,6 @@ class PlantImageSelect2Fragment : Fragment() {
 //        binding.plantImageButton1.setImageBitmap(imageLoadFromURL(url1))
         // TODO: 만일 받아온 이미지가 null이라면 .. 처리
     }
-
-
 
     companion object {
         @JvmStatic

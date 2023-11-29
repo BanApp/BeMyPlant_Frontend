@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.module.DiaryModule
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class CalendarAdapter(
     private val context: Context,
@@ -22,6 +24,7 @@ class CalendarAdapter(
     //private val dateImageMap: HashMap<String, Int> //더미 데이터 - 키가 날짜, 값이 이미지인 맵 (추후 DB의 데이터로 변환 필요)
 ) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     private lateinit var diaryRealmManager: DiaryRealmManager
+    lateinit var realm: Realm
 
     /*init {
         val realm = Realm.getDefaultInstance()
@@ -31,7 +34,14 @@ class CalendarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_cell, parent, false)
-        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diarydb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configDiary)
+        diaryRealmManager = DiaryRealmManager(realm)
         return ViewHolder(view)
     }
 

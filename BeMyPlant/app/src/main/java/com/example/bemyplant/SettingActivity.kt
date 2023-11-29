@@ -17,9 +17,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,6 +44,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var modifySensorButton: Button
     private lateinit var defaultUserImage: Bitmap
     private lateinit var user_image: Bitmap
+    lateinit var realm : Realm
+
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
@@ -47,6 +53,14 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configPlant)
 
         userImage = findViewById(R.id.imageView_setting_user)
         realNameTextView = findViewById(R.id.textView_setting_name)
@@ -58,10 +72,17 @@ class SettingActivity : AppCompatActivity() {
         // 계정 정보 API 호출 -> 계정, 실제 이름대로 uidTextView, nameTextView 수정
         getUserAccount()
 
-        // TODO: (정현) 사용자 이미지 가져올 것 -> userImage 넣기
+        // TODO: 사용자 이미지 변경할 것
+        var vo = realm.where(PlantModel::class.java).findFirst()
+        if (vo != null) {
+            var userImageBitmap = byteArrayToBitmap(vo.userImage)
+            userImage.setImageBitmap(userImageBitmap)
+        } else {
+            userImage.setImageResource(R.drawable.user_image)
+        }
 
 
-        // TODO: (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정 (만약 null이면)
+        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 
         // (1) 로그아웃 버튼 클릭 시 처리
         logoutButton.setOnClickListener{
@@ -133,6 +154,8 @@ class SettingActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("token", null)
         val Tag: String = "sensor"
         //Log.d(Tag, "token: $token")
+        val mainIntent = getIntent()
+        val plantName = mainIntent.getStringExtra("plantName").toString()
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
         if (token.isNullOrEmpty()){
@@ -148,7 +171,7 @@ class SettingActivity : AppCompatActivity() {
                 val UserData = response.body()
 
                 runOnUiThread {
-                    realNameTextView.text = response.body()?.r_name
+                    realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
                     uidTextView.text = response.body()?.username
                     // 화면 갱신
                     realNameTextView.invalidate()
@@ -259,6 +282,9 @@ class SettingActivity : AppCompatActivity() {
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, null)
 
+
+
+
         // 팝업 창의 뷰로 사용할 XML 레이아웃 설정
         builder.setView(dialogView)
 
@@ -268,6 +294,16 @@ class SettingActivity : AppCompatActivity() {
         dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes).setOnClickListener {
             // 2. 식물 삭제
             // TODO: 3. (정현) 식물 DB에서 식물 삭제
+            // sdhan :realm DB control : DB 초기화 or 지우기
+
+
+            realm.executeTransaction {
+                //전부지우기
+                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                //첫번째 줄 지우기
+    //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+            }
+
             // 비동기로 처리 ? (고려중)
 
             // 식물 이미지 변경 (+)
@@ -331,6 +367,10 @@ class SettingActivity : AppCompatActivity() {
         drawable.draw(canvas)
 
         return bitmap
+    }
+
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
 }

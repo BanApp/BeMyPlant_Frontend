@@ -22,8 +22,11 @@ import com.example.bemyplant.R
 import com.example.bemyplant.SettingActivity
 import com.example.bemyplant.adapter.CalendarAdapter
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.module.DiaryModule
+import com.example.bemyplant.module.PlantModule
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
@@ -34,6 +37,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
     private lateinit var calendarAdapter: CalendarAdapter
     lateinit var navController: NavController
     private lateinit var diaryRealmManager: DiaryRealmManager
+    lateinit var realm: Realm
 
     // 현재 날짜 정보
     @RequiresApi(Build.VERSION_CODES.O)
@@ -44,10 +48,18 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diarydb.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realm = Realm.getInstance(configDiary)
+
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
-        diaryRealmManager = DiaryRealmManager(Realm.getDefaultInstance())
+        diaryRealmManager = DiaryRealmManager(realm)
 
         // 캘린더 설정
         val dayList: ArrayList<Day> = getCalendarData(currentDate)
