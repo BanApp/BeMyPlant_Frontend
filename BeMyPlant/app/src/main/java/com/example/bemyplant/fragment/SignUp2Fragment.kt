@@ -1,7 +1,6 @@
 package com.example.bemyplant.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
@@ -13,18 +12,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
+import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
 import com.example.bemyplant.network.RetrofitService
+import io.realm.Realm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
-import com.example.bemyplant.PlantRegisterForFragmentActivity
-import com.example.bemyplant.data.LoginData
-import io.realm.Realm
 
 
 class SignUp2Fragment : Fragment() {
@@ -156,7 +154,7 @@ class SignUp2Fragment : Fragment() {
 //                        var loginData: LoginData = LoginData(username, pw)
 //                        login(loginData)
 
-                        findNavController().navigate(R.id.action_s2Fragment_to_plantImageSelect1Fragment)
+                        findNavController().navigate(R.id.action_s2Fragment_to_userImageSelect1Fragment)
                     }
                 } else {
                     // 회원 가입 실패
