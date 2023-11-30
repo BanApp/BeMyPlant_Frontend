@@ -111,7 +111,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .name("plant.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
@@ -121,9 +121,13 @@ class ChatActivity : AppCompatActivity() {
         var vo = realm.where(PlantModel::class.java).findFirst()
         var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
 
+        if (emptyImg != null) {
+            userImgBitmap = emptyImg
+        }
+
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
-            userImgBitmap = byteArrayToBitmap(vo.userImage)
+//            userImgBitmap = byteArrayToBitmap(vo.userImage)
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg
@@ -131,51 +135,6 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-
-        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
-        var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
-
-
-        Glide.with(this)
-            .asBitmap()
-            .load(urldown)
-            .override(200,200)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    // 이미지 로드가 완료
-                    Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-                    imageGen1 = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
-            })
-
-        Glide.with(this)
-            .asBitmap()
-            .load(urldown2)
-            .override(200,200)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    // 이미지 로드가 완료
-                    Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-//                    imageGen = byteArrayToBitmap(P_Image)!!
-                    imageGen2 = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
-            })
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)

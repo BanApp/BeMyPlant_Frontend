@@ -1,7 +1,9 @@
 package com.example.bemyplant.model
 
 import io.realm.RealmObject
+import io.realm.annotations.RealmClass
 
+@RealmClass
 open class PlantModel: RealmObject() {
     lateinit var plantName : String          // 식물 이름
     lateinit var plantBirth : String           // 식물 생일

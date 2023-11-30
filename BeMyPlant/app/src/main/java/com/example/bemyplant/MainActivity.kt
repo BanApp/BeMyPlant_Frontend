@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .name("plant.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
 
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
-        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+//        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
