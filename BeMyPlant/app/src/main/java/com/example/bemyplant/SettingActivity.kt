@@ -184,13 +184,22 @@ class SettingActivity : AppCompatActivity() {
 
             if (response.isSuccessful) {
                 val UserData = response.body()
-
                 runOnUiThread {
-                    realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
-                    uidTextView.text = response.body()?.username
-                    // 화면 갱신
-                    realNameTextView.invalidate()
-                    uidTextView.invalidate()
+                    var vo = realmPlant.where(PlantModel::class.java).findFirst()
+                    if (vo != null) {
+                        var plantName2 = vo.plantName
+                        realNameTextView.text = response.body()?.r_name + "(${plantName2} 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    } else {
+                        realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    }
                 }
             }
         }
