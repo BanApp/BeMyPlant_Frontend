@@ -25,6 +25,7 @@ import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -36,7 +37,7 @@ import kotlin.concurrent.thread
 class PlantImageSelect2Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
     // TODO: Rename and change types of parameters
-    private lateinit var plantName: String
+    private lateinit var plantNameVar: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
@@ -148,15 +149,29 @@ class PlantImageSelect2Fragment : Fragment() {
                 // sdhan : 등록번호 = 날짜 + 랜덤숫자
                 val regNum = "${regDate}-${range.random()}"
 
-                var vo = realm.where(PlantModel::class.java).findFirst()
-                realm.executeTransaction{ vo?.plantName = plantName}
-                realm.executeTransaction{ vo?.plantBirth = bitrhDate}
-                realm.executeTransaction{ vo?.plantRace = plantName}
-                realm.executeTransaction{ vo?.plantImage = plantImgSelected}
-                realm.executeTransaction{ vo?.plantRegNum = regNum}
+                realm.executeTransaction {
+                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+                }
+
+                realm.executeTransaction{
+                    with(it.createObject(PlantModel::class.java)){
+                        this.plantName = plantNameVar
+                        this.plantBirth = bitrhDate
+                        this.plantRace = plantSpecies
+                        this.plantImage = plantImgSelected
+                        this.plantRegNum = regNum
+                    }
+                }
+
+//                var vo = realm.where(PlantModel::class.java).findFirst()
+//                realm.executeTransaction{ vo?.plantName = plantName}
+//                realm.executeTransaction{ vo?.plantBirth = bitrhDate}
+//                realm.executeTransaction{ vo?.plantRace = plantName}
+//                realm.executeTransaction{ vo?.plantImage = plantImgSelected}
+//                realm.executeTransaction{ vo?.plantRegNum = regNum}
 
                 val bundle = bundleOf(
-                    "plantName" to plantName,
+                    "plantName" to plantNameVar,
                     "plantSpecies" to plantSpecies,
                     "plantColor" to plantColor,
                     "potColor" to potColor,
@@ -184,7 +199,7 @@ class PlantImageSelect2Fragment : Fragment() {
 
     private fun getImageGenerateData() {
         //Log.d("bundle-f2", arguments?.getStringArrayList("imageURLs").toString())
-        plantName = arguments?.getString("plantName").toString()
+        plantNameVar = arguments?.getString("plantName").toString()
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()

@@ -22,7 +22,9 @@ import com.example.bemyplant.adapter.MessageAdapter
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -44,7 +46,8 @@ class ChatActivity : AppCompatActivity() {
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
     private val retrofitService = RetrofitService().apiService2
-    lateinit var realm: Realm
+    lateinit var realmPlant: Realm
+    lateinit var realmUser: Realm
     lateinit var imageGen1 : Bitmap
     lateinit var imageGen2 : Bitmap
     lateinit var plantImgBitmap : Bitmap
@@ -116,9 +119,18 @@ class ChatActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
 
-        var vo = realm.where(PlantModel::class.java).findFirst()
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
+
+        var vo = realmPlant.where(PlantModel::class.java).findFirst()
+        var vo2 = realmUser.where(UserModel::class.java).findFirst()
         var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
 
         if (emptyImg != null) {
@@ -127,10 +139,16 @@ class ChatActivity : AppCompatActivity() {
 
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
-            userImgBitmap = byteArrayToBitmap(vo.userImage)
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg
+            }
+        }
+
+        if (vo2 != null) {
+            userImgBitmap = byteArrayToBitmap(vo2.userImage)
+        } else {
+            if (emptyImg != null) {
                 userImgBitmap = emptyImg
             }
         }

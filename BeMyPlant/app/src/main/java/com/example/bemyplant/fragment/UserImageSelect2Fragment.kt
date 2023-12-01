@@ -22,26 +22,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.PlantImageTempActivity
 import com.example.bemyplant.R
-import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentUserImageSelect2Binding
-import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.UserModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.io.OutputStream
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.Date
 import kotlin.concurrent.thread
 
 
@@ -54,13 +47,7 @@ class UserImageSelect2Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     val binding by lazy{FragmentUserImageSelect2Binding.inflate(layoutInflater)}
 
-    private lateinit var plantNameVar: String
-    private lateinit var plantSpeciesVar: String
-    private lateinit var plantColorVar: String
-    private lateinit var potColorVar: String
-    private lateinit var plantImageURLs: List<String>
     private lateinit var userImageURLs: List<String>
-    private lateinit var plantImgSelected : ByteArray
     private lateinit var userImgSelected : ByteArray
 
 
@@ -77,13 +64,13 @@ class UserImageSelect2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("plant.realm") // 생성할 realm 파일 이름 지정
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
-            .modules(PlantModule())
+            .modules(UserModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realm = Realm.getInstance(configUser)
 
         // 이전화면에서 넘어온 데이터 저장 (성별, 특징, url)
         gender = arguments?.getString("gender").toString()
@@ -156,12 +143,11 @@ class UserImageSelect2Fragment : Fragment() {
                 userImgSelected = bitmapToByteArray(selectedImage!!)
 
                 realm.executeTransaction {
-                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+                    it.where(UserModel::class.java).findAll().deleteAllFromRealm() //전부지우기
                 }
 
                 realm.executeTransaction{
-                    with(it.createObject(PlantModel::class.java)){
-
+                    with(it.createObject(UserModel::class.java)){
                         this.userImage = userImgSelected
                     }
                 }

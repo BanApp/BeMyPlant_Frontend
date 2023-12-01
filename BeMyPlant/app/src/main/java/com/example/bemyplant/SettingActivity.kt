@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -48,7 +50,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var modifySensorButton: Button
     private lateinit var defaultUserImage: Bitmap
     private lateinit var user_image: Bitmap
-    lateinit var realm : Realm
+    lateinit var realmPlant : Realm
+    lateinit var realmUser : Realm
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -64,7 +67,15 @@ class SettingActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
+
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
 
         userImage = findViewById(R.id.imageView_setting_user)
         realNameTextView = findViewById(R.id.textView_setting_name)
@@ -77,7 +88,7 @@ class SettingActivity : AppCompatActivity() {
         getUserAccount()
 
         // TODO: 사용자 이미지 변경할 것
-        var vo = realm.where(PlantModel::class.java).findFirst()
+        var vo = realmUser.where(UserModel::class.java).findFirst()
         if (vo != null) {
             var userImageBitmap = byteArrayToBitmap(vo.userImage)
             userImage.setImageBitmap(userImageBitmap)
@@ -239,6 +250,14 @@ class SettingActivity : AppCompatActivity() {
                     // 다이어리 db 날리기
                     diaryRealmManager.deleteAll()
 
+                    // 사용자 이미지 삭제
+                    realmUser.executeTransaction {
+                        //전부지우기
+                        it.where(UserModel::class.java).findAll().deleteAllFromRealm()
+                        //첫번째 줄 지우기
+                        //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                    }
+
                     val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
                     val token = sharedPreferences.getString("token", null)
 
@@ -301,7 +320,7 @@ class SettingActivity : AppCompatActivity() {
             // sdhan :realm DB control : DB 초기화 or 지우기
 
 
-            realm.executeTransaction {
+            realmPlant.executeTransaction {
                 //전부지우기
                 it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
                 //첫번째 줄 지우기

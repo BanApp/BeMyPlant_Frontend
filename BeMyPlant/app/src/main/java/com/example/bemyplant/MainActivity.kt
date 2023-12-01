@@ -22,6 +22,7 @@ import com.example.bemyplant.data.StatusData
 import com.example.bemyplant.data.checkIfSensorDataIsLatest
 import com.example.bemyplant.fragment.FlowerIdFragment
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -45,7 +46,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var plantNameTextView: TextView
     private lateinit var statusText: TextView
     private val retrofitService = RetrofitService().apiService2
-    private lateinit var realm: Realm
+    private lateinit var realmPlant: Realm
+    private lateinit var realmUser: Realm
     private lateinit var statusImages: Array<ImageView>
     private lateinit var plantNameVar : String
     private lateinit var plantBirthVar : String
@@ -78,7 +80,15 @@ class MainActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
+
+//        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+//            .name("user.realm") // 생성할 realm 파일 이름 지정
+//            .deleteRealmIfMigrationNeeded()
+//            .modules(UserModel())
+//            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+//            .build()
+//        realmUser = Realm.getInstance(configUser)
 
         mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
         plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
@@ -108,8 +118,6 @@ class MainActivity : AppCompatActivity() {
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
 
-        var vo = realm.where(PlantModel::class.java).findFirst()
-
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
 //        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
@@ -129,13 +137,16 @@ class MainActivity : AppCompatActivity() {
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
         val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
         val deletePlant = R.drawable.delete_plant
-        if (vo != null) {
 
-            plantNameVar = vo.plantName
-            plantBirthVar = vo.plantBirth
-            plantRaceVar = vo.plantRace
-            plantImageVar = vo.plantImage
-            plantRegistrationVar = vo.plantRegNum
+        var dbPlant = realmPlant.where(PlantModel::class.java).findFirst()
+
+        if (dbPlant != null) {
+
+            plantNameVar = dbPlant.plantName
+            plantBirthVar = dbPlant.plantBirth
+            plantRaceVar = dbPlant.plantRace
+            plantImageVar = dbPlant.plantImage
+            plantRegistrationVar = dbPlant.plantRegNum
 //
             plantNameTextView.text = plantNameVar // 이름
             var transImageToBitmap = byteArrayToBitmap(plantImageVar)
@@ -149,11 +160,13 @@ class MainActivity : AppCompatActivity() {
             mainFlowerImgBtn.setImageResource(deletePlant)
             plantRegistrationVar = ""
         }
+
+
 //
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
         // sdhan : D-Day 계산
-        var sampleDate = vo?.plantBirth
+        var sampleDate = dbPlant?.plantBirth
 //        var sampleDate = "1900-01-02"
         if (sampleDate != null) {
             if (sampleDate == ""){
@@ -323,7 +336,7 @@ class MainActivity : AppCompatActivity() {
                         for (imageView in statusImages) {
                             imageView.setImageResource(statusImageResource)
                         }
-                        var vo = realm.where(PlantModel::class.java).findFirst()
+                        var vo = realmPlant.where(PlantModel::class.java).findFirst()
 
                         if (vo != null) {
                             println("############" + vo.plantName)
