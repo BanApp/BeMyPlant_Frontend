@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.core.content.ContextCompat
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -47,11 +49,11 @@ class MainActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService2
     private lateinit var realm: Realm
     private lateinit var statusImages: Array<ImageView>
-    private lateinit var plantNameVar : String
-    private lateinit var plantBirthVar : String
-    private lateinit var plantRaceVar : String
-    private lateinit var plantImageVar : ByteArray
-    private lateinit var plantRegistrationVar : String
+    private lateinit var plantNameVar: String
+    private lateinit var plantBirthVar: String
+    private lateinit var plantRaceVar: String
+    private lateinit var plantImageVar: ByteArray
+    private lateinit var plantRegistrationVar: String
     private lateinit var strangeConText: TextView
     private lateinit var strangeCondition: LinearLayout
 
@@ -66,13 +68,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
 
-        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+        val configPlant: RealmConfiguration = RealmConfiguration.Builder()
             .name("plant.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(PlantModule())
@@ -84,8 +87,8 @@ class MainActivity : AppCompatActivity() {
         plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
 
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
-        statusText.text =  "???"
-        currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image")
+        statusText.text = "???"
+        currentPlantImage = PlantImage(R.drawable.image_plant, "Default Image")
 
         plantNameVar = ""
         plantBirthVar = ""
@@ -130,7 +133,6 @@ class MainActivity : AppCompatActivity() {
         val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
         val deletePlant = R.drawable.delete_plant
         if (vo != null) {
-
             plantNameVar = vo.plantName
             plantBirthVar = vo.plantBirth
             plantRaceVar = vo.plantRace
@@ -157,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         var sampleDate = vo?.plantBirth
 //        var sampleDate = "1900-01-02"
         if (sampleDate != null) {
-            if (sampleDate == ""){
+            if (sampleDate == "") {
                 sampleDate = "1900-01-01"
             }
         } else {
@@ -177,51 +179,32 @@ class MainActivity : AppCompatActivity() {
             currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
             updateMainFlower(newPlantImageResId)
         }
+
         //----------메인화면에서 식물 이미지 값에 따라 특정 화면 전환
         mainFlowerImgBtn.setOnClickListener {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            //비트맵으로 현재 이미지 변환 후, delete_plant의 비트맵과 비교
+            val currentImageResource = (mainFlowerImgBtn.drawable.current as? BitmapDrawable)?.bitmap
+            val deletePlantDrawable = ContextCompat.getDrawable(this, R.drawable.delete_plant)
+            if (currentImageResource != null && currentImageResource.sameAs((deletePlantDrawable as BitmapDrawable).bitmap)) {
+                val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
+                startActivity(plantRegisterIntent)
+            } else {
+                val bundle = Bundle()
+                bundle.putParcelable("plantImage", mainFlowerImgBtn.drawable.toBitmap())
+                bundle.putString("plantName", plantNameTextView.text.toString())
+                bundle.putString("plantBirth", plantBirthVar)
+                bundle.putString("plantRace", plantRaceVar)
+                bundle.putString("plantRegistration", plantRegistrationVar)
 
-            when (currentPlantImage){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
-                PlantImage(R.drawable.delete_plant, "Default Image") -> {
-
-                    // 프래그먼트 이동
-//                    val plantImageSelect1Fragment = PlantImageSelect1Fragment()
-//                    fragmentTransaction.add(R.id.plantImageSelect1Fragment, plantImageSelect1Fragment)
-//                    fragmentTransaction.addToBackStack(null)
-//                    fragmentTransaction.commit()
-//                    screenFrame.bringToFront()
-
-                    val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
-                    // 액티비티 이동
-                    //val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
-                    startActivity(plantRegisterIntent)
-
-                    //fragmentTransaction.add(R.id.screenFrame, fragment)
-                    //fragmentTransaction.addToBackStack(null)
-                    //fragmentTransaction.commit()
-                    //screenFrame!!.bringToFront()
-
-                }
-                else -> {
-                    val bundle = Bundle()
-                    bundle.putParcelable("plantImage", mainFlowerImgBtn.drawable.toBitmap())
-                    bundle.putString("plantName", plantNameTextView.text.toString())
-                    bundle.putString("plantBirth", plantBirthVar)
-                    bundle.putString("plantRace", plantRaceVar)
-                    bundle.putString("plantRegistration", plantRegistrationVar)
-
-                    val fragment = FlowerIdFragment()
-                    fragment.arguments = bundle
-                    fragmentTransaction.add(R.id.screenFrame, fragment)
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
-                    screenFrame.bringToFront()
-
-                }
-
+                val fragmentManager: FragmentManager = supportFragmentManager
+                val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+                val fragment = FlowerIdFragment()
+                fragment.arguments = bundle
+                fragmentTransaction.add(R.id.screenFrame, fragment)
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
+                screenFrame.bringToFront()
             }
-
         }
 
 
