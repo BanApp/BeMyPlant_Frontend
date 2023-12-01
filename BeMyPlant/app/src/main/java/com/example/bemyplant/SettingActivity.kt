@@ -81,6 +81,7 @@ class SettingActivity : AppCompatActivity() {
         if (vo != null) {
             var userImageBitmap = byteArrayToBitmap(vo.userImage)
             userImage.setImageBitmap(userImageBitmap)
+            userImage.setBackgroundResource(R.color.transparent)
         } else {
             userImage.setImageResource(R.drawable.user_image)
         }

@@ -49,12 +49,14 @@
 
 
         <ImageView
+            android:layout_gravity="center"
             android:id="@+id/imageView_setting_user"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@color/transparent"
             android:src="@drawable/user_image"
             tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="87dp"/>
+            tools:layout_editor_absoluteY="87dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

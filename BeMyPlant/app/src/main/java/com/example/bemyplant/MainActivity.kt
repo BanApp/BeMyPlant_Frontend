@@ -141,6 +141,7 @@ class MainActivity : AppCompatActivity() {
             var transImageToBitmap = byteArrayToBitmap(plantImageVar)
             mainFlowerImgBtn.setImageBitmap(transImageToBitmap)
             currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+            mainFlowerImgBtn.setBackgroundResource(R.color.transparent)
 //
         } else {
             plantNameTextView.text = ""

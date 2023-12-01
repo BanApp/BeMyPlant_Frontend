@@ -43,7 +43,7 @@
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:src="@drawable/image_plant"
-        app:backgroundTint="#DFF4C7"
+        app:backgroundTint="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
