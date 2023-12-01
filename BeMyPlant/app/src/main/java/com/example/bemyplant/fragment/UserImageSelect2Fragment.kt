@@ -69,15 +69,7 @@ class UserImageSelect2Fragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("plant.realm") // 생성할 realm 파일 이름 지정
-            .deleteRealmIfMigrationNeeded()
-            .modules(PlantModule())
-            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
-            .build()
-        realm = Realm.getInstance(configPlant)
 
-        userImgSelected = byteArrayOf()
     }
 
     override fun onCreateView(
@@ -96,7 +88,6 @@ class UserImageSelect2Fragment : Fragment() {
         // 이전화면에서 넘어온 데이터 저장 (성별, 특징, url)
         gender = arguments?.getString("gender").toString()
         characteristic = arguments?.getString("characteristic").toString()
-        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
         userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
 
         binding.tagText.text = "#${gender}#${characteristic}"
@@ -105,13 +96,6 @@ class UserImageSelect2Fragment : Fragment() {
         var userImageURLsCount = userImageURLs.size
         Log.d("사용자 이미지 개수", userImageURLs.size.toString())
 
-        // 이미지 2개만 고치기
-//        setTwoImages(
-//            imageURLs[shownImageCount],
-//            imageURLs[shownImageCount + 1]
-//        )
-//        shownImageCount += 2
-        // 테스트코드
         if (userImageURLs.isNotEmpty() && userImageURLsCount >= 2) {
             setTwoImages(
                 userImageURLs[shownImageCount],
@@ -127,12 +111,12 @@ class UserImageSelect2Fragment : Fragment() {
                     userImageURLs[shownImageCount],
                     userImageURLs[shownImageCount + 1]
                 )
-                Log.d("식물 이미지 업데이트", "업데이트 완료")
+                Log.d("사용자 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 2
             } else if ((shownImageCount + 1 ) <= userImageURLsCount) { // 하나라도 변경 가능하면 변경
                 setOneImages(userImageURLs[shownImageCount]) //button1 수정
                 //binding.plantImageButton2.setImageBitmap((imageURLs[shownImageCount]))
-                Log.d("식물 이미지 업데이트", "업데이트 완료")
+                Log.d("사용자 이미지 업데이트", "업데이트 완료")
                 shownImageCount += 1
             } else {
                 // 큐에 쌓여 있는 나머지 이미지 생성, 만일 더이상 보여줄 이미지가 없다면 -> 클릭 불가, 투명도 증가로 수정
@@ -164,46 +148,12 @@ class UserImageSelect2Fragment : Fragment() {
             Log.d("selectedImage", selectedImage.toString())
             if (selectedImage == null) {
                 Log.d("selectedImage error", "selected image err")
-                showToast(requireContext(), "유저 이미지를 선택해주세요")
+                showToast(requireContext(), "사용자 이미지를 선택해주세요")
             }
             else{
                 Log.d("selectedImage-else", selectedImage.toString())
                 saveBitmapToFile(requireContext(), selectedImage!!)
                 userImgSelected = bitmapToByteArray(selectedImage!!)
-
-                getImageGenerateData()
-
-                // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
-                val dateFormat = "yyyy-MM-dd"
-                val now = Date(System.currentTimeMillis())
-                val simpleDateFormat = SimpleDateFormat(dateFormat)
-                val bitrhDate: String = simpleDateFormat.format(now)
-
-                // sdhan : 등록번호용 날짜형식 생성
-                val dateFormat2 = "yyMMdd"
-                val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
-                val regDate: String = simpleDateFormat2.format(now)
-
-                // sdhan : 랜덤함수
-                val range = (1000000..9999999)  // 100000 <= n <= 999999
-
-                // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
-                // sdhan : 등록번호 = 날짜 + 랜덤숫자
-                val regNum = "${regDate}-${range.random()}"
-
-                Log.d("plantName", plantNameVar)
-                Log.d("bitrhDate", bitrhDate)
-                Log.d("plantSpecies", plantSpeciesVar)
-                Log.d("plantImageURLs", plantImageURLs.toString())
-                Log.d("regNum", regNum)
-
-                // List<String> to ByteArray
-                val baos = ByteArrayOutputStream()
-                val out = DataOutputStream(baos)
-                for (element in plantImageURLs) {
-                    out.writeUTF(element)
-                }
-                val bytes = baos.toByteArray()
 
                 realm.executeTransaction {
                     it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
@@ -212,16 +162,11 @@ class UserImageSelect2Fragment : Fragment() {
                 realm.executeTransaction{
                     with(it.createObject(PlantModel::class.java)){
 
-                        this.plantName = plantNameVar
-                        this.plantBirth = bitrhDate
-                        this.plantRace = plantSpeciesVar
-                        this.plantImage = plantImgSelected
                         this.userImage = userImgSelected
-                        this.plantRegNum = regNum
                     }
                 }
 
-                val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+                val intent = Intent(requireActivity(), PlantImageTempActivity::class.java)
                 requireActivity().startActivity(intent)
 
             }
@@ -231,26 +176,12 @@ class UserImageSelect2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nextButton.setOnClickListener{
-            val intent = Intent(requireActivity(), PlantImageTempActivity::class.java)
-            requireActivity().startActivity(intent)
-        }
     }
 
     fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         return stream.toByteArray()
-    }
-
-    private fun getImageGenerateData() {
-        plantNameVar = arguments?.getString("plantName").toString()
-        plantSpeciesVar = arguments?.getString("plantSpecies").toString()
-        plantColorVar = arguments?.getString("plantColor").toString()
-        potColorVar = arguments?.getString("potColor").toString()
-        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
-        userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
-        plantImgSelected = arguments?.getByteArray("plantImgSelected") ?: byteArrayOf()
     }
 
     fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {

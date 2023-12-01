@@ -47,75 +47,13 @@ class MainActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService().apiService2
     private lateinit var realm: Realm
     private lateinit var statusImages: Array<ImageView>
-    private lateinit var plantName : String
-    private lateinit var plantBirth : String
-    private lateinit var plantRace : String
-    private lateinit var plantImage : ByteArray
-    private lateinit var plantRegistration : String
+    private lateinit var plantNameVar : String
+    private lateinit var plantBirthVar : String
+    private lateinit var plantRaceVar : String
+    private lateinit var plantImageVar : ByteArray
+    private lateinit var plantRegistrationVar : String
     private lateinit var strangeConText: TextView
     private lateinit var strangeCondition: LinearLayout
-
-//    // ----------- 상태에 따른 이미지 및 텍스트 변경
-//    private fun updateStatus() {
-//        val statusData = StatusData("Seoul")
-//        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
-//        val token = sharedPreferences.getString("token", null)
-//
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val response = retrofitService.getWeatherAndStatus(statusData, "Bearer $token")
-//                if (response.isSuccessful){
-//                    launch(Dispatchers.Main) {
-//                        // 상태에 따른 이미지 변경
-//                        val statusResponse = response.body()
-//                        val statusTemp = statusResponse?.status
-//                        val strangeTemp = statusResponse?.most_important_feature
-//                        if (statusTemp != 0){
-//                            val statusImageResource = arrayOf(R.drawable.good_status1 , R.drawable.good_status2, R.drawable.good_status3)
-//                            val randomIndex = (0 until statusImageResource.size).random()
-//                            for (image in statusImages){
-//                                image.setImageResource(statusImageResource[randomIndex])
-//                            }
-//                        } else {
-//                            val statusImageResource = arrayOf(R.drawable.bad_status)
-//                            for (image in statusImages){
-//                                image.setImageResource(statusImageResource[0])
-//                            }
-//                        }
-//
-//                        //상태에 따른 텍스트 변경
-//                        if (statusTemp != 0) {
-//                            statusText.text = "Good"
-//                            strangeConText.visibility = View.INVISIBLE
-//
-//                        } else {
-//                            statusText.setTextColor(ContextCompat.getColor(applicationContext!!,R.color.coral))
-//                            statusText.text = "Bad"
-//                            strangeCondition.visibility = View.VISIBLE
-//
-//                            when (strangeTemp) {
-//                                "airHumid" -> strangeConText.text = "공기습도이상"
-//                                "airTemp" -> strangeConText.text = "온도이상"
-//                                "lightIntensity" -> strangeConText.text = "조도이상"
-//                                "soilHumid" -> strangeConText.text = "토양습도이상"
-//                            }
-//                        }
-//                    }
-//                    }else{
-//                    val errorBody = response.errorBody()?.string()
-//                    Log.e("Error_Response", errorBody ?: "error body X")
-//                }
-//
-//            }catch (e:Exception){
-//                Log.e("API_Connection", "API 연결 실패")
-//                e.printStackTrace()
-//
-//
-//            }
-//        }
-//    }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
@@ -149,31 +87,23 @@ class MainActivity : AppCompatActivity() {
         statusText.text =  "???"
         currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image")
 
-        plantName = ""
-        plantBirth = ""
-        plantRace = ""
-        plantImage = byteArrayOf()
-        plantRegistration = ""
+        plantNameVar = ""
+        plantBirthVar = ""
+        plantRaceVar = ""
+        plantImageVar = byteArrayOf()
+        plantRegistrationVar = ""
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
         mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
         //plantName = findViewById<TextView>(R.id.textView_main_flowerName)
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         strangeConText = findViewById<TextView>(R.id.strangeConText)
         strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
-        plantRace = "해바라기"
-        plantRegistration = "2023-11-29"
         statusImages = arrayOf(
             findViewById<ImageView>(R.id.statusImage1),
             findViewById<ImageView>(R.id.statusImage2),
             findViewById<ImageView>(R.id.statusImage3),
         )
 
-        // main image 설정
-        //mainFlower.setImageResource(R.drawable.flower)
-        //mainFlower.setImageResource(R.drawable.delete_plant)
-        //mainFlower.setImageResource(R.drawable.sea_otter)
-        //mainFlower.setImageResource(R.drawable.test_img)
-        //R.drawable.flower
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
@@ -201,23 +131,23 @@ class MainActivity : AppCompatActivity() {
         val deletePlant = R.drawable.delete_plant
         if (vo != null) {
 
-            plantName = vo.plantName
-            plantBirth = vo.plantBirth
-            plantRace = vo.plantRace
-            plantImage = vo.plantImage
-            plantRegistration = vo.plantRegNum
+            plantNameVar = vo.plantName
+            plantBirthVar = vo.plantBirth
+            plantRaceVar = vo.plantRace
+            plantImageVar = vo.plantImage
+            plantRegistrationVar = vo.plantRegNum
 //
-            plantNameTextView.text = plantName // 이름
-            var transImageToBitmap = byteArrayToBitmap(plantImage)
+            plantNameTextView.text = plantNameVar // 이름
+            var transImageToBitmap = byteArrayToBitmap(plantImageVar)
             mainFlowerImgBtn.setImageBitmap(transImageToBitmap)
             currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 //
         } else {
             plantNameTextView.text = ""
-            plantBirth = "???"
-            plantRace = ""
+            plantBirthVar = "???"
+            plantRaceVar = ""
             mainFlowerImgBtn.setImageResource(deletePlant)
-            plantRegistration = ""
+            plantRegistrationVar = ""
         }
 //
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
@@ -276,9 +206,9 @@ class MainActivity : AppCompatActivity() {
                     val bundle = Bundle()
                     bundle.putParcelable("plantImage", mainFlowerImgBtn.drawable.toBitmap())
                     bundle.putString("plantName", plantNameTextView.text.toString())
-                    bundle.putString("plantBirth", plantBirth)
-                    bundle.putString("plantRace", plantRace)
-                    bundle.putString("plantRegistration", plantRegistration)
+                    bundle.putString("plantBirth", plantBirthVar)
+                    bundle.putString("plantRace", plantRaceVar)
+                    bundle.putString("plantRegistration", plantRegistrationVar)
 
                     val fragment = FlowerIdFragment()
                     fragment.arguments = bundle
@@ -332,7 +262,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_setting -> {
                     // "setting" 메뉴 클릭 시 SettingActivity로 이동
                     val boardIntent = Intent(this@MainActivity, SettingActivity::class.java)
-                    boardIntent.putExtra("plantName", plantName)
+                    boardIntent.putExtra("plantName", plantNameVar)
                     startActivity(boardIntent)
                     true
                 }

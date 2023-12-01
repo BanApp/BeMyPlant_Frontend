@@ -127,7 +127,7 @@ class ChatActivity : AppCompatActivity() {
 
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
-//            userImgBitmap = byteArrayToBitmap(vo.userImage)
+            userImgBitmap = byteArrayToBitmap(vo.userImage)
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg

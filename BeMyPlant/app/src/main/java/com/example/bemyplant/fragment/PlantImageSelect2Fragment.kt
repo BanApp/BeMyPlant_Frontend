@@ -29,6 +29,8 @@ import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import kotlin.concurrent.thread
 
 class PlantImageSelect2Fragment : Fragment() {
@@ -127,6 +129,32 @@ class PlantImageSelect2Fragment : Fragment() {
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
                 plantImgSelected = bitmapToByteArray(selectedImage!!)
+
+                // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                val dateFormat = "yyyy-MM-dd"
+                val now = Date(System.currentTimeMillis())
+                val simpleDateFormat = SimpleDateFormat(dateFormat)
+                val bitrhDate: String = simpleDateFormat.format(now)
+
+                // sdhan : 등록번호용 날짜형식 생성
+                val dateFormat2 = "yyMMdd"
+                val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+                val regDate: String = simpleDateFormat2.format(now)
+
+                // sdhan : 랜덤함수
+                val range = (1000000..9999999)  // 100000 <= n <= 999999
+
+                // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                // sdhan : 등록번호 = 날짜 + 랜덤숫자
+                val regNum = "${regDate}-${range.random()}"
+
+                var vo = realm.where(PlantModel::class.java).findFirst()
+                realm.executeTransaction{ vo?.plantName = plantName}
+                realm.executeTransaction{ vo?.plantBirth = bitrhDate}
+                realm.executeTransaction{ vo?.plantRace = plantName}
+                realm.executeTransaction{ vo?.plantImage = plantImgSelected}
+                realm.executeTransaction{ vo?.plantRegNum = regNum}
+
                 val bundle = bundleOf(
                     "plantName" to plantName,
                     "plantSpecies" to plantSpecies,

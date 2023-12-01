@@ -311,7 +311,7 @@ class SettingActivity : AppCompatActivity() {
             // 비동기로 처리 ? (고려중)
 
             // 다이어리 db 삭제
-            diaryRealmManager.deleteAll()
+//            diaryRealmManager.deleteAll()
 
             // 식물 이미지 변경 (+)
             val deletePlant = R.drawable.delete_plant
