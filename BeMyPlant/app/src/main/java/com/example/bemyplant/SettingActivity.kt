@@ -69,7 +69,7 @@ class SettingActivity : AppCompatActivity() {
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
         realmDiary = Realm.getInstance(configDiary)
-        diaryRealmManager = DiaryRealmManager(realmDiary)
+        //diaryRealmManager = DiaryRealmManager(realmDiary)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("plant.realm") // 생성할 realm 파일 이름 지정
@@ -267,15 +267,21 @@ class SettingActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     // 다이어리 db 날리기
-                    diaryRealmManager.deleteAll()
 
-                    // 사용자 이미지 삭제
-                    realmUser.executeTransaction {
-                        //전부지우기
-                        it.where(UserModel::class.java).findAll().deleteAllFromRealm()
-                        //첫번째 줄 지우기
-                        //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                    withContext(Dispatchers.Main) {
+                        // 다이어리 db 날리기
+                        realmDiary.executeTransaction {
+                            it.deleteAll()
+                        }
+                        // 사용자 이미지 삭제
+                        realmUser.executeTransaction {
+                            //전부지우기
+                            it.where(UserModel::class.java).findAll().deleteAllFromRealm()
+                            //첫번째 줄 지우기
+                            //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                        }
                     }
+
 
                     val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
                     val token = sharedPreferences.getString("token", null)
