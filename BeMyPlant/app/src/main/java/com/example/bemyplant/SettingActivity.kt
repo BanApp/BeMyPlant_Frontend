@@ -52,6 +52,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var user_image: Bitmap
     lateinit var realmPlant : Realm
     lateinit var realmUser : Realm
+    lateinit var realmDiary: Realm
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -60,6 +61,7 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        diaryRealmManager = DiaryRealmManager(realmDiary)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("plant.realm") // 생성할 realm 파일 이름 지정
