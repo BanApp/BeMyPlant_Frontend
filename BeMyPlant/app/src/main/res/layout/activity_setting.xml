@@ -56,7 +56,8 @@
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="false"
             android:layout_gravity="center"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/imageView_setting_user"
