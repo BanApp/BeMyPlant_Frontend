@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
 import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.model.UserModel
@@ -31,7 +30,6 @@ import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
@@ -106,9 +104,6 @@ class SettingActivity : AppCompatActivity() {
             userImage.setImageResource(R.drawable.user_image)
         }
 
-
-        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
-
         // (1) 로그아웃 버튼 클릭 시 처리
         logoutButton.setOnClickListener{
             logoutPopup() //팝업창 띄움
@@ -174,13 +169,13 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
+    private fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
     private fun getUserAccount() {
         val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        val Tag: String = "sensor"
-        //Log.d(Tag, "token: $token")
-        val mainIntent = getIntent()
-        val plantName = mainIntent.getStringExtra("plantName").toString()
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
         if (token.isNullOrEmpty()){
@@ -189,22 +184,44 @@ class SettingActivity : AppCompatActivity() {
         }
         CoroutineScope(Dispatchers.IO).launch {
             val response = retrofitService.getUserData("Bearer " + token)
-            val Tag: String = "sensor"
-            Log.d(Tag, "sensor raw-response: $response")
 
             if (response.isSuccessful) {
-                val UserData = response.body()
                 runOnUiThread {
                     var vo = realmPlant.where(PlantModel::class.java).findFirst()
                     if (vo != null) {
                         var plantName2 = vo.plantName
+                        if (plantName2.isNullOrEmpty()) {
+                            plantName2 = "??"
+                        }
                         realNameTextView.text = response.body()?.r_name + "(${plantName2} 주인님)"
                         uidTextView.text = response.body()?.username
                         // 화면 갱신
                         realNameTextView.invalidate()
                         uidTextView.invalidate()
                     } else {
-                        realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
+                        realNameTextView.text = response.body()?.r_name + "(?? 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    }
+                }
+            }
+            else{
+                runOnUiThread {
+                    var vo = realmPlant.where(PlantModel::class.java).findFirst()
+                    if (vo != null) {
+                        var plantName2 = vo.plantName
+                        if (plantName2.isNullOrEmpty()) {
+                            plantName2 = "??"
+                        }
+                        realNameTextView.text = "???" + "(${plantName2} 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    } else {
+                        realNameTextView.text = "???" + "(?? 주인님)"
                         uidTextView.text = response.body()?.username
                         // 화면 갱신
                         realNameTextView.invalidate()
@@ -319,7 +336,7 @@ class SettingActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     // API 요청 실패
                     withContext(Dispatchers.Main) {
-                        showToast(this@SettingActivity, "API 요청 실패: ${e.message}")
+                        showToast(this@SettingActivity, "회원 탈퇴 실패: ${e.message}")
                     }
                 }
             }
@@ -334,7 +351,7 @@ class SettingActivity : AppCompatActivity() {
 
     }
 
-    fun deletePlantPopup(){
+    fun deletePlantPopup() {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, null)
@@ -345,39 +362,58 @@ class SettingActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // 예 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes).setOnClickListener {
-            // 2. 식물 삭제
-            // TODO: 3. (정현) 식물 DB에서 식물 삭제
-            // sdhan :realm DB control : DB 초기화 or 지우기
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes)
+            .setOnClickListener {
+                // 2. 식물 삭제
+                // TODO: 3. (정현) 식물 DB에서 식물 삭제
+                // sdhan :realm DB control : DB 초기화 or 지우기
 
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        withContext(Dispatchers.Main) {
+                            // 다이어리 db 날리기
+                            realmDiary.executeTransaction {
+                                it.deleteAll()
+                            }
 
-            realmPlant.executeTransaction {
-                //전부지우기
-                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
-                //첫번째 줄 지우기
-    //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                            // 식물 삭제
+                            realmPlant.executeTransaction {
+                                //전부지우기
+                                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                                //첫번째 줄 지우기
+                                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                            }
+                        }
+
+                        // 식물 이미지 변경 (+)
+                        val deletePlant = R.drawable.delete_plant
+                        val bundle = Bundle()
+                        bundle.putInt("newPlantImageResId", deletePlant)
+
+                        // 화면 이동 (메인화면 이동)
+                        val mainActivityIntent =
+                            Intent(this@SettingActivity, MainActivity::class.java)
+                        mainActivityIntent.putExtras(bundle)
+                        startActivity(mainActivityIntent)
+                    } catch (e: Exception) {
+                        // API 요청 실패
+                        withContext(Dispatchers.Main) {
+                            showToast(this@SettingActivity, "식물 삭제 실패: ${e.message}")
+                        }
+                    }
+
+                }
             }
 
-            // 다이어리 db 삭제
-            diaryRealmManager.deleteAll()
-
-            // 식물 이미지 변경 (+)
-            val deletePlant = R.drawable.delete_plant
-            val bundle = Bundle()
-            bundle.putInt("newPlantImageResId", deletePlant)
-
-            // 화면 이동 (메인화면 이동)
-            val mainActivityIntent = Intent(this@SettingActivity, MainActivity::class.java)
-            mainActivityIntent.putExtras(bundle)
-            startActivity(mainActivityIntent)
-        }
 
         // 아니오 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_no).setOnClickListener {
-            dialog.dismiss() // 다이얼로그를 닫습니다.
-        }
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_no)
+            .setOnClickListener {
+                dialog.dismiss() // 다이얼로그를 닫습니다.
+            }
 
         dialog.show()
+
     }
 
     fun readBitmapFromExternalStorage(file: File): Bitmap? {
@@ -389,18 +425,6 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
-
-    fun drawableResourceToBitmap(context: Context, drawableResId: Int): Bitmap? {
-        return runBlocking {
-            withContext(Dispatchers.IO) {
-                // Drawable을 가져옵니다.
-                val drawable = ContextCompat.getDrawable(context, drawableResId)
-
-                // Drawable을 Bitmap으로 변환합니다.
-                drawableToBitmap(drawable)
-            }
-        }
-    }
 
     // 변환 함수
     fun drawableToBitmap(drawable: Drawable?): Bitmap? {
@@ -422,10 +446,6 @@ class SettingActivity : AppCompatActivity() {
         drawable.draw(canvas)
 
         return bitmap
-    }
-
-    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
 }
