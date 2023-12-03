@@ -47,10 +47,7 @@ class UserImageSelect1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        getImageGenerateData()
         // Inflate the layout for this fragment
-
-
 
         binding.nextButton.setOnClickListener {
             var gender: String = ""
@@ -84,35 +81,23 @@ class UserImageSelect1Fragment : Fragment() {
                 var userImageURLs = userImageGenerate(imageGenerateRequestData, progressDialog)
                 if (userImageURLs == null) {
                     // bad request
-                    Log.d("식물 이미지생성", "식물 이미지 생성 결과 null")
+                    Log.d("사용자 이미지생성", "사용자 이미지 생성 결과 null")
                 } else {
-                    Log.d("식물 이미지생성", "식물 이미지 생성완료 ")
+                    Log.d("사용자 이미지생성", "사용자 이미지 생성완료 ")
 
                     val userImageURLs = userImageURLs
 
-                    Log.d("식물 이미지생성결과", userImageURLs.user_image_urls.toString())
+                    Log.d("사용자 이미지생성결과", userImageURLs.user_image_urls.toString())
 
                     if (userImageURLs.user_image_urls == null) {
-                        Log.d("식물 이미지생성 결과", "원소 없음 !!")
+                        Log.d("사용자 이미지생성 결과", "원소 없음 !!")
                     }
                     val bundle = bundleOf(
-                        "plantName" to plantName,
-                        "plantSpecies" to plantSpecies,
-                        "plantColor" to plantColor,
-                        "potColor" to potColor,
-                        "plantImageURLs" to plantImageURLs,
-                        "plantImgSelected" to plantImgSelected,
                         "userImageURLs" to userImageURLs.user_image_urls,
                         "gender" to gender,
                         "characteristic" to characteristic
                     )
-                    Log.d("bundle-f3", bundle.getString("plantName").toString())
-                    Log.d("bundle-f3", bundle.getString("plantSpecies").toString())
-                    Log.d("bundle-f3", bundle.getString("plantColor").toString())
-                    Log.d("bundle-f3", bundle.getString("potColor").toString())
-                    Log.d("bundle-f3", bundle.getStringArrayList("plantImageURLs").toString())
                     Log.d("bundle-f3", bundle.getStringArrayList("userImageURLs").toString())
-                    Log.d("bundle-f3", bundle.getByteArray("userImageURLs").toString())
                     findNavController().navigate(
                         R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,
                         bundle
@@ -169,16 +154,6 @@ class UserImageSelect1Fragment : Fragment() {
             }
         }
         return deferred.await()
-    }
-
-    private fun getImageGenerateData() {
-        //Log.d("bundle-f2", arguments?.getStringArrayList("imageURLs").toString())
-        plantName = arguments?.getString("plantName").toString()
-        plantSpecies = arguments?.getString("plantSpecies").toString()
-        plantColor = arguments?.getString("plantColor").toString()
-        potColor = arguments?.getString("potColor").toString()
-        plantImageURLs = arguments?.getStringArrayList("plantImageURLs") ?: emptyList<String>()
-        plantImgSelected = arguments?.getByteArray("plantImgSelected") ?: byteArrayOf()
     }
 
     companion object {

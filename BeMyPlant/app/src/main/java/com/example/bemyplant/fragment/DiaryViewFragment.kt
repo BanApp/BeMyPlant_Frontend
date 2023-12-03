@@ -62,7 +62,7 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
         weatherTextView = view.findViewById(R.id.textView_diaryView_weather)
         contentTextView = view.findViewById(R.id.textView_diaryView_diaryContent)
         val configDiary : RealmConfiguration = RealmConfiguration.Builder()
-            .name("diarydb.realm") // 생성할 realm 파일 이름 지정
+            .name("diary.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(DiaryModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용

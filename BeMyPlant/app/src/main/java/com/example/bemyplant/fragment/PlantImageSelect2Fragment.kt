@@ -25,16 +25,19 @@ import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import kotlin.concurrent.thread
 
 class PlantImageSelect2Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
     // TODO: Rename and change types of parameters
-    private lateinit var plantName: String
+    private lateinit var plantNameVar: String
     private lateinit var plantSpecies: String
     private lateinit var plantColor: String
     private lateinit var potColor: String
@@ -47,7 +50,7 @@ class PlantImageSelect2Fragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .name("plant.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
@@ -127,8 +130,48 @@ class PlantImageSelect2Fragment : Fragment() {
                 //   참고 - 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
                 //   참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
                 plantImgSelected = bitmapToByteArray(selectedImage!!)
+
+                // sdhan : 현재 날짜를 구해 P_Birth 연산하고 DB에 넣을 것
+                val dateFormat = "yyyy-MM-dd"
+                val now = Date(System.currentTimeMillis())
+                val simpleDateFormat = SimpleDateFormat(dateFormat)
+                val bitrhDate: String = simpleDateFormat.format(now)
+
+                // sdhan : 등록번호용 날짜형식 생성
+                val dateFormat2 = "yyMMdd"
+                val simpleDateFormat2 = SimpleDateFormat(dateFormat2)
+                val regDate: String = simpleDateFormat2.format(now)
+
+                // sdhan : 랜덤함수
+                val range = (1000000..9999999)  // 100000 <= n <= 999999
+
+                // 참고 - plantRegistration에서 P_Birth와 임의의 랜덤값을 이용해 식물 주민 등록번호를 생성할 것
+                // sdhan : 등록번호 = 날짜 + 랜덤숫자
+                val regNum = "${regDate}-${range.random()}"
+
+                realm.executeTransaction {
+                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+                }
+
+                realm.executeTransaction{
+                    with(it.createObject(PlantModel::class.java)){
+                        this.plantName = plantNameVar
+                        this.plantBirth = bitrhDate
+                        this.plantRace = plantSpecies
+                        this.plantImage = plantImgSelected
+                        this.plantRegNum = regNum
+                    }
+                }
+
+//                var vo = realm.where(PlantModel::class.java).findFirst()
+//                realm.executeTransaction{ vo?.plantName = plantName}
+//                realm.executeTransaction{ vo?.plantBirth = bitrhDate}
+//                realm.executeTransaction{ vo?.plantRace = plantName}
+//                realm.executeTransaction{ vo?.plantImage = plantImgSelected}
+//                realm.executeTransaction{ vo?.plantRegNum = regNum}
+
                 val bundle = bundleOf(
-                    "plantName" to plantName,
+                    "plantName" to plantNameVar,
                     "plantSpecies" to plantSpecies,
                     "plantColor" to plantColor,
                     "potColor" to potColor,
@@ -156,7 +199,7 @@ class PlantImageSelect2Fragment : Fragment() {
 
     private fun getImageGenerateData() {
         //Log.d("bundle-f2", arguments?.getStringArrayList("imageURLs").toString())
-        plantName = arguments?.getString("plantName").toString()
+        plantNameVar = arguments?.getString("plantName").toString()
         plantSpecies = arguments?.getString("plantSpecies").toString()
         plantColor = arguments?.getString("plantColor").toString()
         potColor = arguments?.getString("potColor").toString()

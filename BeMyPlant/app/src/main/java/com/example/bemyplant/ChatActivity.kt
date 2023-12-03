@@ -22,7 +22,9 @@ import com.example.bemyplant.adapter.MessageAdapter
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -44,7 +46,8 @@ class ChatActivity : AppCompatActivity() {
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
     private val retrofitService = RetrofitService().apiService2
-    lateinit var realm: Realm
+    lateinit var realmPlant: Realm
+    lateinit var realmUser: Realm
     lateinit var imageGen1 : Bitmap
     lateinit var imageGen2 : Bitmap
     lateinit var plantImgBitmap : Bitmap
@@ -111,71 +114,45 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
-            .name("appdb.realm") // 생성할 realm 파일 이름 지정
+            .name("plant.realm") // 생성할 realm 파일 이름 지정
             .deleteRealmIfMigrationNeeded()
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
 
-        var vo = realm.where(PlantModel::class.java).findFirst()
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
+
+        var vo = realmPlant.where(PlantModel::class.java).findFirst()
+        var vo2 = realmUser.where(UserModel::class.java).findFirst()
         var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+
+        if (emptyImg != null) {
+            userImgBitmap = emptyImg
+        }
 
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
-            userImgBitmap = byteArrayToBitmap(vo.userImage)
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg
+            }
+        }
+
+        if (vo2 != null) {
+            userImgBitmap = byteArrayToBitmap(vo2.userImage)
+        } else {
+            if (emptyImg != null) {
                 userImgBitmap = emptyImg
             }
         }
 
-
-        var urldown = "https://blog.kakaocdn.net/dn/cAuwVb/btqE7mYami5/cq6e0C7VxP1xS4kRN2AAu1/img.png"
-        var urldown2 = "https://d32gkk464bsqbe.cloudfront.net/photos/o/9e8eb83b35fa4dbaac68503c8f59f509ad273f21.png?v=6.4.4"
-
-
-        Glide.with(this)
-            .asBitmap()
-            .load(urldown)
-            .override(200,200)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    // 이미지 로드가 완료
-                    Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-                    imageGen1 = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
-            })
-
-        Glide.with(this)
-            .asBitmap()
-            .load(urldown2)
-            .override(200,200)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    // 이미지 로드가 완료
-                    Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-//                    imageGen = byteArrayToBitmap(P_Image)!!
-                    imageGen2 = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
-            })
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottomNavigation_main_menu)

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".App"
@@ -23,6 +24,9 @@
         tools:targetApi="33">
         <activity
             android:name=".PlantImageTempActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bluetooth_testActivity"
             android:exported="false" />
         <activity
             android:name=".SensorActivity"
