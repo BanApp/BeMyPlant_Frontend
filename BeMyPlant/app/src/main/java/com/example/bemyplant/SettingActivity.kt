@@ -17,10 +17,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
-import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -285,6 +285,12 @@ class SettingActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             showToast(this@SettingActivity, "회원탈퇴 되었습니다.")
                         }
+                        // 캐시 날리기
+
+                        val editor = sharedPreferences.edit()
+                        editor.clear()
+                        editor.apply()
+
                         // 최초 화면으로 이동 (MJ_main)
                         val homeIntent = Intent(this@SettingActivity, MJ_MainActivity::class.java)
                         startActivity(homeIntent)
@@ -336,10 +342,8 @@ class SettingActivity : AppCompatActivity() {
     //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
             }
 
-            // 비동기로 처리 ? (고려중)
-
             // 다이어리 db 삭제
-//            diaryRealmManager.deleteAll()
+            diaryRealmManager.deleteAll()
 
             // 식물 이미지 변경 (+)
             val deletePlant = R.drawable.delete_plant
