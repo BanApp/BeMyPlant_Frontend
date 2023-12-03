@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.DiaryModule
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
@@ -61,6 +62,13 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diary.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmDiary = Realm.getInstance(configDiary)
         diaryRealmManager = DiaryRealmManager(realmDiary)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
