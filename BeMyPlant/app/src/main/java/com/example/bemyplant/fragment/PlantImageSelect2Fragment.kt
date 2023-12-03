@@ -63,6 +63,7 @@ class PlantImageSelect2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         getImageGenerateData() // 이전 화면으로부터 넘어오는 데이터저장 (plantName, plantSpecies, plantColor, potCOlor)
+        val username = arguments?.getString("username").toString()
         Log.d("식물 이미지 가져옴", plantImageURLs.toString())
 
         binding.tagText.text = "#${plantSpecies}#${plantColor}#${potColor} 화분"
@@ -149,19 +150,33 @@ class PlantImageSelect2Fragment : Fragment() {
                 // sdhan : 등록번호 = 날짜 + 랜덤숫자
                 val regNum = "${regDate}-${range.random()}"
 
-                realm.executeTransaction {
-                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
-                }
+//                realm.executeTransaction {
+//                    it.where(PlantModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+//                }
 
-                realm.executeTransaction{
-                    with(it.createObject(PlantModel::class.java)){
-                        this.plantName = plantNameVar
-                        this.plantBirth = bitrhDate
-                        this.plantRace = plantSpecies
-                        this.plantImage = plantImgSelected
-                        this.plantRegNum = regNum
-                    }
-                }
+                val vo = realm.where(PlantModel::class.java).equalTo("userName", username).findFirst()
+//                realm.executeTransaction{
+//                    vo?.plantName = plantNameVar
+//                    vo?.plantBirth = bitrhDate
+//                    vo?.plantRace = plantSpecies
+//                    vo?.plantImage = plantImgSelected
+//                    vo?.plantRegNum = regNum
+//                }
+                realm.executeTransaction{ vo?.plantName = plantNameVar}
+                realm.executeTransaction{ vo?.plantBirth = bitrhDate}
+                realm.executeTransaction{ vo?.plantRace = plantSpecies}
+                realm.executeTransaction{ vo?.plantImage = plantImgSelected}
+                realm.executeTransaction{ vo?.plantRegNum = regNum}
+
+//                realm.executeTransaction{
+//                    with(it.createObject(PlantModel::class.java)){
+//                        this.plantName = plantNameVar
+//                        this.plantBirth = bitrhDate
+//                        this.plantRace = plantSpecies
+//                        this.plantImage = plantImgSelected
+//                        this.plantRegNum = regNum
+//                    }
+//                }
 
 //                var vo = realm.where(PlantModel::class.java).findFirst()
 //                realm.executeTransaction{ vo?.plantName = plantName}
@@ -176,7 +191,8 @@ class PlantImageSelect2Fragment : Fragment() {
                     "plantColor" to plantColor,
                     "potColor" to potColor,
                     "plantImageURLs" to plantImageURLs,
-                    "plantImgSelected" to plantImgSelected
+                    "plantImgSelected" to plantImgSelected,
+                    "username" to username
                 )
                 Log.d("bundle-f2", bundle.getString("plantName").toString())
                 Log.d("bundle-f2", bundle.getString("plantSpecies").toString())
@@ -188,8 +204,11 @@ class PlantImageSelect2Fragment : Fragment() {
 //                    R.id.action_plantImageSelect2Fragment_to_userImageSelect1Fragment,
 //                    bundle
 //                )
+                println("♥♥♥♥♥♥♥♥♥♥♥")
+                println(username)
                 // TODO: bundle 값 넘기게 수정
                 val intent = Intent(requireActivity(), TempConnectActivity::class.java)
+                intent.putExtra("username", username)
                 requireActivity().startActivity(intent)
             }
         }

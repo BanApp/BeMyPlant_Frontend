@@ -136,9 +136,15 @@ class MainActivity : AppCompatActivity() {
 
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
         val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
+        val username = intent.getStringExtra("username").toString()
+        println("♥♥♥♥♥♥♥♥♥♥♥")
+        println(username)
+//        val login_username = intent.getStringExtra("login_username").toString()
+        println("♥♥♥♥♥♥♥♥♥♥♥")
+//        println(login_username)
         val deletePlant = R.drawable.delete_plant
 
-        var dbPlant = realmPlant.where(PlantModel::class.java).findFirst()
+        var dbPlant = realmPlant.where(PlantModel::class.java).equalTo("userName", username).findFirst()
 
         if (dbPlant != null) {
 

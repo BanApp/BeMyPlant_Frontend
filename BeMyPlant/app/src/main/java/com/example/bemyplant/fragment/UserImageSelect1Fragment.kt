@@ -48,6 +48,7 @@ class UserImageSelect1Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        var username = arguments?.getString("username").toString()
 
         binding.nextButton.setOnClickListener {
             var gender: String = ""
@@ -93,10 +94,13 @@ class UserImageSelect1Fragment : Fragment() {
                         Log.d("사용자 이미지생성 결과", "원소 없음 !!")
                     }
                     val bundle = bundleOf(
+                        "username" to username,
                         "userImageURLs" to userImageURLs.user_image_urls,
                         "gender" to gender,
                         "characteristic" to characteristic
                     )
+                    println("♥♥♥♥♥♥♥♥♥♥♥")
+                    println(username)
                     Log.d("bundle-f3", bundle.getStringArrayList("userImageURLs").toString())
                     findNavController().navigate(
                         R.id.action_userImageSelect1Fragment_to_userImageSelect2Fragment,

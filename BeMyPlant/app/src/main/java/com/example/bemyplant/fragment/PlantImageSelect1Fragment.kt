@@ -16,7 +16,13 @@ import com.example.bemyplant.R
 import com.example.bemyplant.data.GeneratePlantImageRequest
 import com.example.bemyplant.data.GeneratePlantImageResponse
 import com.example.bemyplant.databinding.FragmentPlantImageSelect1Binding
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,9 +33,11 @@ import kotlinx.coroutines.withContext
 class PlantImageSelect1Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect1Binding.inflate((layoutInflater))}
     private val retrofitService = RetrofitService().apiService2
+    private lateinit var realm : Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -41,6 +49,7 @@ class PlantImageSelect1Fragment : Fragment() {
             val plantSpecies = binding.question2Edit.text.toString()
             val plantColor = binding.question3Edit.text.toString()
             val potColor = binding.question4Edit.text.toString()
+            val username = arguments?.getString("username").toString()
 
 
             if (plantName == "" ){
@@ -78,12 +87,20 @@ class PlantImageSelect1Fragment : Fragment() {
                             Log.d("식물 이미지생성 결과", "원소 없음 !!")
                         }
 
-                        val bundle = bundleOf("plantName" to plantName, "plantSpecies" to plantSpecies, "plantColor" to plantColor, "potColor" to potColor, "plantImageURLs" to plantImageURLs.plant_image_urls)
+                        val bundle = bundleOf(
+                            "plantSpecies" to plantSpecies,
+                            "plantColor" to plantColor,
+                            "potColor" to potColor,
+                            "plantImageURLs" to plantImageURLs.plant_image_urls,
+                            "username" to username
+                        )
                         Log.d("bundle-f1", bundle.getString("plantName").toString())
                         Log.d("bundle-f1", bundle.getString("plantSpecies").toString())
                         Log.d("bundle-f1", bundle.getString("plantColor").toString())
                         Log.d("bundle-f1", bundle.getString("potColor").toString())
                         Log.d("bundle-f1", bundle.getStringArrayList("plantImageURLs").toString())
+                        println("♥♥♥♥♥♥♥♥♥♥♥")
+                        println(username)
                         findNavController().navigate(R.id.action_plantImageSelect1Fragment2_to_plantImageSelect2Fragment2, bundle)
 
                     }
@@ -136,14 +153,5 @@ class PlantImageSelect1Fragment : Fragment() {
         }
 
         return deferred.await()
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            PlantImageSelect1Fragment().apply {
-                arguments = Bundle().apply { }
-            }
     }
 }

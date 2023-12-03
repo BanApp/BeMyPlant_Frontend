@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
@@ -37,8 +38,15 @@ class BluetoothReadyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val username = arguments?.getString("username").toString()
+        val bundle = bundleOf(
+            "username" to username
+        )
         binding.plantButton.setOnClickListener{
+            println("♥♥♥♥♥♥♥♥♥♥♥")
+            println(username)
             val intent = Intent(requireActivity(), MainActivity::class.java)
+            intent.putExtra("username", username)
             requireActivity().startActivity(intent)
         }
     }

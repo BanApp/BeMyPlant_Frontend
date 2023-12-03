@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
@@ -44,8 +45,14 @@ class BluetoothSend2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val username = arguments?.getString("username").toString()
+        val bundle = bundleOf(
+            "username" to username
+        )
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_bS2Fragment2_to_bS3Fragment2)
+            println("♥♥♥♥♥♥♥♥♥♥♥")
+            println(username)
+            findNavController().navigate(R.id.action_bS2Fragment2_to_bS3Fragment2, bundle)
         },delayMillis)
     }
 

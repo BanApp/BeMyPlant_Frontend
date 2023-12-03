@@ -9,14 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
 import com.example.bemyplant.data.LoginData
 import com.example.bemyplant.data.SignUpData
 import com.example.bemyplant.databinding.FragmentSignUp2Binding
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +32,8 @@ import java.util.Date
 
 
 class SignUp2Fragment : Fragment() {
-    lateinit var realm : Realm
+    lateinit var realmUser : Realm
+    lateinit var realmPlant : Realm
     val binding by lazy{FragmentSignUp2Binding.inflate((layoutInflater))}
     lateinit var username : String
     lateinit var pw : String
@@ -35,6 +42,21 @@ class SignUp2Fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
+
+        val configPlant : RealmConfiguration = RealmConfiguration.Builder()
+            .name("plant.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(PlantModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmPlant = Realm.getInstance(configPlant)
     }
     /*
     * 입력받은*/
@@ -153,8 +175,22 @@ class SignUp2Fragment : Fragment() {
                         // 로그인 시도
 //                        var loginData: LoginData = LoginData(username, pw)
 //                        login(loginData)
+                        realmUser.executeTransaction{
+                            with(it.createObject(UserModel::class.java)){
+                                this.userName = username
+                            }
+                        }
 
-                        findNavController().navigate(R.id.action_s2Fragment_to_userImageSelect1Fragment)
+                        realmPlant.executeTransaction{
+                            with(it.createObject(PlantModel::class.java)){
+                                this.userName = username
+                            }
+                        }
+                        val bundle = bundleOf("username" to username)
+                        println("♥♥♥♥♥♥♥♥♥♥♥")
+                        println(username)
+
+                        findNavController().navigate(R.id.action_s2Fragment_to_userImageSelect1Fragment, bundle)
                     }
                 } else {
                     // 회원 가입 실패

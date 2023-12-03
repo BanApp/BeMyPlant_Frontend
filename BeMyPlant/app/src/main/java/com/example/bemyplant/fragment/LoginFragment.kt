@@ -98,6 +98,7 @@ class LoginFragment : Fragment() {
                         editor?.apply()
 
                         val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra("username", loginData.username)
                         requireActivity().startActivity(intent)
 
                     }

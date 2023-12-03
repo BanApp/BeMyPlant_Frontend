@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.ConnectedBluetoothThread
@@ -45,8 +46,14 @@ class BluetoothConnectFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val username = arguments?.getString("username").toString()
+        val bundle = bundleOf(
+            "username" to username
+        )
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_bCFragment2_to_bSFragment2)
+            println("♥♥♥♥♥♥♥♥♥♥♥")
+            println(username)
+            findNavController().navigate(R.id.action_bCFragment2_to_bSFragment2, bundle)
         }
 
 //        ConnectedBluetoothThread.mBluetoothHandler = object : Handler() {

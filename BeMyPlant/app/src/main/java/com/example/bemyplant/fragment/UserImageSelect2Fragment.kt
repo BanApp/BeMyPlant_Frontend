@@ -73,6 +73,7 @@ class UserImageSelect2Fragment : Fragment() {
         realm = Realm.getInstance(configUser)
 
         // 이전화면에서 넘어온 데이터 저장 (성별, 특징, url)
+        var username = arguments?.getString("username").toString()
         gender = arguments?.getString("gender").toString()
         characteristic = arguments?.getString("characteristic").toString()
         userImageURLs = arguments?.getStringArrayList("userImageURLs") ?: emptyList<String>()
@@ -142,17 +143,19 @@ class UserImageSelect2Fragment : Fragment() {
                 saveBitmapToFile(requireContext(), selectedImage!!)
                 userImgSelected = bitmapToByteArray(selectedImage!!)
 
-                realm.executeTransaction {
-                    it.where(UserModel::class.java).findAll().deleteAllFromRealm() //전부지우기
-                }
+//                realm.executeTransaction {
+//                    it.where(UserModel::class.java).findAll().deleteAllFromRealm() //전부지우기
+//                }
 
+                val vo = realm.where(UserModel::class.java).equalTo("userName", username).findFirst()
                 realm.executeTransaction{
-                    with(it.createObject(UserModel::class.java)){
-                        this.userImage = userImgSelected
-                    }
+                    vo?.userImage = userImgSelected
                 }
+                println("♥♥♥♥♥♥♥♥♥♥♥")
+                println(username)
 
                 val intent = Intent(requireActivity(), PlantImageTempActivity::class.java)
+                intent.putExtra("username", username)
                 requireActivity().startActivity(intent)
 
             }

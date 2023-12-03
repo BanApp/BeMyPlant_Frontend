@@ -58,5 +58,9 @@
         android:id="@+id/userImageSelect2Fragment"
         android:name="com.example.bemyplant.fragment.UserImageSelect2Fragment"
         android:label="fragment_user_image_select2"
-        tools:layout="@layout/fragment_user_image_select2" />
+        tools:layout="@layout/fragment_user_image_select2" >
+        <action
+            android:id="@+id/action_userImageSelect2Fragment_to_plantImageSelect1Fragment2"
+            app:destination="@id/plantImageSelect1Fragment2" />
+    </fragment>
 </navigation>

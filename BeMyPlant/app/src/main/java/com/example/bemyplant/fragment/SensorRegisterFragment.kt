@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.R
@@ -37,8 +38,14 @@ class SensorRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val username = arguments?.getString("username").toString()
+        val bundle = bundleOf(
+            "username" to username
+        )
         binding.finishButton.setOnClickListener {
-            findNavController().navigate(R.id.action_sRFragment_to_bCFragment2)
+            println("♥♥♥♥♥♥♥♥♥♥♥")
+            println(username)
+            findNavController().navigate(R.id.action_sRFragment_to_bCFragment2, bundle)
         }
         // 버튼 클릭시, 각각 센서에 대한 설명 보이도록 구현
         binding.luminousButton.setOnClickListener {

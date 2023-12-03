@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.ConnectedBluetoothThread
@@ -34,7 +35,10 @@ class BluetoothSend1Fragment : Fragment() {
         userIdEdit = binding.userIdEdit.text.toString()
         userPwEdit = binding.userPwEdit.text.toString()
 */
-
+        val username = arguments?.getString("username").toString()
+        val bundle = bundleOf(
+            "username" to username
+        )
 
         binding.finishButton.setOnClickListener {
             wifiEdit = binding.editTextWifiSsid.text.toString()
@@ -49,7 +53,9 @@ class BluetoothSend1Fragment : Fragment() {
                 showToast("전송 성공")
                 // 만일 보내기 성공 시 화면이동
                 // findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
-                findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2)
+                println("♥♥♥♥♥♥♥♥♥♥♥")
+                println(username)
+                findNavController().navigate(R.id.action_bSFragment2_to_bS2Fragment2, bundle)
             }
         }
 
