@@ -34,11 +34,11 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-data class PlantImage(val resourceId: Int, val description: String) // TODO: DB 연동 후 삭제
+data class PlantImage(val resourceId: Int?, val description: String)
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var currentPlantImage: PlantImage // TODO: DB 연동 후 삭제
+    private lateinit var currentPlantImage: PlantImage
     private lateinit var regenerateButton: ImageButton
 
     private lateinit var mainFlowerImgBtn: ImageButton
@@ -133,6 +133,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
+        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
+        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        strangeConText = findViewById<TextView>(R.id.strangeConText)
+        strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
+        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
+        plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
+
+        statusImages = arrayOf(
+            findViewById<ImageView>(R.id.statusImage1),
+            findViewById<ImageView>(R.id.statusImage2),
+            findViewById<ImageView>(R.id.statusImage3),
+        )
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("appdb.realm") // 생성할 realm 파일 이름 지정
@@ -142,47 +154,18 @@ class MainActivity : AppCompatActivity() {
             .build()
         realm = Realm.getInstance(configPlant)
 
-        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
-        plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
-
-        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
-        statusText.text =  "???"
-        currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image")
-
         plantName = ""
         plantBirth = ""
         plantRace = ""
         plantImage = byteArrayOf()
         plantRegistration = ""
-        regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
-        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
-        //plantName = findViewById<TextView>(R.id.textView_main_flowerName)
-        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
-        strangeConText = findViewById<TextView>(R.id.strangeConText)
-        strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
-        plantRace = "해바라기"
-        plantRegistration = "2023-11-29"
-        statusImages = arrayOf(
-            findViewById<ImageView>(R.id.statusImage1),
-            findViewById<ImageView>(R.id.statusImage2),
-            findViewById<ImageView>(R.id.statusImage3),
-        )
+
 
         // main image 설정
-        //mainFlower.setImageResource(R.drawable.flower)
-        //mainFlower.setImageResource(R.drawable.delete_plant)
-        //mainFlower.setImageResource(R.drawable.sea_otter)
-        //mainFlower.setImageResource(R.drawable.test_img)
-        //R.drawable.flower
-        // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
+        // 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
-        //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
 
         var vo = realm.where(PlantModel::class.java).findFirst()
-
-        //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
-        //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
-        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
@@ -197,7 +180,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
-        val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
+        //val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
         val deletePlant = R.drawable.delete_plant
         if (vo != null) {
 
@@ -206,18 +189,20 @@ class MainActivity : AppCompatActivity() {
             plantRace = vo.plantRace
             plantImage = vo.plantImage
             plantRegistration = vo.plantRegNum
-//
+
             plantNameTextView.text = plantName // 이름
             var transImageToBitmap = byteArrayToBitmap(plantImage)
             mainFlowerImgBtn.setImageBitmap(transImageToBitmap)
-            currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
-//
+            currentPlantImage = PlantImage(null, "Image from DB")
+
         } else {
             plantNameTextView.text = ""
             plantBirth = "???"
             plantRace = ""
             mainFlowerImgBtn.setImageResource(deletePlant)
             plantRegistration = ""
+
+            currentPlantImage = PlantImage(R.drawable.delete_plant, "Delete Image")
         }
 //
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
@@ -242,34 +227,17 @@ class MainActivity : AppCompatActivity() {
             textView_dDayValue.text = "???"
         }
 
-        if (newPlantImageResId != 0) { // 현재 이미지와 다른 이미지값이 들어온다면
-            currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
-            updateMainFlower(newPlantImageResId)
-        }
         //----------메인화면에서 식물 이미지 값에 따라 특정 화면 전환
         mainFlowerImgBtn.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
 
-            when (currentPlantImage){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
-                PlantImage(R.drawable.delete_plant, "Default Image") -> {
-
-                    // 프래그먼트 이동
-//                    val plantImageSelect1Fragment = PlantImageSelect1Fragment()
-//                    fragmentTransaction.add(R.id.plantImageSelect1Fragment, plantImageSelect1Fragment)
-//                    fragmentTransaction.addToBackStack(null)
-//                    fragmentTransaction.commit()
-//                    screenFrame.bringToFront()
+            when (currentPlantImage.resourceId){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
+                R.drawable.delete_plant -> {
 
                     val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
                     // 액티비티 이동
-                    //val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
                     startActivity(plantRegisterIntent)
-
-                    //fragmentTransaction.add(R.id.screenFrame, fragment)
-                    //fragmentTransaction.addToBackStack(null)
-                    //fragmentTransaction.commit()
-                    //screenFrame!!.bringToFront()
 
                 }
                 else -> {
@@ -286,12 +254,10 @@ class MainActivity : AppCompatActivity() {
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()
                     screenFrame.bringToFront()
-
                 }
-
             }
-
         }
+
 
 
         //------------------------상태에 관한 텍스트 클릭시 , 센서 화면으로 이동
