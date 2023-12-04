@@ -22,6 +22,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -56,8 +57,10 @@ class SensorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sensor)
 
+
+
         regenButton = findViewById(R.id.imageButton_sensor_regen)
-        temperButton =findViewById(R.id.Button_sensor_temperature)
+        temperButton = findViewById(R.id.Button_sensor_temperature)
         humidButton = findViewById(R.id.Button_sensor_humidity)
         lightButton = findViewById(R.id.Button_sensor_light)
         soilHumidButton = findViewById(R.id.Button_sensor_soilHumidity)
@@ -85,7 +88,7 @@ class SensorActivity : AppCompatActivity() {
         }
 
         // 완료 버튼 클릭 시 메인 화면으로 이동
-        completeButton.setOnClickListener{
+        completeButton.setOnClickListener {
             val homeIntent = Intent(this@SensorActivity, MainActivity::class.java)
             startActivity(homeIntent)
         }
@@ -98,85 +101,97 @@ class SensorActivity : AppCompatActivity() {
         }
 
         // 온도 버튼 클릭 시 온도 그래프 그리기
-        temperButton.setOnClickListener{
-            if (todayTempers.isNullOrEmpty() or todayTempersLabel.isNullOrEmpty()){
+        temperButton.setOnClickListener {
+            if (todayTempers.isNullOrEmpty() or todayTempersLabel.isNullOrEmpty()) {
 
                 getSensorDatas() // api call
 
-                if(todayTempers.isNullOrEmpty() or todayTempersLabel.isNullOrEmpty() ){
+                if (todayTempers.isNullOrEmpty() or todayTempersLabel.isNullOrEmpty()) {
                     // 그래프를 가져올 수 없습니다
                     graphErrText.visibility = View.VISIBLE
                     sensorErrText.visibility = View.INVISIBLE
                     lineChart.visibility = View.INVISIBLE
                 }
             }
-            drawChart(todayTempers, todayTempersLabel)
+            else{
+                drawChart(todayTempers, todayTempersLabel)
+            }
         }
 
         // 습도 버튼 클릭 시 습도 그래프 그리기
-        humidButton.setOnClickListener{
-            if (todayHumids.isNullOrEmpty()or todayHumidsLabel.isNullOrEmpty() ){
+        humidButton.setOnClickListener {
+            if (todayHumids.isNullOrEmpty() or todayHumidsLabel.isNullOrEmpty()) {
 
                 getSensorDatas() // api call
 
-                if(todayHumids.isNullOrEmpty() or todayHumidsLabel.isNullOrEmpty() ){
+                if (todayHumids.isNullOrEmpty() or todayHumidsLabel.isNullOrEmpty()) {
                     // 그래프를 가져올 수 없습니다
                     graphErrText.visibility = View.VISIBLE
                     sensorErrText.visibility = View.INVISIBLE
                     lineChart.visibility = View.INVISIBLE
                 }
             }
-            drawChart(todayHumids, todayHumidsLabel)
+            else{
+                drawChart(todayHumids, todayHumidsLabel)
+            }
         }
 
         // 조도 버튼 클릭 시 조도 그래프 그리기
-        lightButton.setOnClickListener{
-            if (todayLights.isNullOrEmpty() or todayLightsLabel.isNullOrEmpty()){
+        lightButton.setOnClickListener {
+            if (todayLights.isNullOrEmpty() or todayLightsLabel.isNullOrEmpty()) {
 
                 getSensorDatas() // api call
 
-                if(todayLights.isNullOrEmpty() or todayLightsLabel.isNullOrEmpty() ){
+                if (todayLights.isNullOrEmpty() or todayLightsLabel.isNullOrEmpty()) {
                     // 그래프를 가져올 수 없습니다
                     graphErrText.visibility = View.VISIBLE
                     sensorErrText.visibility = View.INVISIBLE
                     lineChart.visibility = View.INVISIBLE
                 }
             }
-            drawChart(todayLights, todayLightsLabel)
+            else{
+                drawChart(todayLights, todayLightsLabel)
+            }
         }
 
         // 토양 습도 버튼 클릭 시 조도 그래프 그리기
-        soilHumidButton.setOnClickListener{
-            if (todaySoilHumids.isNullOrEmpty() or todaySoilHumidsLabel.isNullOrEmpty()){
+        soilHumidButton.setOnClickListener {
+            if (todaySoilHumids.isNullOrEmpty() or todaySoilHumidsLabel.isNullOrEmpty()) {
 
                 getSensorDatas() // api call
 
-                if(todaySoilHumids.isNullOrEmpty() or todaySoilHumidsLabel.isNullOrEmpty() ){
+                if (todaySoilHumids.isNullOrEmpty() or todaySoilHumidsLabel.isNullOrEmpty()) {
                     // 그래프를 가져올 수 없습니다
                     graphErrText.visibility = View.VISIBLE
                     sensorErrText.visibility = View.INVISIBLE
                     lineChart.visibility = View.INVISIBLE
                 }
             }
-            drawChart(todaySoilHumids, todaySoilHumidsLabel)
+            else{
+                drawChart(todaySoilHumids, todaySoilHumidsLabel)
+            }
         }
     }
 
 
     private fun drawChart(values: List<Double>, labels: List<String>) {
+        Log.d("chart value:", values.toString())
+        Log.d("chart label:", labels.toString())
+
         // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
         sensorErrText.visibility = View.INVISIBLE
         graphErrText.visibility = View.INVISIBLE
         lineChart.visibility = View.VISIBLE
 
         //그래프 그리기
-        lineChart.xAxis.valueFormatter= IndexAxisValueFormatter(labels)
+        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         var entries = ArrayList<Entry>()
-        for(i in values.indices){
+        for (i in values.indices) {
             entries.add(Entry(i.toFloat(), values[i].toFloat()))
         }
-        val dataset= LineDataSet(entries, "")
+        val dataset = LineDataSet(entries, "")
         val data = LineData(dataset)
+
         lineChart.data = data
         lineChart.invalidate()
     }
@@ -190,7 +205,7 @@ class SensorActivity : AppCompatActivity() {
         Log.d(Tag, "token: $token")
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
-        if (token.isNullOrEmpty()){
+        if (token.isNullOrEmpty()) {
             val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
             startActivity(homeIntent)
         }
@@ -200,7 +215,8 @@ class SensorActivity : AppCompatActivity() {
 
         // 현재 시간 기준으로 0시부터의 경과 시간을 계산하여 데이터 가져오기
         val dataCountPerDay = calculateDataCountPerDay(collectingInterval)
-        val dataNumsToCollect = dataCountPerDay - (minutesFromMidnight / collectingInterval) // 샌서 가져올 횟수
+        val dataNumsToCollect =
+            dataCountPerDay - (minutesFromMidnight / collectingInterval) // 샌서 가져올 횟수
 
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -220,21 +236,278 @@ class SensorActivity : AppCompatActivity() {
             Log.d(Tag, "sensor raw-response: $response")
 
             if (response.isSuccessful) {
+                var sensorDataListToday:ArrayList<SensorData> = ArrayList(0)
                 val sensorDataList = response.body()
                 if (!sensorDataList.isNullOrEmpty()) {
-                    val averagesLists = calculateHourlyAverages(sensorDataList)
+                    for (sensorData in sensorDataList) {
+                        val date =
+                            LocalDateTime.parse(sensorData.date, DateTimeFormatter.ISO_DATE_TIME)
+                        if (!checkDateMatch(date)) {
+                            // 현재 날짜에 해당하는 센서값이 아님
+                            continue
+                        }
+                        sensorDataListToday.add(sensorData)
+                    }
 
-                    todaySoilHumids = averagesLists.todaySoilHumids
-                    todayTempers = averagesLists.todayTempers
-                    todayHumids = averagesLists.todayHumids
-                    todayLights = averagesLists.todayLights
-                    todaySoilHumidsLabel = averagesLists.todaySoilHumidsLabel
-                    todayTempersLabel = averagesLists.todayTempersLabel
-                    todayHumidsLabel = averagesLists.todayHumidsLabel
-                    todayLightsLabel = averagesLists.todayLightsLabel
+                    Log.d("chart sensorDataListToday", sensorDataListToday.toString())
+                    if (!sensorDataListToday.isNullOrEmpty()){
+                        val averagesLists = calculateHourlyAverages(sensorDataListToday)
+                        Log.d("chart averagesLists", averagesLists.toString())
+
+                        todaySoilHumids = averagesLists.todaySoilHumids
+                        todayTempers = averagesLists.todayTempers
+                        todayHumids = averagesLists.todayHumids
+                        todayLights = averagesLists.todayLights
+                        todaySoilHumidsLabel = averagesLists.todaySoilHumidsLabel
+                        todayTempersLabel = averagesLists.todayTempersLabel
+                        todayHumidsLabel = averagesLists.todayHumidsLabel
+                        todayLightsLabel = averagesLists.todayLightsLabel
+                    }
+                    else{
+                        todaySoilHumids = emptyList()
+                        todayTempers = emptyList()
+                        todayHumids = emptyList()
+                        todayLights = emptyList()
+                        todaySoilHumidsLabel = emptyList()
+                        todayTempersLabel = emptyList()
+                        todayHumidsLabel = emptyList()
+                        todayLightsLabel = emptyList()
+                    }
                 }
             }
         }
+
+    }
+    // setNewSensorData function calls sensor API & set textViews(temper, humid, light, soilHumid).
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun setNewSensorData() {
+        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val Tag: String = "sensor"
+        Log.d(Tag, "token: $token")
+
+        // 토큰 부재 시 초기화면(MJ_main)으로 전환
+        if (token.isNullOrEmpty()) {
+            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+        }
+        // api call to get sensor data
+        val response = retrofitService.getSensorData(1, "Bearer " + token)
+        // HTTP 오류 코드에 대한 처리
+        if (response.code() == 401) {
+            // 401 Unauthorized 오류 처리
+            // 첫 화면으로 (로그인 시도 화면) 이동
+            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
+            startActivity(homeIntent)
+        } else {
+            // TODO: 센서 데이터 api call - 다른 HTTP 오류 코드에 대한 처리
+        }
+
+        Log.d(Tag, "sensor raw-response: $response")
+
+
+        checkIfSensorDataIsLatest(this) { isLatest ->
+            if (!isLatest) {
+                Log.d("latest", "not latest")
+                // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
+                sensorErrText.visibility = View.VISIBLE
+                graphErrText.visibility = View.INVISIBLE
+                lineChart.visibility = View.INVISIBLE
+
+                runOnUiThread {
+                    humidButton.text = "습도\n" + "??"
+                    lightButton.text =
+                        "조도\n" + "??"
+                    soilHumidButton.text =
+                        "토양습도\n" + "??"
+                    temperButton.text = "온도\n" + "??"
+
+                    // 화면 갱신
+                    humidButton.invalidate()
+                    lightButton.invalidate()
+                    soilHumidButton.invalidate()
+                    temperButton.invalidate()
+                }
+            } else {
+                Log.d("latest", "not latest")
+                // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
+                sensorErrText.visibility = View.INVISIBLE
+                graphErrText.visibility = View.INVISIBLE
+                //lineChart.visibility = View.VISIBLE
+                if (response.isSuccessful) {
+                    val sensorDataList = response.body()
+                    // 1. date값
+                    //가장 최근 시간
+                    if (!sensorDataList.isNullOrEmpty()) {
+                        val mostRecentData = sensorDataList.firstOrNull()
+
+                        Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+                        Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+                        Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+                        Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
+
+                        runOnUiThread {
+                            humidButton.text =
+                                "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
+                            lightButton.text =
+                                "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
+                            soilHumidButton.text =
+                                "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+                            temperButton.text =
+                                "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
+
+                            // 화면 갱신
+                            humidButton.invalidate()
+                            lightButton.invalidate()
+                            soilHumidButton.invalidate()
+                            temperButton.invalidate()
+                        }
+                    }
+                    // 현재 센서가 최신의 것인지 check
+                    /*
+                checkIfSensorDataIsLatest(this) { isLatest ->
+                    if (!isLatest) {
+                        // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
+                        sensorErrText.visibility = View.VISIBLE
+                        graphErrText.visibility = View.INVISIBLE
+                        lineChart.visibility = View.INVISIBLE
+
+                        runOnUiThread {
+                            humidButton.text = "습도\n" + "??"
+                            lightButton.text =
+                                "조도\n" + "??"
+                            soilHumidButton.text =
+                                "토양습도\n" + "??"
+                            temperButton.text = "온도\n" + "??"
+
+                            // 화면 갱신
+                            humidButton.invalidate()
+                            lightButton.invalidate()
+                            soilHumidButton.invalidate()
+                            temperButton.invalidate()
+                        }
+
+                    } else {
+                        // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
+                        sensorErrText.visibility = View.INVISIBLE
+                        graphErrText.visibility = View.INVISIBLE
+                        lineChart.visibility = View.VISIBLE
+                        }
+                        val sensorDataList = response.body()
+                        // 1. date값
+                        //가장 최근 시간
+                        if (!sensorDataList.isNullOrEmpty()) {
+                            val mostRecentData = sensorDataList.firstOrNull()
+
+                            Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+                            Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+                            Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+                            Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
+
+                            runOnUiThread {
+                                humidButton.text =
+                                    "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
+                                lightButton.text =
+                                    "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
+                                soilHumidButton.text =
+                                    "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+                                temperButton.text =
+                                    "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
+
+                                // 화면 갱신
+                                humidButton.invalidate()
+                                lightButton.invalidate()
+                                soilHumidButton.invalidate()
+                                temperButton.invalidate()
+                            }
+                        }
+
+        */
+                }
+            }
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun checkDateMatch(sensorDate: LocalDateTime): Boolean {
+        // 현재 날짜 구하기
+        val currentDate = LocalDate.now()
+
+        // 년, 월, 일 비교
+        return currentDate.year == sensorDate.year &&
+                currentDate.month == sensorDate.month &&
+                currentDate.dayOfMonth == sensorDate.dayOfMonth
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun calculateHourlyAverages(sensorDataList: List<SensorData>): HourlyAveragesLists {
+        val hourlyAverages = mutableMapOf<Int, SensorHourlyAverages>()
+
+        // 데이터 그룹화 및 평균 계산
+        for (sensorData in sensorDataList) {
+            val date = LocalDateTime.parse(sensorData.date, DateTimeFormatter.ISO_DATE_TIME)
+            if (!checkDateMatch(date)) {
+                // 현재 날짜에 해당하는 센서값이 아님
+                continue
+            }
+            val hour = date.hour
+
+            val currentAverage =
+                hourlyAverages[hour] ?: SensorHourlyAverages(hour, 0.0, 0.0, 0.0, 0.0)
+
+            hourlyAverages[hour] = currentAverage.copy(
+                airTemp = currentAverage.airTemp + sensorData.airTemp,
+                airHumid = currentAverage.airHumid + sensorData.airHumid,
+                soilHumid = currentAverage.soilHumid + sensorData.soilHumid,
+                lightIntensity = currentAverage.lightIntensity + sensorData.lightIntensity
+            )
+        }
+
+        // 결과 리스트 생성
+        val todaySoilHumids = mutableListOf<Double>()
+        val todayTempers = mutableListOf<Double>()
+        val todayHumids = mutableListOf<Double>()
+        val todayLights = mutableListOf<Double>()
+        val todaySoilHumidsLabel = mutableListOf<String>()
+        val todayTempersLabel = mutableListOf<String>()
+        val todayHumidsLabel = mutableListOf<String>()
+        val todayLightsLabel = mutableListOf<String>()
+
+        for (hour in 0..23) {
+            val currentAverage =
+                hourlyAverages[hour] ?: SensorHourlyAverages(hour, 0.0, 0.0, 0.0, 0.0)
+
+            // 센서 종류별 평균 계산
+            val totalCount = sensorDataList.count {
+                LocalDateTime.parse(
+                    it.date,
+                    DateTimeFormatter.ISO_DATE_TIME
+                ).hour == hour
+            }
+            val average = currentAverage.copy(
+                airTemp = currentAverage.airTemp / totalCount,
+                airHumid = currentAverage.airHumid / totalCount,
+                soilHumid = currentAverage.soilHumid / totalCount,
+                lightIntensity = currentAverage.lightIntensity / totalCount
+            )
+
+            todaySoilHumids.add(average.soilHumid)
+            todayTempers.add(average.airTemp)
+            todayHumids.add(average.airHumid)
+            todayLights.add(average.lightIntensity)
+            todaySoilHumidsLabel.add(hour.toString() + "시")
+            todayTempersLabel.add(hour.toString() + "시")
+            todayHumidsLabel.add(hour.toString() + "시")
+            todayLightsLabel.add(hour.toString() + "시")
+        }
+
+        return HourlyAveragesLists(
+            todaySoilHumids, todayTempers, todayHumids, todayLights,
+            todaySoilHumidsLabel, todayTempersLabel, todayHumidsLabel, todayLightsLabel
+        )
     }
 
     // 0시를 기준으로 몇 분이 지났는지 측정
@@ -271,155 +544,7 @@ class SensorActivity : AppCompatActivity() {
         val todayLightsLabel: List<String>
     )
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun calculateHourlyAverages(sensorDataList: List<SensorData>): HourlyAveragesLists {
-        val hourlyAverages = mutableMapOf<Int, SensorHourlyAverages>()
-
-        // 데이터 그룹화 및 평균 계산
-        for (sensorData in sensorDataList) {
-            val date = LocalDateTime.parse(sensorData.date, DateTimeFormatter.ISO_DATE_TIME)
-            val hour = date.hour
-
-            val currentAverage = hourlyAverages[hour] ?: SensorHourlyAverages(hour, 0.0, 0.0, 0.0, 0.0)
-
-            hourlyAverages[hour] = currentAverage.copy(
-                airTemp = currentAverage.airTemp + sensorData.airTemp,
-                airHumid = currentAverage.airHumid + sensorData.airHumid,
-                soilHumid = currentAverage.soilHumid + sensorData.soilHumid,
-                lightIntensity = currentAverage.lightIntensity + sensorData.lightIntensity
-            )
-        }
-
-        // 결과 리스트 생성
-        val todaySoilHumids = mutableListOf<Double>()
-        val todayTempers = mutableListOf<Double>()
-        val todayHumids = mutableListOf<Double>()
-        val todayLights = mutableListOf<Double>()
-        val todaySoilHumidsLabel = mutableListOf<String>()
-        val todayTempersLabel = mutableListOf<String>()
-        val todayHumidsLabel = mutableListOf<String>()
-        val todayLightsLabel = mutableListOf<String>()
-
-        for (hour in 0..23) {
-            val currentAverage = hourlyAverages[hour] ?: SensorHourlyAverages(hour, 0.0, 0.0, 0.0, 0.0)
-
-            // 센서 종류별 평균 계산
-            val totalCount = sensorDataList.count { LocalDateTime.parse(it.date, DateTimeFormatter.ISO_DATE_TIME).hour == hour }
-            val average = currentAverage.copy(
-                airTemp = currentAverage.airTemp / totalCount,
-                airHumid = currentAverage.airHumid / totalCount,
-                soilHumid = currentAverage.soilHumid / totalCount,
-                lightIntensity = currentAverage.lightIntensity / totalCount
-            )
-
-            todaySoilHumids.add(average.soilHumid)
-            todayTempers.add(average.airTemp)
-            todayHumids.add(average.airHumid)
-            todayLights.add(average.lightIntensity)
-            todaySoilHumidsLabel.add(hour.toString() + "시")
-            todayTempersLabel.add(hour.toString() + "시")
-            todayHumidsLabel.add(hour.toString() + "시")
-            todayLightsLabel.add(hour.toString() + "시")
-        }
-
-        return HourlyAveragesLists(
-            todaySoilHumids, todayTempers, todayHumids, todayLights,
-            todaySoilHumidsLabel, todayTempersLabel, todayHumidsLabel, todayLightsLabel
-        )
-    }
-    
-
-    // setNewSensorData function calls sensor API & set textViews(temper, humid, light, soilHumid).
-    @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun setNewSensorData() {
-        val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("token", null)
-        val Tag: String = "sensor"
-        Log.d(Tag, "token: $token")
-
-        // 토큰 부재 시 초기화면(MJ_main)으로 전환
-        if (token.isNullOrEmpty()){
-            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
-            startActivity(homeIntent)
-        }
-        // api call to get sensor data
-        val response = retrofitService.getSensorData(1, "Bearer " + token)
-        // HTTP 오류 코드에 대한 처리
-        if (response.code() == 401) {
-            // 401 Unauthorized 오류 처리
-            // 첫 화면으로 (로그인 시도 화면) 이동
-            val homeIntent = Intent(this@SensorActivity, MJ_MainActivity::class.java)
-            startActivity(homeIntent)
-        } else {
-            // TODO: 센서 데이터 api call - 다른 HTTP 오류 코드에 대한 처리
-        }
-
-        Log.d(Tag, "sensor raw-response: $response")
-
-
-        if (response.isSuccessful) {
-            // 현재 센서가 최신의 것인지 check
-            checkIfSensorDataIsLatest(this) { isLatest ->
-                if (!isLatest) {
-                    // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
-                    sensorErrText.visibility = View.VISIBLE
-                    graphErrText.visibility = View.INVISIBLE
-                    lineChart.visibility = View.INVISIBLE
-
-                    runOnUiThread {
-                        humidButton.text = "습도\n" + "??"
-                        lightButton.text =
-                            "조도\n" + "??"
-                        soilHumidButton.text =
-                            "토양습도\n" + "??"
-                        temperButton.text = "온도\n" + "??"
-
-                        // 화면 갱신
-                        humidButton.invalidate()
-                        lightButton.invalidate()
-                        soilHumidButton.invalidate()
-                        temperButton.invalidate()
-                    }
-
-                } else {
-                    // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
-                    sensorErrText.visibility = View.INVISIBLE
-                    graphErrText.visibility = View.INVISIBLE
-                    lineChart.visibility = View.VISIBLE
-
-                    val sensorDataList = response.body()
-                    // 1. date값
-                    //가장 최근 시간
-                    if (!sensorDataList.isNullOrEmpty()) {
-                        val mostRecentData = sensorDataList.firstOrNull()
-
-                        Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
-                        Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
-                        Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
-                        Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
-
-                        runOnUiThread {
-                            humidButton.text =
-                                "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
-                            lightButton.text =
-                                "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
-                            soilHumidButton.text =
-                                "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
-                            temperButton.text =
-                                "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
-
-                            // 화면 갱신
-                            humidButton.invalidate()
-                            lightButton.invalidate()
-                            soilHumidButton.invalidate()
-                            temperButton.invalidate()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+}
 
 
 
@@ -545,5 +670,3 @@ class SensorActivity : AppCompatActivity() {
         }
     }
     */
-
-}
