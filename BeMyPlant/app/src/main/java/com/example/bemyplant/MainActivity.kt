@@ -19,10 +19,8 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bemyplant.data.StatusData
-import com.example.bemyplant.data.checkIfSensorDataIsLatest
 import com.example.bemyplant.fragment.FlowerIdFragment
 import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -60,13 +58,14 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
-        checkIfSensorDataIsLatest(this) { isLatest ->
-            if (!isLatest) {
-                updateSensorError()
-            } else {
-                updateStatus()
-            }
-        }
+        updateStatus()
+//        checkIfSensorDataIsLatest(this) { isLatest ->
+//            if (!isLatest) {
+//                updateSensorError()
+//            } else {
+//                updateStatus()
+//            }
+//        }
     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,15 +141,15 @@ class MainActivity : AppCompatActivity() {
 
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
-            checkIfSensorDataIsLatest(this) { isLatest ->
-                if (!isLatest) {
-                    updateSensorError()
-                } else {
-                    updateStatus()
-                }
-            }
+            updateStatus()
+//            checkIfSensorDataIsLatest(this) { isLatest ->
+//                if (!isLatest) {
+//                    updateSensorError()
+//                } else {
+//                    updateStatus()
+//                }
+//            }
         }
-
 
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
         //val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
@@ -236,7 +235,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
         //------------------------상태에 관한 텍스트 클릭시 , 센서 화면으로 이동
         //TODO: 새로고침 버튼 구현
         val healthText = findViewById<TextView>(R.id.textView_main_healthValue)
@@ -319,66 +317,69 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     launch(Dispatchers.Main) {
                         // 상태에 따른 이미지 변경
+                        Log.d("image rendering", "image rendering start..")
                         val statusResponse = response.body()
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
-                        val statusImageResource = if (statusTemp == 0) {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.good_status1
-                            R.drawable.ic_launcher_foreground
-
+                        if (statusTemp != 0) {
+                            val statusImageResource = arrayOf(R.drawable.good_status1, R.drawable.good_status2, R.drawable.good_status3)
+                            val randomIndex = (0 until statusImageResource.size).random()
+                            for (image in statusImages) {
+                                image.setImageResource(statusImageResource[randomIndex])
+                            }
                         } else {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.bad_status
-                            R.drawable.ic_launcher_foreground
+                            val statusImageResource = arrayOf(R.drawable.bad_status)
+                            for (image in statusImages) {
+                                image.setImageResource(statusImageResource[0])
+                            }
                         }
 
-                        for (imageView in statusImages) {
-                            imageView.setImageResource(statusImageResource)
-                        }
                         var vo = realmPlant.where(PlantModel::class.java).findFirst()
-
+                        Log.d("image rendering", "image rendering end..")
                         if (vo != null) {
                             println("############" + vo.plantName)
                             if (vo.plantName == null || vo.plantName == "") {
                                 statusText.text = "???"
                             } else {
                                 //상태에 따른 텍스트 변경
-                                if (statusTemp == 0) {
+                                if (statusTemp != 0) {
                                     statusText.text = "Good"
                                     strangeConText.visibility = View.INVISIBLE
+                                    strangeCondition.visibility = View.INVISIBLE
 
                                 } else {
                                     statusText.text = "Bad"
                                     strangeCondition.visibility = View.VISIBLE
+                                    strangeConText.visibility = View.VISIBLE
                                 }
                             }
                         } else {
                             statusText.text = "???"
                         }
 
-                        if (strangeTemp == "airHumid") {
-                            strangeConText.text = "습도이상"
-
-                        } else if (strangeTemp == "airTemp") {
-                            strangeConText.text = "온도이상"
-                        } else {
-                            strangeConText.text = "확인용!!!!!"
+                        when (strangeTemp) {
+                            "airHumid" -> strangeConText.text = "공기습도이상"
+                            "airTemp" -> strangeConText.text = "온도이상"
+                            "lightIntensity" -> strangeConText.text = "조도이상"
+                            "soilHumid" -> strangeConText.text = "토양습도이상"
                         }
                     }
 
                 } else {
-                    statusText.text = "???"
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("Error_Response", errorBody ?: "error body X")
+                    launch(Dispatchers.Main) {
+                        statusText.text = "???"
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("Error_Response", errorBody ?: "error body X")
+                    }
                 }
             } catch (e: Exception) {
-                statusText.text = "???"
-                Log.e("API_Connection", "API 연결 실패")
-                e.printStackTrace()
+                launch(Dispatchers.Main) {
+                    statusText.text = "???"
+                    Log.e("API_Connection", "API 연결 실패")
+                    e.printStackTrace()
+                }
             }
         }
-
     }
 
     private fun updateSensorError() {
