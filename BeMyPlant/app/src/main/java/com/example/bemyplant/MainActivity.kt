@@ -363,7 +363,7 @@ class MainActivity : AppCompatActivity() {
                         } else if (strangeTemp == "airTemp") {
                             strangeConText.text = "온도이상"
                         } else {
-                            strangeConText.text = "확인용!!!!!"
+                            strangeConText.text = "확인용!!!!"
                         }
                     }
 
