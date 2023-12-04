@@ -56,10 +56,5 @@
         android:name="com.example.bemyplant.fragment.BluetoothReadyFragment"
         android:label="fragment_b_r"
         tools:layout="@layout/fragment_bluetooth_ready" />
-    <fragment
-        android:id="@+id/loginFragment3"
-        android:name="com.example.bemyplant.fragment.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
 
 </navigation>

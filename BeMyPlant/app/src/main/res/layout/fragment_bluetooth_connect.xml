@@ -55,14 +55,13 @@
         app:layout_constraintVertical_bias="0.81" />
 
     <android.widget.Button
-        android:id="@+id/finishButton"
+        android:id="@+id/skipButton"
         android:layout_width="110dp"
         android:layout_height="55dp"
         android:layout_marginBottom="36dp"
-        android:background="@drawable/button_green"
         android:fontFamily="@font/notosans_medium"
         android:gravity="center"
-        android:text="@string/finish"
+        android:text="skip"
         android:textColor="@color/white"
         android:textSize="@dimen/appButtonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"

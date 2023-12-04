@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bemyplant.ConnectedBluetoothThread
+import com.example.bemyplant.MainActivity
 import com.example.bemyplant.R
 import com.example.bemyplant.databinding.FragmentBluetoothConnectBinding
 import java.io.IOException
@@ -40,13 +41,18 @@ class BluetoothConnectFragment : Fragment() {
     // private val BT_MESSAGE_READ = 2
     private val BT_CONNECTING_STATUS = 3
     private val BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+    private var bluetoothConnect = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.finishButton.setOnClickListener {
+        binding.skipButton.setOnClickListener {
+            // TODO: 확인버튼 삭제할 것 ! (자동 이동)
             findNavController().navigate(R.id.action_bCFragment2_to_bSFragment2)
+
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            requireActivity().startActivity(intent)
         }
 
 //        ConnectedBluetoothThread.mBluetoothHandler = object : Handler() {
@@ -147,6 +153,7 @@ class BluetoothConnectFragment : Fragment() {
 
             try {
                 mBluetoothSocket.connect()
+                bluetoothConnect = true
                 Log.d("bluetooth", "mBluetoothSocket connect")
                 //showToast("bluetooth: mBluetoothSocket connect")
 
@@ -185,6 +192,7 @@ class BluetoothConnectFragment : Fragment() {
 
             // 다음 화면으로 이동
             findNavController().navigate(R.id.bSFragment2)
+            // findNavController().navigate(action_bCFragment2_to_bSFragment2)
 
 
         } catch (e: IOException) {
