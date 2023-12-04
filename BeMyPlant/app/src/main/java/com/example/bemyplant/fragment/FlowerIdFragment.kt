@@ -35,11 +35,15 @@ class FlowerIdFragment() : Fragment() {
         val plantRace = rootView.findViewById<TextView>(R.id.plantVariety)
         val plantName = rootView.findViewById<TextView>(R.id.flowerName)
         val plantRegistration = rootView.findViewById<TextView>(R.id.plantRegistration)
-
+        val transparentView = rootView.findViewById<View>(R.id.transparentView)
         val bundle = arguments
         Log.d(bundle.toString(), "test-bundle-id-fragment")
         //if (bundle != null && bundle.containsKey("plantImage") && bundle.containsKey("plantName") &&  bundle.containsKey("plantRace") && bundle.containsKey("plantRegistration")) {
 //        if (bundle != null && bundle.containsKey("plantImageRes") && bundle.containsKey("plantName") &&  bundle.containsKey("plantRace") && bundle.containsKey("plantRegistration")) {
+        transparentView.setOnClickListener {
+            requireActivity().onBackPressed()
+
+        }
         if (bundle != null) {
             mainFlower.setImageBitmap(bundle.getParcelable("plantImage"))
             plantName.text = bundle.getString("plantName")
