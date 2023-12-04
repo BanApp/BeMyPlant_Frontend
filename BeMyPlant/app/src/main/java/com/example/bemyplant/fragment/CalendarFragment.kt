@@ -1,7 +1,6 @@
 package com.example.bemyplant.fragment
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +22,6 @@ import com.example.bemyplant.SettingActivity
 import com.example.bemyplant.adapter.CalendarAdapter
 import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.module.DiaryModule
-import com.example.bemyplant.module.PlantModule
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -167,7 +165,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
         // 현재 달의 마지막 날짜
         val lastDay = lastDayOfMonth.dayOfMonth
 
-
         // 이전 달의 마지막 날 구하기
         val lastDayOfPrevMonth = firstDayOfMonth.minusDays(1)
 
@@ -223,15 +220,15 @@ class CalendarFragment : Fragment(), CalendarAdapter.ItemClickListener {
         if (data != null) { //해당하는 날짜에 데이터가 있다면
             // 기존 다이어리 확인
             val bundle = Bundle()
-            bundle.putString("title", data?.Title)
-            bundle.putParcelable("image",  BitmapFactory.decodeByteArray(data?.Image, 0, data?.Image!!.size)) //db의 이미지는 ByteArray -> bitmap으로 수정
-            bundle.putString("contents", data?.Content)
-            if (data?.WeatherCode == null){
-                bundle.putInt("weatherCode", 0) //기본값 0(맑음)
-            }
-            else{
-                bundle.putInt("weatherCode", data!!.WeatherCode)
-            }
+            //bundle.putString("title", data?.Title)
+            //bundle.putParcelable("image",  BitmapFactory.decodeByteArray(data?.Image, 0, data?.Image!!.size)) //db의 이미지는 ByteArray -> bitmap으로 수정
+            //bundle.putString("contents", data?.Content)
+//            if (data?.WeatherCode == null){
+//                bundle.putInt("weatherCode", 0) //기본값 0(맑음)
+//            }
+//            else{
+//                bundle.putInt("weatherCode", data!!.WeatherCode)
+//            }
 
             bundle.putParcelable("selectedDay", day)
             navController.navigate(R.id.diaryViewFragment, bundle)

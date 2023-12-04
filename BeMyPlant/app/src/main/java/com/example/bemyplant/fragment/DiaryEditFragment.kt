@@ -24,6 +24,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
 import com.example.bemyplant.model.Diary
@@ -31,6 +33,7 @@ import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.module.DiaryModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import java.io.ByteArrayOutputStream
 
 class DiaryEditFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
@@ -80,38 +83,6 @@ class DiaryEditFragment : Fragment(), View.OnClickListener {
         diaryRealmManager = DiaryRealmManager(realm)
         weatherArray = resources.getStringArray(R.array.spinner_array)
         val bundle = arguments
-
-
-        if (bundle != null && bundle.containsKey("selectedDay") && bundle.containsKey("title") && bundle.containsKey(
-                "image"
-            ) && bundle.containsKey("contents")
-        ) {
-            // TODO: 예외처리
-            selectedDay = bundle.getParcelable<Day>("selectedDay")!!
-            selectedDiaryImage = bundle.getParcelable("image")!!
-            selectedWeatherCode = bundle.getInt("weatherCode")
-            selectedContent = bundle.getString("contents")!!
-            selectedDiaryTitle = bundle.getString("title")!!
-            formattedDate = String.format(
-                "%04d/%02d/%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
-            )
-            // (1) 화면 구성 (날짜)
-            diaryDateTextView.text = formattedDate
-
-            // (2) 화면 구성 (제목)
-            diaryTitleEditText.setText(selectedDiaryTitle)
-
-            // (3) 화면 구성 (이미지)
-            diaryImage.setImageBitmap(selectedDiaryImage)
-
-            // (4) 화면 구성 (날씨)
-            weatherSpinner.setSelection(selectedWeatherCode)
-
-            // (5) 화면 구성 (다이어리 내용)
-            contentEditText.setText(selectedContent)
-            Log.d("diary", "diary edit: 이전 화면으로부터 정보 받아와 렌더링 완료")
-        }
-
 
         // selectedDay만 넘어오면 db조회
         if (bundle != null && bundle.containsKey("selectedDay")) {
@@ -218,11 +189,6 @@ class DiaryEditFragment : Fragment(), View.OnClickListener {
 
                 val bundle = Bundle()
                 bundle.putParcelable("selectedDay", selectedDay)
-                bundle.putString("title", diaryTitleEditText.text.toString())
-                bundle.putParcelable("image", diaryImage.drawable.toBitmap())
-                bundle.putString("contents", contentEditText.text.toString())
-                bundle.putInt("weatherCode", weatherCode)
-                //bundle.putParcelable("selectedDay", selectedDay)
                 navController.navigate(R.id.diaryViewFragment, bundle)
             }
 
@@ -238,27 +204,32 @@ class DiaryEditFragment : Fragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == DiaryNewFragment.GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 val selectedImageUri: Uri? = data.data
-                // 선택한 이미지 URI를 사용하여 원하는 작업 수행
-                // 예: 이미지 뷰에 이미지 표시
-                // val imageView: ImageView = view?.findViewById(R.id.imageView)
-                // Glide를 사용하여 이미지 로딩 및 크기 조절
-                view?.findViewById<ImageView?>(R.id.imageView_diaryEdit_plant)?.let {
-                    Glide.with(requireContext())
-                        .load(selectedImageUri)
-                        .override(600, 600) // 원하는 크기로 조절
-                        .centerCrop() // 이미지를 중앙으로 맞춤
-                        .into(it)
-                }
 
-                /*view?.findViewById<ImageView?>(R.id.imageView_diaryNew_plant)
-                    ?.setImageURI(selectedImageUri)*/
+                Glide.with(requireContext())
+                    .asBitmap()
+                    .load(selectedImageUri)
+                    .override(600, 600) // 원하는 크기로 조절
+                    .centerCrop() // 이미지를 중앙으로 맞춤
+                    .into(object : SimpleTarget<Bitmap>() {
+                        @RequiresApi(Build.VERSION_CODES.O)
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            // 이미지 뷰에 비트맵 설정
+                            view?.findViewById<ImageView?>(R.id.imageView_diaryEdit_plant)?.setImageBitmap(resource)
+
+                        }
+                    })
+
             }
         }
+        fun Bitmap.toByteArray(): ByteArray {
+            val stream = ByteArrayOutputStream()
+            this.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            return stream.toByteArray()
+        }
     }
-
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 101 // 앨범에서 사진을 가져오기 위한 요청 코드
