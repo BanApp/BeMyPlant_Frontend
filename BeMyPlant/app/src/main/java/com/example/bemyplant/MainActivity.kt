@@ -186,6 +186,8 @@ class MainActivity : AppCompatActivity() {
             val currentImageResource = (mainFlowerImgBtn.drawable.current as? BitmapDrawable)?.bitmap
             val deletePlantDrawable = ContextCompat.getDrawable(this, R.drawable.delete_plant)
             if (currentImageResource != null && currentImageResource.sameAs((deletePlantDrawable as BitmapDrawable).bitmap)) {
+                val bundle = Bundle()
+                // 사용자
                 val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
                 startActivity(plantRegisterIntent)
             } else {
