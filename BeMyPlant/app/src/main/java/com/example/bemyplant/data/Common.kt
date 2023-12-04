@@ -46,6 +46,9 @@ fun checkIfSensorDataIsLatest(context: Context, callback: (Boolean) -> Unit) {
                     }
                 }
             }
+            else{
+                callback.invoke(false)
+            }
         } catch (e: Exception) {
             // Handle exceptions (e.g., network issues)
             Log.d("sensor is latest", "Error during API call")

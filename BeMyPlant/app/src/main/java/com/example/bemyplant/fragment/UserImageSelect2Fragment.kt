@@ -235,14 +235,15 @@ class UserImageSelect2Fragment : Fragment() {
                 ) {
                     // 이미지 로드가 완료
                     Log.d("이미지 로드", "성공")
-                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-                    val transparentBitmap = makeTransparentBitmap(resource)
-                    if (transparentBitmap != null) {
-                        Log.d("이미지 투명", "성공")
-                        callback.onImageLoaded(transparentBitmap)
-                    } else {
-                        callback.onImageLoadFailed()
-                    }
+                    callback.onImageLoaded(resource)
+//                    // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
+//                    val transparentBitmap = makeTransparentBitmap(resource)
+//                    if (transparentBitmap != null) {
+//                        Log.d("이미지 투명", "성공")
+//                        callback.onImageLoaded(transparentBitmap)
+//                    } else {
+//                        callback.onImageLoadFailed()
+//                    }
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
