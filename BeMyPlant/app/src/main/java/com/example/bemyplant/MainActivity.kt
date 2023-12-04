@@ -322,20 +322,19 @@ class MainActivity : AppCompatActivity() {
                         val statusResponse = response.body()
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
-                        val statusImageResource = if (statusTemp == 0) {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.good_status1
-                            R.drawable.ic_launcher_foreground
-
+                        if (statusTemp != 0){
+                            val statusImageResource = arrayOf(R.drawable.good_status1 , R.drawable.good_status2, R.drawable.good_status3)
+                            val randomIndex = (0 until statusImageResource.size).random()
+                            for (image in statusImages){
+                                image.setImageResource(statusImageResource[randomIndex])
+                            }
                         } else {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.bad_status
-                            R.drawable.ic_launcher_foreground
+                            val statusImageResource = arrayOf(R.drawable.bad_status)
+                            for (image in statusImages){
+                                image.setImageResource(statusImageResource[0])
+                            }
                         }
 
-                        for (imageView in statusImages) {
-                            imageView.setImageResource(statusImageResource)
-                        }
                         var vo = realmPlant.where(PlantModel::class.java).findFirst()
 
                         if (vo != null) {
@@ -347,23 +346,23 @@ class MainActivity : AppCompatActivity() {
                                 if (statusTemp == 0) {
                                     statusText.text = "Good"
                                     strangeConText.visibility = View.INVISIBLE
+                                    strangeCondition.visibility = View.INVISIBLE
 
                                 } else {
                                     statusText.text = "Bad"
                                     strangeCondition.visibility = View.VISIBLE
+                                    strangeConText.visibility = View.VISIBLE
                                 }
                             }
                         } else {
                             statusText.text = "???"
                         }
 
-                        if (strangeTemp == "airHumid") {
-                            strangeConText.text = "습도이상"
-
-                        } else if (strangeTemp == "airTemp") {
-                            strangeConText.text = "온도이상"
-                        } else {
-                            strangeConText.text = "확인용!!!!"
+                        when (strangeTemp) {
+                            "airHumid" -> strangeConText.text = "공기습도이상"
+                            "airTemp" -> strangeConText.text = "온도이상"
+                            "lightIntensity" -> strangeConText.text = "조도이상"
+                            "soilHumid" -> strangeConText.text = "토양습도이상"
                         }
                     }
 
