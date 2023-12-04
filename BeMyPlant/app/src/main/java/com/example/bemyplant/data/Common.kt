@@ -9,8 +9,12 @@ import com.example.bemyplant.MJ_MainActivity
 import com.example.bemyplant.network.RetrofitService
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.ResolverStyle
+import java.util.Locale
 
 private val retrofitService = RetrofitService().apiService
 
@@ -42,6 +46,7 @@ fun checkIfSensorDataIsLatest(context: Context, callback: (Boolean) -> Unit) {
                         Log.d("sensor is latest", "recent data: $it")
                         // Check if it's the most recent time
                         val isLatest = checkTimeDifference(it)
+                        Log.d("checkTimeDifference", isLatest.toString())
                         callback.invoke(isLatest)
                     }
                 }
@@ -52,23 +57,45 @@ fun checkIfSensorDataIsLatest(context: Context, callback: (Boolean) -> Unit) {
         } catch (e: Exception) {
             // Handle exceptions (e.g., network issues)
             Log.d("sensor is latest", "Error during API call")
-            callback.invoke(false)
+            //callback.invoke(false)
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun checkTimeDifference(dataDate: String): Boolean {
-    // Parse the date from the JSON data
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    val dataDateTime = ZonedDateTime.parse(dataDate, formatter)
+    Log.d("dataDate", dataDate)
+    val builder = DateTimeFormatterBuilder()
+        .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        .optionalStart()
+        .appendOffset("+HH:MM", "Z")
+        .toFormatter(Locale.ENGLISH)
+        .withResolverStyle(ResolverStyle.STRICT)
 
-    // Get the current date and time
-    val currentDateTime = ZonedDateTime.now()
+    try {
+        val dataDateTime = ZonedDateTime.parse(dataDate, builder)
+            .withZoneSameInstant(ZoneId.of("UTC"))
 
-    // Calculate the time difference in hours
-    val timeDifference = kotlin.math.abs(Duration.between(dataDateTime, currentDateTime).toHours())
+        Log.d("dataDateTime", dataDateTime.toString())
 
-    // 1시간 이상 차이나면 false
-    return timeDifference < 1
+        val currentDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+
+        Log.d("currentDateTime", currentDateTime.toString())
+
+        val dataTime = dataDateTime.toLocalTime()
+        val currentTime = currentDateTime.toLocalTime()
+
+        val timeDifferenceMillis = kotlin.math.abs(Duration.between(dataTime, currentTime).toMillis())
+        val timeDifferenceHours = timeDifferenceMillis / (60 * 60 * 1000)
+
+        Log.d("timeDifferenceMillis", timeDifferenceMillis.toString())
+        Log.d("timeDifferenceHours", timeDifferenceHours.toString())
+
+        return timeDifferenceHours < 1
+    } catch (e: Exception) {
+        // Handle parsing exception
+        e.printStackTrace()
+    }
+
+    return false
 }
