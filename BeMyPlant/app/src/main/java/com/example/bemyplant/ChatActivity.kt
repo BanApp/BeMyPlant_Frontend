@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -175,6 +179,7 @@ class ChatActivity : AppCompatActivity() {
 
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
+            plantImgBitmap = makeTransparentAreaWhite(plantImgBitmap) // 투명 배경 -> 하얀색으로
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg
@@ -292,6 +297,20 @@ class ChatActivity : AppCompatActivity() {
 
             }
         }
+    }
+    fun makeTransparentAreaWhite(bitmap: Bitmap): Bitmap {
+        val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+        canvas.drawColor(Color.WHITE) // 배경을 하얀색으로 초기화
+
+        val paint = Paint().apply {
+            colorFilter = LightingColorFilter(Color.WHITE, 1)
+        }
+
+        // 투명한 부분을 하얀색으로 그리기
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+
+        return resultBitmap
     }
 
 }

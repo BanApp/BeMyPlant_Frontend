@@ -5,6 +5,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -17,15 +21,14 @@ import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.R
 import com.example.bemyplant.TempConnectActivity
 import com.example.bemyplant.databinding.FragmentPlantImageSelect2Binding
 import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -33,6 +36,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.concurrent.thread
+import kotlin.math.abs
 
 class PlantImageSelect2Fragment : Fragment() {
     val binding by lazy{ FragmentPlantImageSelect2Binding.inflate((layoutInflater))}
@@ -210,20 +214,46 @@ class PlantImageSelect2Fragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun makeTransparentBitmap(sourceBitmap: Bitmap): Bitmap {
+    fun makeTransparentBitmap(sourceBitmap: Bitmap, targetColor: Int, tolerance: Int): Bitmap {
+        Log.d("이미지 타켓 색", targetColor.toString())
         val width = sourceBitmap.width
         val height = sourceBitmap.height
 
         val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(resultBitmap)
 
-        // 배경을 투명하게 설정
-        canvas.drawColor(Color.TRANSPARENT)
-
-        // 원본 비트맵을 그림
+        // 이미지를 그림
         canvas.drawBitmap(sourceBitmap, 0f, 0f, null)
 
+        // 특정 색상을 투명하게 만듦
+        val paint = Paint().apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+            colorFilter = LightingColorFilter(targetColor, 0)
+        }
+
+        // 특정 색상을 찾아서 처리
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                val pixelColor = sourceBitmap.getPixel(x, y)
+                Log.d("이미지 색", pixelColor.toString())
+
+                // Check if the color is close to white within the tolerance
+                if (isColorCloseToWhite(pixelColor, tolerance)) {
+                    resultBitmap.setPixel(x, y, Color.TRANSPARENT)
+                    Log.d("이미지 투명", "true")
+                }
+            }
+        }
+
         return resultBitmap
+    }
+
+    private fun isColorCloseToWhite(color: Int, tolerance: Int): Boolean {
+        val white = Color.rgb(255, 255, 255)
+        val redDiff = abs(Color.red(color) - Color.red(white))
+        val greenDiff = abs(Color.green(color) - Color.green(white))
+        val blueDiff = abs(Color.blue(color) - Color.blue(white))
+        return redDiff <= tolerance && greenDiff <= tolerance && blueDiff <= tolerance
     }
 
     interface ImageLoadCallback {
@@ -236,6 +266,7 @@ class PlantImageSelect2Fragment : Fragment() {
             .asBitmap()
             .load(imageUrl)
             .override(200,200)
+            .format(DecodeFormat.PREFER_ARGB_8888)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
@@ -243,14 +274,15 @@ class PlantImageSelect2Fragment : Fragment() {
                 ) {
                     // 이미지 로드가 완료
                     Log.d("이미지 로드", "성공")
+                    callback.onImageLoaded(resource)
                     // 예를 들어, 비트맵을 투명 배경으로 변경하는 경우:
-                    val transparentBitmap = makeTransparentBitmap(resource)
-                    if (transparentBitmap != null) {
-                        Log.d("이미지 투명", "성공")
-                        callback.onImageLoaded(transparentBitmap)
-                    } else {
-                        callback.onImageLoadFailed()
-                    }
+//                    val transparentBitmap = makeTransparentBitmap(resource)
+//                    if (transparentBitmap != null) {
+//                        Log.d("이미지 투명", "성공")
+//                        callback.onImageLoaded(transparentBitmap)
+//                    } else {
+//                        callback.onImageLoadFailed()
+//                    }
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -280,7 +312,9 @@ class PlantImageSelect2Fragment : Fragment() {
                         Log.d("이미지 url->비트맵", "1 성공")
                         binding.textOverlay1.visibility = View.INVISIBLE
                         binding.plantImageButton1.visibility = View.VISIBLE
-                        binding.plantImageButton1.setImageBitmap(bitmap)
+                        val targetColor = Color.WHITE
+                        val transparentBitmap = makeTransparentBitmap(bitmap, targetColor, 10)
+                        binding.plantImageButton1.setImageBitmap(transparentBitmap)
                     }
                     var transBitmapToByteArray = bitmapToByteArray(bitmap)
                 }
@@ -300,7 +334,9 @@ class PlantImageSelect2Fragment : Fragment() {
                         Log.d("이미지 url->비트맵", "2 성공")
                         binding.textOverlay2.visibility = View.INVISIBLE
                         binding.plantImageButton2.visibility = View.VISIBLE
-                        binding.plantImageButton2.setImageBitmap(bitmap)
+                        val targetColor = Color.WHITE
+                        val transparentBitmap = makeTransparentBitmap(bitmap, targetColor, 10)
+                        binding.plantImageButton2.setImageBitmap(transparentBitmap)
                     }
                 }
 
@@ -315,7 +351,7 @@ class PlantImageSelect2Fragment : Fragment() {
 
     fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
     }
 
@@ -329,7 +365,9 @@ class PlantImageSelect2Fragment : Fragment() {
                 Log.d("이미지 url->비트맵", "1 성공")
                 binding.textOverlay1.visibility = View.INVISIBLE
                 binding.plantImageButton1.visibility = View.VISIBLE
-                binding.plantImageButton1.setImageBitmap(bitmap)
+                val targetColor = Color.WHITE
+                val transparentBitmap = makeTransparentBitmap(bitmap, targetColor, 10)
+                binding.plantImageButton1.setImageBitmap(transparentBitmap)
             }
 
             override fun onImageLoadFailed() {
