@@ -12,7 +12,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -71,40 +70,6 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
         diaryRealmManager = DiaryRealmManager(realm)
         weatherArray = resources.getStringArray(R.array.spinner_array)
         val bundle = arguments
-
-        // selectedDay 를 비롯해 다이어리 내용, 날씨, 제목이 모두 넘어오면 db조회 없이 처리
-        if (bundle != null && bundle.containsKey("selectedDay") && bundle.containsKey("title") && bundle.containsKey(
-                "image"
-            ) && bundle.containsKey("contege, selectedWeatherCode, selectedCnts")
-        ) {
-            // TODO: 예외처리
-            selectedDay = bundle.getParcelable<Day>("selectedDay")!!
-            selectedDiaryImage = bundle.getParcelable("image")!!
-            selectedWeatherCode = bundle.getInt("weatherCode")
-            selectedContent = bundle.getString("contents")!!
-            selectedDiaryTitle = bundle.getString("title")!!
-
-            formattedDate = String.format(
-                "%04d/%02d/%02d", selectedDay?.year, selectedDay?.month, selectedDay?.day
-            )
-
-            // (1) 화면 구성 (날짜)
-            diaryDateTextView.text = formattedDate
-
-            // (2) 화면 구성 (제목)
-            diaryTitleTextView.text = selectedDiaryTitle
-
-            // (3) 화면 구성 (이미지)
-            diaryImage.setImageBitmap(selectedDiaryImage)
-
-            // (4) 화면 구성 (날씨)
-            weatherTextView.text =  weatherArray[selectedWeatherCode]
-
-            // (5) 화면 구성 (다이어리 내용)
-            contentTextView.text = selectedContent
-            Log.d("diary", "diary view: 이전 화면으로부터 정보 받아와 렌더링 완료")
-        }
-
 
         // selectedDay만 넘어오면 db조회
         if (bundle != null && bundle.containsKey("selectedDay")) {
@@ -190,11 +155,6 @@ class DiaryViewFragment : Fragment(), View.OnClickListener {
             R.id.imageButton_diaryView_edit -> {
                 val bundle = Bundle()
                 bundle.putParcelable("selectedDay", selectedDay)
-                bundle.putString("title", diaryTitleTextView.text.toString())
-                bundle.putParcelable("image", diaryImage.drawable.toBitmap())
-                bundle.putString("contents", contentTextView.text.toString())
-                bundle.putInt("weatherCode", selectedWeatherCode)
-
                 navController.navigate(R.id.diaryEditFragment, bundle)
 
             }

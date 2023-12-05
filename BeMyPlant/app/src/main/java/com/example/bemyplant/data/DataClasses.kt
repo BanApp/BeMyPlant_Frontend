@@ -46,7 +46,7 @@ data class SensorData(
     val id: String,
     val airTemp: Double,
     val airHumid: Double,
-    val soilHumid: Double,
+    var soilHumid: Double,
     val lightIntensity: Double,
     val status: Boolean,
     val date: String
