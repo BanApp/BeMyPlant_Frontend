@@ -296,6 +296,7 @@ class SensorActivity : AppCompatActivity() {
                 val sensorDataList = response.body()
                 if (!sensorDataList.isNullOrEmpty()) {
                     for (sensorData in sensorDataList) {
+                        sensorData?.soilHumid = (sensorData?.soilHumid)?.div(100)!!
                         val date =
                             LocalDateTime.parse(sensorData.date, DateTimeFormatter.ISO_DATE_TIME)
                         if (!checkDateMatch(date)) {
@@ -396,6 +397,7 @@ class SensorActivity : AppCompatActivity() {
                     //가장 최근 시간
                     if (!sensorDataList.isNullOrEmpty()) {
                         val mostRecentData = sensorDataList.firstOrNull()
+                        mostRecentData?.soilHumid = (mostRecentData?.soilHumid)?.div(100)!!
 
                         Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
                         Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
