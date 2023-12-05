@@ -3,6 +3,7 @@ package com.example.bemyplant
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +15,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.bemyplant.data.SensorData
-import com.example.bemyplant.data.checkIfSensorDataIsLatest
 import com.example.bemyplant.network.RetrofitService
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -363,21 +363,96 @@ class SensorActivity : AppCompatActivity() {
         Log.d(Tag, "sensor raw-response: $response")
 
 
-        checkIfSensorDataIsLatest(this) { isLatest ->
-            if (!isLatest) {
-                Log.d("latest", "not latest")
-                // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
-                sensorErrText.visibility = View.VISIBLE
-                graphErrText.visibility = View.INVISIBLE
-                lineChart.visibility = View.INVISIBLE
+//        checkIfSensorDataIsLatest(this) { isLatest ->
+//            if (!isLatest) {
+//                Log.d("latest", "not latest")
+//                // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
+//                sensorErrText.visibility = View.VISIBLE
+//                graphErrText.visibility = View.INVISIBLE
+//                lineChart.visibility = View.INVISIBLE
+//
+//                runOnUiThread {
+//                    humidButton.text = "습도\n" + "??"
+//                    lightButton.text =
+//                        "조도\n" + "??"
+//                    soilHumidButton.text =
+//                        "토양습도\n" + "??"
+//                    temperButton.text = "온도\n" + "??"
+//
+//                    // 화면 갱신
+//                    humidButton.invalidate()
+//                    lightButton.invalidate()
+//                    soilHumidButton.invalidate()
+//                    temperButton.invalidate()
+//                }
+//            } else {
+//                Log.d("latest", "not latest")
+//                // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
+//                sensorErrText.visibility = View.INVISIBLE
+//                graphErrText.visibility = View.INVISIBLE
+//                //lineChart.visibility = View.VISIBLE
+//                if (response.isSuccessful) {
+//                    val sensorDataList = response.body()
+//                    // 1. date값
+//                    //가장 최근 시간
+//                    if (!sensorDataList.isNullOrEmpty()) {
+//                        val mostRecentData = sensorDataList.firstOrNull()
+//                        mostRecentData?.soilHumid = (mostRecentData?.soilHumid)?.div(100)!!
+//
+//                        Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+//                        Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+//                        Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+//                        Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
+//
+//                        runOnUiThread {
+//                            humidButton.text =
+//                                "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
+//                            lightButton.text =
+//                                "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
+//                            soilHumidButton.text =
+//                                "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+//                            temperButton.text =
+//                                "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
+//
+//                            // 화면 갱신
+//                            humidButton.invalidate()
+//                            lightButton.invalidate()
+//                            soilHumidButton.invalidate()
+//                            temperButton.invalidate()
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }
+
+        Log.d("latest", "not latest")
+        // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
+        sensorErrText.visibility = View.INVISIBLE
+        graphErrText.visibility = View.INVISIBLE
+        //lineChart.visibility = View.VISIBLE
+        if (response.isSuccessful) {
+            val sensorDataList = response.body()
+            // 1. date값
+            //가장 최근 시간
+            if (!sensorDataList.isNullOrEmpty()) {
+                val mostRecentData = sensorDataList.firstOrNull()
+                mostRecentData?.soilHumid = (mostRecentData?.soilHumid)?.div(100)!!
+
+                Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
+                Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
+                Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
+                Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
 
                 runOnUiThread {
-                    humidButton.text = "습도\n" + "??"
+                    humidButton.text =
+                        "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
                     lightButton.text =
-                        "조도\n" + "??"
+                        "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
                     soilHumidButton.text =
-                        "토양습도\n" + "??"
-                    temperButton.text = "온도\n" + "??"
+                        "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
+                    temperButton.text =
+                        "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
 
                     // 화면 갱신
                     humidButton.invalidate()
@@ -385,106 +460,9 @@ class SensorActivity : AppCompatActivity() {
                     soilHumidButton.invalidate()
                     temperButton.invalidate()
                 }
-            } else {
-                Log.d("latest", "not latest")
-                // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
-                sensorErrText.visibility = View.INVISIBLE
-                graphErrText.visibility = View.INVISIBLE
-                //lineChart.visibility = View.VISIBLE
-                if (response.isSuccessful) {
-                    val sensorDataList = response.body()
-                    // 1. date값
-                    //가장 최근 시간
-                    if (!sensorDataList.isNullOrEmpty()) {
-                        val mostRecentData = sensorDataList.firstOrNull()
-                        mostRecentData?.soilHumid = (mostRecentData?.soilHumid)?.div(100)!!
-
-                        Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
-                        Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
-                        Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
-                        Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
-
-                        runOnUiThread {
-                            humidButton.text =
-                                "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
-                            lightButton.text =
-                                "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
-                            soilHumidButton.text =
-                                "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
-                            temperButton.text =
-                                "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
-
-                            // 화면 갱신
-                            humidButton.invalidate()
-                            lightButton.invalidate()
-                            soilHumidButton.invalidate()
-                            temperButton.invalidate()
-                        }
-                    }
-                    // 현재 센서가 최신의 것인지 check
-                    /*
-                checkIfSensorDataIsLatest(this) { isLatest ->
-                    if (!isLatest) {
-                        // 최신의 데이터가 아니라면 ??? 으로 설정, 그래프 부분에 '센서 연결을 확인해주세요!'
-                        sensorErrText.visibility = View.VISIBLE
-                        graphErrText.visibility = View.INVISIBLE
-                        lineChart.visibility = View.INVISIBLE
-
-                        runOnUiThread {
-                            humidButton.text = "습도\n" + "??"
-                            lightButton.text =
-                                "조도\n" + "??"
-                            soilHumidButton.text =
-                                "토양습도\n" + "??"
-                            temperButton.text = "온도\n" + "??"
-
-                            // 화면 갱신
-                            humidButton.invalidate()
-                            lightButton.invalidate()
-                            soilHumidButton.invalidate()
-                            temperButton.invalidate()
-                        }
-
-                    } else {
-                        // 그래프 부분에 '센서 연결을 확인해주세요!' 안보이게
-                        sensorErrText.visibility = View.INVISIBLE
-                        graphErrText.visibility = View.INVISIBLE
-                        lineChart.visibility = View.VISIBLE
-                        }
-                        val sensorDataList = response.body()
-                        // 1. date값
-                        //가장 최근 시간
-                        if (!sensorDataList.isNullOrEmpty()) {
-                            val mostRecentData = sensorDataList.firstOrNull()
-
-                            Log.d(Tag, "sensor airtemp: ${mostRecentData?.airTemp.toString()}")
-                            Log.d(Tag, "sensor humid: ${mostRecentData?.airHumid.toString()}")
-                            Log.d(Tag, "sensor light: ${mostRecentData?.lightIntensity.toString()}")
-                            Log.d(Tag, "sensor soil-humid: ${mostRecentData?.soilHumid.toString()}")
-
-                            runOnUiThread {
-                                humidButton.text =
-                                    "습도\n" + String.format("%.2f%%", mostRecentData?.airHumid)
-                                lightButton.text =
-                                    "조도\n" + String.format("%.2fLUX", mostRecentData?.lightIntensity)
-                                soilHumidButton.text =
-                                    "토양습도\n" + String.format("%.2f%%", mostRecentData?.soilHumid)
-                                temperButton.text =
-                                    "온도\n" + String.format("%.2f℃", mostRecentData?.airTemp)
-
-                                // 화면 갱신
-                                humidButton.invalidate()
-                                lightButton.invalidate()
-                                soilHumidButton.invalidate()
-                                temperButton.invalidate()
-                            }
-                        }
-
-        */
-                }
             }
-        }
 
+        }
 
     }
 
@@ -588,13 +566,25 @@ class SensorActivity : AppCompatActivity() {
 
         // 아래 부분 색상 및 투명도 설정
         val dataset = LineDataSet(entries, label)
+        val xAxis = lineChart.xAxis
+        val yAxis = lineChart.axisLeft
+        xAxis.typeface = Typeface.create("@font/notosans_black", Typeface.NORMAL)
+        yAxis.typeface = Typeface.create("@font/notosans_black", Typeface.NORMAL)
+        xAxis.textSize = 10F
+        yAxis.textSize = 6F
+        dataset.setLineWidth(2F)
+        dataset.setCircleRadius(2F)
+        dataset.setCircleColor(Color.parseColor("#9999FF"))
+        dataset.setDrawCircles(false)
+        dataset.setColor(Color.parseColor("#9999CC"))
 
         dataset.mode = LineDataSet.Mode.CUBIC_BEZIER
         dataset.cubicIntensity = 0.2f
+
         //dataset.color = Color.BLUE
-        dataset.setCircleColor(Color.BLUE)
-        dataset.setDrawCircles(true)
-        dataset.setDrawFilled(true)
+//        dataset.setCircleColor(Color.BLUE)
+//        dataset.setDrawCircles(true)
+//        dataset.setDrawFilled(true)
         dataset.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient_fill)
         dataset.fillAlpha = 50
         dataset.highLightColor = Color.GREEN
