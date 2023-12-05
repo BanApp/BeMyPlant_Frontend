@@ -114,23 +114,27 @@ class SensorActivity : AppCompatActivity() {
                     lineChart.visibility = View.INVISIBLE
                 }
                 else{
-                    // NaN 값을 제거하여 새로운 리스트 생성
-                    val filteredValues = todayTempers.filter { !it.isNaN() }
+                    val (filteredValues, filteredLabels) = todayTempers.indices
+                        .filter { !todayTempers[it].isNaN() }
+                        .map { todayTempers[it] to todayTempersLabel[it] }
+                        .unzip()
 
-                    // NaN에 해당하는 라벨도 제거
-                    val filteredLabels = todayTempersLabel.take(filteredValues.size)
+                    Log.d("after nan", filteredValues.toString())
+                    Log.d("after nan2", filteredLabels.toString())
 
                     // 그래프 그리기
                     drawChart(filteredValues, filteredLabels, "온도")
-                    //drawChart(todayTempers, todayTempersLabel, "온도")
+                    // drawChart(todayTempers, todayTempersLabel, "온도")
                 }
             }
             else{
-                // NaN 값을 제거하여 새로운 리스트 생성
-                val filteredValues = todayTempers.filter { !it.isNaN() }
+                val (filteredValues, filteredLabels) = todayTempers.indices
+                    .filter { !todayTempers[it].isNaN() }
+                    .map { todayTempers[it] to todayTempersLabel[it] }
+                    .unzip()
 
-                // NaN에 해당하는 라벨도 제거
-                val filteredLabels = todayTempersLabel.take(filteredValues.size)
+                Log.d("after nan", filteredValues.toString())
+                Log.d("after nan2", filteredLabels.toString())
 
                 // 그래프 그리기
                 drawChart(filteredValues, filteredLabels, "온도")
@@ -151,23 +155,27 @@ class SensorActivity : AppCompatActivity() {
                     lineChart.visibility = View.INVISIBLE
                 }
                 else{
-                    // NaN 값을 제거하여 새로운 리스트 생성
-                    val filteredValues = todayHumids.filter { !it.isNaN() }
+                    val (filteredValues, filteredLabels) = todayHumids.indices
+                        .filter { !todayHumids[it].isNaN() }
+                        .map { todayHumids[it] to todayHumidsLabel[it] }
+                        .unzip()
 
-                    // NaN에 해당하는 라벨도 제거
-                    val filteredLabels = todayHumidsLabel.take(filteredValues.size)
+                    Log.d("after nan", filteredValues.toString())
+                    Log.d("after nan2", filteredLabels.toString())
 
-                    // 그래프 그리기
+                // 그래프 그리기
                     drawChart(filteredValues, filteredLabels, "습도")
                     //drawChart(todayHumids, todayHumidsLabel, "습도")
                 }
             }
             else{
-                // NaN 값을 제거하여 새로운 리스트 생성
-                val filteredValues = todayHumids.filter { !it.isNaN() }
+                val (filteredValues, filteredLabels) = todayHumids.indices
+                    .filter { !todayHumids[it].isNaN() }
+                    .map { todayHumids[it] to todayHumidsLabel[it] }
+                    .unzip()
 
-                // NaN에 해당하는 라벨도 제거
-                val filteredLabels = todayHumidsLabel.take(filteredValues.size)
+                Log.d("after nan", filteredValues.toString())
+                Log.d("after nan2", filteredLabels.toString())
 
                 // 그래프 그리기
                 drawChart(filteredValues, filteredLabels, "습도")
@@ -188,27 +196,30 @@ class SensorActivity : AppCompatActivity() {
                     lineChart.visibility = View.INVISIBLE
                 }
                 else{
-                    // NaN 값을 제거하여 새로운 리스트 생성
-                    val filteredValues = todayLights.filter { !it.isNaN() }
+                    val (filteredValues, filteredLabels) = todayLights.indices
+                        .filter { !todayLights[it].isNaN() }
+                        .map { todayLights[it] to todayLightsLabel[it] }
+                        .unzip()
 
-                    // NaN에 해당하는 라벨도 제거
-                    val filteredLabels = todayLightsLabel.take(filteredValues.size)
+                    Log.d("after nan", filteredValues.toString())
+                    Log.d("after nan2", filteredLabels.toString())
 
                     // 그래프 그리기
                     drawChart(filteredValues, filteredLabels, "조도")
-                    //drawChart(todayLights, todayLightsLabel, "조도")
+                    // drawChart(todayTempers, todayTempersLabel, "온도")
                 }
             }
             else{
-                // NaN 값을 제거하여 새로운 리스트 생성
-                val filteredValues = todayLights.filter { !it.isNaN() }
+                val (filteredValues, filteredLabels) = todayLights.indices
+                    .filter { !todayLights[it].isNaN() }
+                    .map { todayLights[it] to todayLightsLabel[it] }
+                    .unzip()
 
-                // NaN에 해당하는 라벨도 제거
-                val filteredLabels = todayLightsLabel.take(filteredValues.size)
+                Log.d("after nan", filteredValues.toString())
+                Log.d("after nan2", filteredLabels.toString())
 
                 // 그래프 그리기
                 drawChart(filteredValues, filteredLabels, "조도")
-                //drawChart(todayLights, todayLightsLabel, "조도")
             }
         }
 
@@ -225,27 +236,29 @@ class SensorActivity : AppCompatActivity() {
                     lineChart.visibility = View.INVISIBLE
                 }
                 else{
-                    // NaN 값을 제거하여 새로운 리스트 생성
-                    val filteredValues = todaySoilHumids.filter { !it.isNaN() }
+                    val (filteredValues, filteredLabels) = todaySoilHumids.indices
+                        .filter { !todaySoilHumids[it].isNaN() }
+                        .map { todaySoilHumids[it] to todaySoilHumidsLabel[it] }
+                        .unzip()
 
-                    // NaN에 해당하는 라벨도 제거
-                    val filteredLabels = todaySoilHumidsLabel.take(filteredValues.size)
+                    Log.d("after nan", filteredValues.toString())
+                    Log.d("after nan2", filteredLabels.toString())
 
                     // 그래프 그리기
                     drawChart(filteredValues, filteredLabels, "토양습도")
-                    //drawChart(todaySoilHumids, todaySoilHumidsLabel, "토양습도")
                 }
             }
             else{
-                // NaN 값을 제거하여 새로운 리스트 생성
-                val filteredValues = todaySoilHumids.filter { !it.isNaN() }
+                val (filteredValues, filteredLabels) = todaySoilHumids.indices
+                    .filter { !todaySoilHumids[it].isNaN() }
+                    .map { todaySoilHumids[it] to todaySoilHumidsLabel[it] }
+                    .unzip()
 
-                // NaN에 해당하는 라벨도 제거
-                val filteredLabels = todaySoilHumidsLabel.take(filteredValues.size)
+                Log.d("after nan", filteredValues.toString())
+                Log.d("after nan2", filteredLabels.toString())
 
                 // 그래프 그리기
                 drawChart(filteredValues, filteredLabels, "토양습도")
-                //drawChart(todaySoilHumids, todaySoilHumidsLabel, "토양습도")
             }
         }
     }
