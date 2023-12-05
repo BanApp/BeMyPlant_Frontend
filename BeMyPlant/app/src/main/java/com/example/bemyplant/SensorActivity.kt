@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -191,7 +193,18 @@ class SensorActivity : AppCompatActivity() {
         }
         val dataset = LineDataSet(entries, "")
         val data = LineData(dataset)
+        val xAxis = lineChart.xAxis
+        val yAxis = lineChart.axisLeft
 
+        xAxis.typeface = Typeface.create("@font/notosans_black", Typeface.NORMAL)
+        xAxis.textSize = 10F
+        yAxis.typeface = Typeface.create("@font/notosans_bold", Typeface.NORMAL)
+        yAxis.textSize = 6F
+        dataset.setLineWidth(2F); //라인 두께
+        dataset.setCircleRadius(2F); // 점 크기
+        dataset.setCircleColor(Color.parseColor("#9999FF")); // 점 색깔
+        dataset.setDrawCircleHole(false); // 원의 겉 부분 칠할거?
+        dataset.setColor(Color.parseColor("#9999CC"));
         lineChart.data = data
         lineChart.invalidate()
     }
