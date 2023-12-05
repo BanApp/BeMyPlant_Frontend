@@ -28,7 +28,7 @@
             app:layout_constraintHorizontal_bias="0.14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.023"></TextView>
+            app:layout_constraintVertical_bias="0.023"/>
 
         <ImageButton
             android:id="@+id/imageButton_sensor_regen"
@@ -40,7 +40,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13"></ImageButton>
+            app:layout_constraintVertical_bias="0.13"/>
 
     </LinearLayout>
 
@@ -60,48 +60,53 @@
         tools:layout_editor_absoluteX="0dp">
 
         <android.widget.Button
+            android:layout_gravity="left"
             android:id="@+id/Button_sensor_temperature"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/border_pink"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:text="온도\n??"
             android:textColor="#000000"
-            android:textSize="22dp"></android.widget.Button>
+            android:textSize="20sp" />
 
         <android.widget.Button
+            android:layout_gravity="right"
             android:id="@+id/Button_sensor_humidity"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/border_purple"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:text="습도\n??"
             android:textColor="#000000"
-            android:textSize="22dp"></android.widget.Button>
+            android:textSize="20sp"/>
 
         <android.widget.Button
             android:id="@+id/Button_sensor_light"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
+            android:layout_gravity="left"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/border_yellow"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:text="조도\n??"
             android:textColor="#000000"
-            android:textSize="22dp"></android.widget.Button>
+            android:textSize="20sp"/>
 
         <android.widget.Button
+            android:layout_gravity="right"
+
             android:id="@+id/Button_sensor_soilHumidity"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/border_blue"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:text="토양습도\n??"
             android:textColor="#000000"
-            android:textSize="20dp"></android.widget.Button>
+            android:textSize="20sp"/>
 
     </GridLayout>
 

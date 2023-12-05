@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import kotlin.collections.EmptyMap.entries
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -135,7 +134,7 @@ class SensorActivity : AppCompatActivity() {
 
                 // 그래프 그리기
                 drawChart(filteredValues, filteredLabels, "온도")
-               // drawChart(todayTempers, todayTempersLabel, "온도")
+                // drawChart(todayTempers, todayTempersLabel, "온도")
             }
         }
 
@@ -249,25 +248,6 @@ class SensorActivity : AppCompatActivity() {
                 //drawChart(todaySoilHumids, todaySoilHumidsLabel, "토양습도")
             }
         }
-        val dataset= LineDataSet(entries, "")
-        val data = LineData(dataset)
-        val xAxis = lineChart.xAxis
-        val yAxis = lineChart.axisLeft
-
-        xAxis.typeface = Typeface.create("@font/notosans_black", Typeface.NORMAL)
-        xAxis.textSize = 10F
-        yAxis.typeface = Typeface.create("@font/notosans_bold", Typeface.NORMAL)
-        yAxis.textSize = 6F
-        dataset.setLineWidth(2F); //라인 두께
-        dataset.setCircleRadius(2F); // 점 크기
-        dataset.setCircleColor(Color.parseColor("#9999FF")); // 점 색깔
-        dataset.setDrawCircleHole(false); // 원의 겉 부분 칠할거?
-        dataset.setColor(Color.parseColor("#9999CC"));
-        lineChart.data = data
-        lineChart.invalidate()
-        lineChart.data = data
-        lineChart.invalidate()
-
     }
 
 
