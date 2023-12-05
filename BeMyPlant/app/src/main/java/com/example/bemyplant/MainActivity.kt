@@ -55,10 +55,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var strangeConText: TextView
     private lateinit var strangeCondition: LinearLayout
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onResume() {
-        super.onResume()
-        updateStatus()
+    //@RequiresApi(Build.VERSION_CODES.O)
+    //override fun onResume() {
+//        super.onResume()
+//        Log.d("rendering", "onResume .. updateStatus before ..")
+//        updateStatus()
+//        Log.d("rendering", "onResume .. updateStatus after ..")
 //        checkIfSensorDataIsLatest(this) { isLatest ->
 //            if (!isLatest) {
 //                updateSensorError()
@@ -66,9 +68,11 @@ class MainActivity : AppCompatActivity() {
 //                updateStatus()
 //            }
 //        }
-    }
+//    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("rendering", "onCreate Start")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
@@ -119,11 +123,6 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         strangeConText = findViewById<TextView>(R.id.strangeConText)
         strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
-        statusImages = arrayOf(
-            findViewById<ImageView>(R.id.statusImage1),
-            findViewById<ImageView>(R.id.statusImage2),
-            findViewById<ImageView>(R.id.statusImage3),
-        )
 
         // main image 설정
         //mainFlower.setImageResource(R.drawable.flower)
@@ -138,6 +137,19 @@ class MainActivity : AppCompatActivity() {
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
 //        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
+
+
+        Log.d("rendering", "onResume .. updateStatus before ..")
+        updateStatus()
+        Log.d("rendering", "onResume .. updateStatus after ..")
+//        checkIfSensorDataIsLatest(this) { isLatest ->
+//            if (!isLatest) {
+//                updateSensorError()
+//            } else {
+//                updateStatus()
+//            }
+//        }
+
 
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
@@ -156,6 +168,7 @@ class MainActivity : AppCompatActivity() {
         val deletePlant = R.drawable.delete_plant
 
         var dbPlant = realmPlant.where(PlantModel::class.java).findFirst()
+        Log.d("rendering", "onCreate .. dbPlant realm search ..")
 
         if (dbPlant != null) {
 
@@ -313,11 +326,13 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d("rendering", "retrofit response start..")
                 val response = retrofitService.getWeatherAndStatus(statusData, "Bearer $token")
+                Log.d("rendering", "retrofit response end..")
                 if (response.isSuccessful) {
                     launch(Dispatchers.Main) {
                         // 상태에 따른 이미지 변경
-                        Log.d("image rendering", "image rendering start..")
+                        Log.d("rendering", "updateStatus .. image rendering start..")
                         val statusResponse = response.body()
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
@@ -333,9 +348,10 @@ class MainActivity : AppCompatActivity() {
                                 image.setImageResource(statusImageResource[0])
                             }
                         }
-
+                        Log.d("rendering", "updateStatus .. set image complete..")
                         var vo = realmPlant.where(PlantModel::class.java).findFirst()
-                        Log.d("image rendering", "image rendering end..")
+                        Log.d("rendering", "realm search")
+
                         if (vo != null) {
                             println("############" + vo.plantName)
                             if (vo.plantName == null || vo.plantName == "") {
@@ -356,6 +372,8 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             statusText.text = "???"
                         }
+                        Log.d("rendering", "realm search complete..")
+
 
                         when (strangeTemp) {
                             "airHumid" -> strangeConText.text = "공기습도이상"
@@ -380,6 +398,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        Log.d("rendering", "updateStatus COMPLETE")
+
     }
 
     private fun updateSensorError() {
