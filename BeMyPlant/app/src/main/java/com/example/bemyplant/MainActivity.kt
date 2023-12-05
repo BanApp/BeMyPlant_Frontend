@@ -19,7 +19,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bemyplant.data.StatusData
-import com.example.bemyplant.data.checkIfSensorDataIsLatest
 import com.example.bemyplant.fragment.FlowerIdFragment
 import com.example.bemyplant.model.PlantModel
 import com.example.bemyplant.module.PlantModule
@@ -34,7 +33,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-data class PlantImage(val resourceId: Int, val description: String) // TODO: DB 연동 후 삭제
+data class PlantImage(val resourceId: Int?, val description: String)
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +44,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var plantNameTextView: TextView
     private lateinit var statusText: TextView
     private val retrofitService = RetrofitService().apiService2
-    private lateinit var realm: Realm
+    private lateinit var realmPlant: Realm
+    private lateinit var realmUser: Realm
     private lateinit var statusImages: Array<ImageView>
     private lateinit var plantNameVar : String
     private lateinit var plantBirthVar : String
@@ -55,22 +55,39 @@ class MainActivity : AppCompatActivity() {
     private lateinit var strangeConText: TextView
     private lateinit var strangeCondition: LinearLayout
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onResume() {
-        super.onResume()
-        checkIfSensorDataIsLatest(this) { isLatest ->
-            if (!isLatest) {
-                updateSensorError()
-            } else {
-                updateStatus()
-            }
-        }
-    }
+    //@RequiresApi(Build.VERSION_CODES.O)
+    //override fun onResume() {
+//        super.onResume()
+//        Log.d("rendering", "onResume .. updateStatus before ..")
+//        updateStatus()
+//        Log.d("rendering", "onResume .. updateStatus after ..")
+//        checkIfSensorDataIsLatest(this) { isLatest ->
+//            if (!isLatest) {
+//                updateSensorError()
+//            } else {
+//                updateStatus()
+//            }
+//        }
+//    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("rendering", "onCreate Start")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         regenerateButton = findViewById<ImageButton>(R.id.regenerateButton)
+        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
+        statusText = findViewById<TextView>(R.id.textView_main_healthValue)
+        strangeConText = findViewById<TextView>(R.id.strangeConText)
+        strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
+        mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
+        plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
+
+        statusImages = arrayOf(
+            findViewById<ImageView>(R.id.statusImage1),
+            findViewById<ImageView>(R.id.statusImage2),
+            findViewById<ImageView>(R.id.statusImage3),
+        )
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("plant.realm") // 생성할 realm 파일 이름 지정
@@ -78,7 +95,15 @@ class MainActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
+
+//        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+//            .name("user.realm") // 생성할 realm 파일 이름 지정
+//            .deleteRealmIfMigrationNeeded()
+//            .modules(UserModel())
+//            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+//            .build()
+//        realmUser = Realm.getInstance(configUser)
 
         mainFlowerImgBtn = findViewById<ImageButton>(R.id.mainFlower)
         plantNameTextView = findViewById<TextView>(R.id.textView_main_flowerName)
@@ -98,62 +123,79 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById<TextView>(R.id.textView_main_healthValue)
         strangeConText = findViewById<TextView>(R.id.strangeConText)
         strangeCondition = findViewById<LinearLayout>(R.id.strangeCondition)
-        statusImages = arrayOf(
-            findViewById<ImageView>(R.id.statusImage1),
-            findViewById<ImageView>(R.id.statusImage2),
-            findViewById<ImageView>(R.id.statusImage3),
-        )
 
+        // main image 설정
+        //mainFlower.setImageResource(R.drawable.flower)
+        //mainFlower.setImageResource(R.drawable.delete_plant)
+        //mainFlower.setImageResource(R.drawable.sea_otter)
+        //mainFlower.setImageResource(R.drawable.test_img)
+        //R.drawable.flower
         // TODO: (정현) 식물 DB 조회 후 렌더링 (D+Day, 식물 이미지, 식물 이름)
         //  R.id.textView_main_dDayValue, R.id.mainFlower, R.id.textView_main_flowerName
         //  렌더링하지 않아도, 일단 DB에서 받아온 값은 모두 변수에 저장해주세요(단, 주민등록번호의 경우 반드시 plantRegistration에 저장하고, 품종은 plantRace에 저장해주세요,...) (다른 화면으로 이동 시 데이터 넘길때 사용)
-
-        var vo = realm.where(PlantModel::class.java).findFirst()
 
         //-----------이전 화면에서 넘어오는 이미지 값이 있다면 해당 값으로 이미지 수정
         //currentPlantImage = PlantImage(R.drawable.delete_plant, "Default Image") // TODO: DB 연동 후 삭제
 //        currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
 
+
+        Log.d("rendering", "onResume .. updateStatus before ..")
+        updateStatus()
+        Log.d("rendering", "onResume .. updateStatus after ..")
+//        checkIfSensorDataIsLatest(this) { isLatest ->
+//            if (!isLatest) {
+//                updateSensorError()
+//            } else {
+//                updateStatus()
+//            }
+//        }
+
+
         // 새로고침 버튼
         regenerateButton.setOnClickListener {
-            checkIfSensorDataIsLatest(this) { isLatest ->
-                if (!isLatest) {
-                    updateSensorError()
-                } else {
-                    updateStatus()
-                }
-            }
+            updateStatus()
+//            checkIfSensorDataIsLatest(this) { isLatest ->
+//                if (!isLatest) {
+//                    updateSensorError()
+//                } else {
+//                    updateStatus()
+//                }
+//            }
         }
 
-
         val screenFrame = findViewById<FrameLayout>(R.id.screenFrame)
-        val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
+        //val newPlantImageResId = intent.getIntExtra("newPlantImageResId", 0) // 다른 화면에서 전달되는 이미지
         val deletePlant = R.drawable.delete_plant
-        if (vo != null) {
 
-            plantNameVar = vo.plantName
-            plantBirthVar = vo.plantBirth
-            plantRaceVar = vo.plantRace
-            plantImageVar = vo.plantImage
-            plantRegistrationVar = vo.plantRegNum
+        var dbPlant = realmPlant.where(PlantModel::class.java).findFirst()
+        Log.d("rendering", "onCreate .. dbPlant realm search ..")
+
+        if (dbPlant != null) {
+
+            plantNameVar = dbPlant.plantName
+            plantBirthVar = dbPlant.plantBirth
+            plantRaceVar = dbPlant.plantRace
+            plantImageVar = dbPlant.plantImage
+            plantRegistrationVar = dbPlant.plantRegNum
 //
             plantNameTextView.text = plantNameVar // 이름
             var transImageToBitmap = byteArrayToBitmap(plantImageVar)
             mainFlowerImgBtn.setImageBitmap(transImageToBitmap)
-            currentPlantImage = PlantImage(R.drawable.flower, "Default Image")
-//
+            currentPlantImage = PlantImage(null, "Image from DB")
+
         } else {
             plantNameTextView.text = ""
             plantBirthVar = "???"
             plantRaceVar = ""
             mainFlowerImgBtn.setImageResource(deletePlant)
             plantRegistrationVar = ""
+            currentPlantImage = PlantImage(R.drawable.delete_plant, "Delete Image")
         }
 //
         val textView_dDayValue = findViewById<TextView>(R.id.textView_main_dDayValue)
 
         // sdhan : D-Day 계산
-        var sampleDate = vo?.plantBirth
+        var sampleDate = dbPlant?.plantBirth
 //        var sampleDate = "1900-01-02"
         if (sampleDate != null) {
             if (sampleDate == ""){
@@ -172,34 +214,17 @@ class MainActivity : AppCompatActivity() {
             textView_dDayValue.text = "???"
         }
 
-        if (newPlantImageResId != 0) { // 현재 이미지와 다른 이미지값이 들어온다면
-            currentPlantImage = PlantImage(newPlantImageResId, "Custom Image")
-            updateMainFlower(newPlantImageResId)
-        }
         //----------메인화면에서 식물 이미지 값에 따라 특정 화면 전환
         mainFlowerImgBtn.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
 
-            when (currentPlantImage){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
-                PlantImage(R.drawable.delete_plant, "Default Image") -> {
-
-                    // 프래그먼트 이동
-//                    val plantImageSelect1Fragment = PlantImageSelect1Fragment()
-//                    fragmentTransaction.add(R.id.plantImageSelect1Fragment, plantImageSelect1Fragment)
-//                    fragmentTransaction.addToBackStack(null)
-//                    fragmentTransaction.commit()
-//                    screenFrame.bringToFront()
+            when (currentPlantImage.resourceId){//resources.getIdentifier("mainFlower", "id", this.packageName)) { //currentPlantImage.resourceId
+                R.drawable.delete_plant -> {
 
                     val plantRegisterIntent = Intent(this@MainActivity, PlantImageTempActivity::class.java)
                     // 액티비티 이동
-                    //val plantRegisterIntent = Intent(this@MainActivity, TempConnectActivity::class.java)
                     startActivity(plantRegisterIntent)
-
-                    //fragmentTransaction.add(R.id.screenFrame, fragment)
-                    //fragmentTransaction.addToBackStack(null)
-                    //fragmentTransaction.commit()
-                    //screenFrame!!.bringToFront()
 
                 }
                 else -> {
@@ -222,7 +247,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
 
         //------------------------상태에 관한 텍스트 클릭시 , 센서 화면으로 이동
         //TODO: 새로고침 버튼 구현
@@ -302,28 +326,31 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d("rendering", "retrofit response start..")
                 val response = retrofitService.getWeatherAndStatus(statusData, "Bearer $token")
+                Log.d("rendering", "retrofit response end..")
                 if (response.isSuccessful) {
                     launch(Dispatchers.Main) {
                         // 상태에 따른 이미지 변경
+                        Log.d("rendering", "updateStatus .. image rendering start..")
                         val statusResponse = response.body()
                         val statusTemp = statusResponse?.status
                         val strangeTemp = statusResponse?.most_important_feature
-                        val statusImageResource = if (statusTemp == 0) {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.good_status1
-                            R.drawable.ic_launcher_foreground
-
+                        if (statusTemp != 0) {
+                            val statusImageResource = arrayOf(R.drawable.good_status1, R.drawable.good_status2, R.drawable.good_status3)
+                            val randomIndex = (0 until statusImageResource.size).random()
+                            for (image in statusImages) {
+                                image.setImageResource(statusImageResource[randomIndex])
+                            }
                         } else {
-                            Log.d("123", statusTemp.toString())
-//                            R.drawable.bad_status
-                            R.drawable.ic_launcher_foreground
+                            val statusImageResource = arrayOf(R.drawable.bad_status)
+                            for (image in statusImages) {
+                                image.setImageResource(statusImageResource[0])
+                            }
                         }
-
-                        for (imageView in statusImages) {
-                            imageView.setImageResource(statusImageResource)
-                        }
-                        var vo = realm.where(PlantModel::class.java).findFirst()
+                        Log.d("rendering", "updateStatus .. set image complete..")
+                        var vo = realmPlant.where(PlantModel::class.java).findFirst()
+                        Log.d("rendering", "realm search")
 
                         if (vo != null) {
                             println("############" + vo.plantName)
@@ -331,40 +358,47 @@ class MainActivity : AppCompatActivity() {
                                 statusText.text = "???"
                             } else {
                                 //상태에 따른 텍스트 변경
-                                if (statusTemp == 0) {
+                                if (statusTemp != 0) {
                                     statusText.text = "Good"
                                     strangeConText.visibility = View.INVISIBLE
+                                    strangeCondition.visibility = View.INVISIBLE
 
                                 } else {
                                     statusText.text = "Bad"
                                     strangeCondition.visibility = View.VISIBLE
+                                    strangeConText.visibility = View.VISIBLE
                                 }
                             }
                         } else {
                             statusText.text = "???"
                         }
+                        Log.d("rendering", "realm search complete..")
 
-                        if (strangeTemp == "airHumid") {
-                            strangeConText.text = "습도이상"
 
-                        } else if (strangeTemp == "airTemp") {
-                            strangeConText.text = "온도이상"
-                        } else {
-                            strangeConText.text = "확인용!!!!!"
+                        when (strangeTemp) {
+                            "airHumid" -> strangeConText.text = "공기습도이상"
+                            "airTemp" -> strangeConText.text = "온도이상"
+                            "lightIntensity" -> strangeConText.text = "조도이상"
+                            "soilHumid" -> strangeConText.text = "토양습도이상"
                         }
                     }
 
                 } else {
-                    statusText.text = "???"
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("Error_Response", errorBody ?: "error body X")
+                    launch(Dispatchers.Main) {
+                        statusText.text = "???"
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("Error_Response", errorBody ?: "error body X")
+                    }
                 }
             } catch (e: Exception) {
-                statusText.text = "???"
-                Log.e("API_Connection", "API 연결 실패")
-                e.printStackTrace()
+                launch(Dispatchers.Main) {
+                    statusText.text = "???"
+                    Log.e("API_Connection", "API 연결 실패")
+                    e.printStackTrace()
+                }
             }
         }
+        Log.d("rendering", "updateStatus COMPLETE")
 
     }
 

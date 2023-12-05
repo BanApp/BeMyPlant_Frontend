@@ -27,6 +27,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
 import com.example.bemyplant.model.Diary
@@ -145,13 +147,16 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
                 val contents = contentEditText.text.toString()
                 val image = diaryImage.drawable.toBitmap()
                 if (image==null){
-                    showToast(requireContext(),"그림을 입력해주세요.")
+                    showToast(requireContext(),"사진을 입력해주세요.")
+                    return
                 }
                 if (title.isEmpty()){
                     showToast(requireContext(),"제목을 입력해주세요.")
+                    return
                 }
                 if (contents.isEmpty()){
                     showToast(requireContext(),"내용을 입력해주세요.")
+                    return
                 }
 
                 else{
@@ -168,11 +173,6 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
 
                     val bundle = Bundle()
                     bundle.putParcelable("selectedDay", selectedDay)
-                    bundle.putString("title", diaryTitleEditText.text.toString())
-                    bundle.putParcelable("image", diaryImage.drawable.toBitmap())
-                    bundle.putString("contents", contentEditText.text.toString())
-                    bundle.putInt("weatherCode", weatherCode)
-                    //bundle.putParcelable("selectedDay", selectedDay)
                     Log.d("diary", "diary new: bundle 설정 성공")
                     navController.navigate(R.id.diaryViewFragment, bundle)
                 }
@@ -189,9 +189,11 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
     }
 
-    // 앨범에서 선택한 이미지를 처리하는 콜백
+     //앨범에서 선택한 이미지를 처리하는 콜백
+    /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
 
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
@@ -213,6 +215,31 @@ class DiaryNewFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+    */
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+         super.onActivityResult(requestCode, resultCode, data)
+
+         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+             if (data != null) {
+                 val selectedImageUri: Uri? = data.data
+
+                 // Glide를 사용하여 이미지 로딩 및 크기 조절
+                 Glide.with(requireContext())
+                     .asBitmap()
+                     .load(selectedImageUri)
+                     .override(600, 600) // 원하는 크기로 조절
+                     .centerCrop() // 이미지를 중앙으로 맞춤
+                     .into(object : SimpleTarget<Bitmap>() {
+                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                             // 이미지 뷰에 비트맵 설정
+                             view?.findViewById<ImageView?>(R.id.imageView_diaryNew_plant)?.setImageBitmap(resource)
+                         }
+                     })
+             }
+         }
+     }
+
+
 
 
     companion object {

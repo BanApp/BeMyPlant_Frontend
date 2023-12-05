@@ -4,25 +4,28 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.bemyplant.adapter.MessageAdapter
 import com.example.bemyplant.data.ChatMsg
 import com.example.bemyplant.data.ChatRequest
 import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
 import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,11 +43,18 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var sendButton: Button
     private lateinit var messageAdapterMe: MessageAdapter
     private lateinit var messageAdapterOther: MessageAdapter
+
+    private lateinit var recyclerViewMe: RecyclerView
+    private lateinit var recyclerViewOther: RecyclerView
+
+    private lateinit var messageContentMe: TextView
+    private lateinit var messageContentOther: TextView
     private val itemListMe = ArrayList<ChatMsg>()
     private val itemListOther = ArrayList<ChatMsg>()
     private val currentUser = "jo" //임시값
     private val retrofitService = RetrofitService().apiService2
-    lateinit var realm: Realm
+    lateinit var realmPlant: Realm
+    lateinit var realmUser: Realm
     lateinit var imageGen1 : Bitmap
     lateinit var imageGen2 : Bitmap
     lateinit var plantImgBitmap : Bitmap
@@ -62,49 +72,82 @@ class ChatActivity : AppCompatActivity() {
         return dateFormat.format(date)
     }
 
-    private fun renderingMessage(message: String, user:String, userBitmapImage:Bitmap, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
-        Log.d("chatbot", "[function] message: $message")
-        Log.d("chatbot", "[function] user: $user")
 
+    private fun renderingMessage(message: String, user:String, userBitmapImage:Bitmap, recyclerViewMe: RecyclerView, recyclerViewOther: RecyclerView) {
+//        messageContentMe = recyclerViewMe.findViewById(R.id.messageContent)
+//        messageContentOther = recyclerViewOther.findViewById(R.id.messageContent)
+        val layoutManagerMe = recyclerViewMe.layoutManager as LinearLayoutManager
+        val layoutManagerOther = recyclerViewOther.layoutManager as LinearLayoutManager
+        val lastVisiblePositionMe = layoutManagerMe.findLastVisibleItemPosition()
+        val lastVisiblePositionOther = layoutManagerOther.findLastVisibleItemPosition()
+
+
+        var oneLineHeightPixel = getHeightForTextSize15dp(this)
+        Log.d("message oneLineHeightPixel", oneLineHeightPixel.toString())
         var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+        messageEditText.text.clear()
 
         if (message.isNotEmpty()) {
             if (user == "jo") {
                 itemListMe.add(ChatMsg(message, currentUser, getTime(), userBitmapImage))
                 messageAdapterMe.notifyDataSetChanged()
-                recyclerViewMe.scrollToPosition(itemListMe.size - 1)
 
+                recyclerViewMe.post {
+                    recyclerViewMe.scrollToPosition(itemListMe.size - 1)
+//                    layoutManagerMe.scrollToPositionWithOffset(itemListMe.size - 1,
+//                        (oneLineHeightPixel * (messageAdapterMe.lineCount())).toInt()
+//                    )
+                }
 
                 // 빈 문자열 추가
-                itemListOther.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
-//                com.google.android.material.R.drawable.navigation_empty_icon
+                val processedMessage = message.map { if (it == '\n') it else ' ' }.joinToString("")
+                itemListOther.add(ChatMsg(processedMessage, currentUser, "", emptyImg))
                 messageAdapterOther.notifyDataSetChanged()
-                recyclerViewOther.scrollToPosition(itemListMe.size - 1)
-            } else {
-                Log.d("chatbot", "[function] other user enter")
-                itemListOther.add(ChatMsg(message, user, getTime(), userBitmapImage))
-                Log.d("chatbot", "[function] (1) itemListOther.add")
-                messageAdapterOther.notifyDataSetChanged()
-                Log.d("chatbot", "[function] (2) messageAdapterOther")
                 recyclerViewOther.scrollToPosition(itemListOther.size - 1)
-                Log.d("chatbot", "[function] (3) recyclerViewOther")
+//                recyclerViewOther.post {
+//                    layoutManagerOther.scrollToPositionWithOffset(itemListOther.size - 1,
+//                        (oneLineHeightPixel * (messageAdapterMe.lineCount())).toInt()
+//                    )
+//                }
+            } else {
+                itemListOther.add(ChatMsg(message, user, getTime(), userBitmapImage))
+                messageAdapterOther.notifyDataSetChanged()
+                recyclerViewOther.post {
+                    //recyclerViewOther.scrollToPosition(messageAdapterOther.lineCount() - 1)
+                    recyclerViewMe.scrollToPosition(itemListOther.size - 1)
+//                    layoutManagerOther.scrollToPositionWithOffset(itemListOther.size - 1,
+//                        (oneLineHeightPixel * (messageAdapterOther.lineCount())).toInt()
+//                    )
+                }
 
                 // 빈 문자열 추가
-                itemListMe.add(ChatMsg(" ".repeat(message.length), currentUser, "", emptyImg))
-                Log.d("chatbot", "[function] (4) itemListOther.add")
+                val processedMessage = message.map { if (it == '\n') it else ' ' }.joinToString("")
+                itemListMe.add(ChatMsg(processedMessage, currentUser, "", emptyImg))
                 messageAdapterMe.notifyDataSetChanged()
-                Log.d("chatbot", "[function] (5) messageAdapterOtherjmj0801")
-                recyclerViewMe.scrollToPosition(itemListMe.size - 1)
-                Log.d("chatbot", "[function] (6) recyclerViewOther")
+                recyclerViewMe.post {
+                    recyclerViewMe.scrollToPosition(itemListMe.size - 1)
+//                    layoutManagerMe.scrollToPositionWithOffset(itemListMe.size - 1,
+//                        (oneLineHeightPixel * (messageAdapterOther.lineCount())).toInt()
+//                    )
+                }
             }
-            messageEditText.text.clear()
+
         }
+    }
+
+    fun dpToPx(dp: Float, context: Context): Float {
+        val scale = context.resources.displayMetrics.density
+        return dp * scale
+    }
+
+    fun getHeightForTextSize15dp(context: Context): Float {
+        val textSizeInDp = 15f
+        return dpToPx(textSizeInDp, context)
     }
 
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,9 +159,18 @@ class ChatActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
 
-        var vo = realm.where(PlantModel::class.java).findFirst()
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
+
+        var vo = realmPlant.where(PlantModel::class.java).findFirst()
+        var vo2 = realmUser.where(UserModel::class.java).findFirst()
         var emptyImg : Bitmap? = ContextCompat.getDrawable(this, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
 
         if (emptyImg != null) {
@@ -127,10 +179,17 @@ class ChatActivity : AppCompatActivity() {
 
         if (vo != null) {
             plantImgBitmap = byteArrayToBitmap(vo.plantImage)
-            userImgBitmap = byteArrayToBitmap(vo.userImage)
+            plantImgBitmap = makeTransparentAreaWhite(plantImgBitmap) // 투명 배경 -> 하얀색으로
         } else {
             if (emptyImg != null) {
                 plantImgBitmap = emptyImg
+            }
+        }
+
+        if (vo2 != null) {
+            userImgBitmap = byteArrayToBitmap(vo2.userImage)
+        } else {
+            if (emptyImg != null) {
                 userImgBitmap = emptyImg
             }
         }
@@ -179,8 +238,8 @@ class ChatActivity : AppCompatActivity() {
         messageEditText = findViewById(R.id.messageEditText)
         sendButton = findViewById(R.id.sendButton)
 
-        val recyclerViewMe = findViewById<RecyclerView>(R.id.recycler_view_me)
-        val recyclerViewOther = findViewById<RecyclerView>(R.id.recycler_view_other)
+        recyclerViewMe = findViewById<RecyclerView>(R.id.recycler_view_me)
+        recyclerViewOther = findViewById<RecyclerView>(R.id.recycler_view_other)
 
         messageAdapterMe = MessageAdapter(itemListMe, currentUser)
         messageAdapterOther = MessageAdapter(itemListOther, "other")
@@ -191,7 +250,7 @@ class ChatActivity : AppCompatActivity() {
         recyclerViewMe.layoutManager = LinearLayoutManager(this)
         recyclerViewOther.layoutManager = LinearLayoutManager(this)
 
-        ///*
+
         sendButton.setOnClickListener {
             val message = messageEditText.text.toString()
             CoroutineScope(Dispatchers.Main).launch {
@@ -238,6 +297,20 @@ class ChatActivity : AppCompatActivity() {
 
             }
         }
+    }
+    fun makeTransparentAreaWhite(bitmap: Bitmap): Bitmap {
+        val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+        canvas.drawColor(Color.WHITE) // 배경을 하얀색으로 초기화
+
+        val paint = Paint().apply {
+            colorFilter = LightingColorFilter(Color.WHITE, 1)
+        }
+
+        // 투명한 부분을 하얀색으로 그리기
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+
+        return resultBitmap
     }
 
 }

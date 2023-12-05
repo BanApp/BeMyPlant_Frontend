@@ -41,13 +41,13 @@
             android:name=".SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MJ_MainActivity"
             android:exported="false" />
         <activity
             android:name=".TempConnectActivity"
             android:exported="false" />
         <activity
-            android:name=".MJ_MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

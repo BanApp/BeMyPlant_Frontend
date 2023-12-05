@@ -16,10 +16,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
-import com.example.bemyplant.model.PlantModel
-import com.example.bemyplant.module.PlantModule
 import com.example.bemyplant.model.DiaryRealmManager
+import com.example.bemyplant.model.PlantModel
+import com.example.bemyplant.model.UserModel
+import com.example.bemyplant.module.DiaryModule
+import com.example.bemyplant.module.PlantModule
+import com.example.bemyplant.module.UserModule
 import com.example.bemyplant.network.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,7 +30,6 @@ import io.realm.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
@@ -48,7 +49,9 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var modifySensorButton: Button
     private lateinit var defaultUserImage: Bitmap
     private lateinit var user_image: Bitmap
-    lateinit var realm : Realm
+    lateinit var realmPlant : Realm
+    lateinit var realmUser : Realm
+    lateinit var realmDiary: Realm
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -57,6 +60,14 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        val configDiary : RealmConfiguration = RealmConfiguration.Builder()
+            .name("diary.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(DiaryModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmDiary = Realm.getInstance(configDiary)
+        //diaryRealmManager = DiaryRealmManager(realmDiary)
 
         val configPlant : RealmConfiguration = RealmConfiguration.Builder()
             .name("plant.realm") // 생성할 realm 파일 이름 지정
@@ -64,7 +75,15 @@ class SettingActivity : AppCompatActivity() {
             .modules(PlantModule())
             .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
             .build()
-        realm = Realm.getInstance(configPlant)
+        realmPlant = Realm.getInstance(configPlant)
+
+        val configUser : RealmConfiguration = RealmConfiguration.Builder()
+            .name("user.realm") // 생성할 realm 파일 이름 지정
+            .deleteRealmIfMigrationNeeded()
+            .modules(UserModule())
+            .allowWritesOnUiThread(true) // sdhan : UI thread에서 realm에 접근할수 있게 허용
+            .build()
+        realmUser = Realm.getInstance(configUser)
 
         userImage = findViewById(R.id.imageView_setting_user)
         realNameTextView = findViewById(R.id.textView_setting_name)
@@ -77,16 +96,13 @@ class SettingActivity : AppCompatActivity() {
         getUserAccount()
 
         // TODO: 사용자 이미지 변경할 것
-        var vo = realm.where(PlantModel::class.java).findFirst()
+        var vo = realmUser.where(UserModel::class.java).findFirst()
         if (vo != null) {
             var userImageBitmap = byteArrayToBitmap(vo.userImage)
             userImage.setImageBitmap(userImageBitmap)
         } else {
             userImage.setImageResource(R.drawable.user_image)
         }
-
-
-        // TODO: 2. (정현) 식물 DB에서 식물 이름 가져옴 -> nameTextView 수정
 
         // (1) 로그아웃 버튼 클릭 시 처리
         logoutButton.setOnClickListener{
@@ -153,13 +169,13 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
+    private fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
     private fun getUserAccount() {
         val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        val Tag: String = "sensor"
-        //Log.d(Tag, "token: $token")
-        val mainIntent = getIntent()
-        val plantName = mainIntent.getStringExtra("plantName").toString()
 
         // 토큰 부재 시 초기화면(MJ_main)으로 전환
         if (token.isNullOrEmpty()){
@@ -168,18 +184,49 @@ class SettingActivity : AppCompatActivity() {
         }
         CoroutineScope(Dispatchers.IO).launch {
             val response = retrofitService.getUserData("Bearer " + token)
-            val Tag: String = "sensor"
-            Log.d(Tag, "sensor raw-response: $response")
 
             if (response.isSuccessful) {
-                val UserData = response.body()
-
                 runOnUiThread {
-                    realNameTextView.text = response.body()?.r_name + "(${plantName} 주인님)"
-                    uidTextView.text = response.body()?.username
-                    // 화면 갱신
-                    realNameTextView.invalidate()
-                    uidTextView.invalidate()
+                    var vo = realmPlant.where(PlantModel::class.java).findFirst()
+                    if (vo != null) {
+                        var plantName2 = vo.plantName
+                        if (plantName2.isNullOrEmpty()) {
+                            plantName2 = "??"
+                        }
+                        realNameTextView.text = response.body()?.r_name + "(${plantName2} 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    } else {
+                        realNameTextView.text = response.body()?.r_name + "(?? 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    }
+                }
+            }
+            else{
+                runOnUiThread {
+                    var vo = realmPlant.where(PlantModel::class.java).findFirst()
+                    if (vo != null) {
+                        var plantName2 = vo.plantName
+                        if (plantName2.isNullOrEmpty()) {
+                            plantName2 = "??"
+                        }
+                        realNameTextView.text = "???" + "(${plantName2} 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    } else {
+                        realNameTextView.text = "???" + "(?? 주인님)"
+                        uidTextView.text = response.body()?.username
+                        // 화면 갱신
+                        realNameTextView.invalidate()
+                        uidTextView.invalidate()
+                    }
                 }
             }
         }
@@ -237,7 +284,21 @@ class SettingActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     // 다이어리 db 날리기
-                    diaryRealmManager.deleteAll()
+
+                    withContext(Dispatchers.Main) {
+                        // 다이어리 db 날리기
+                        realmDiary.executeTransaction {
+                            it.deleteAll()
+                        }
+                        // 사용자 이미지 삭제
+                        realmUser.executeTransaction {
+                            //전부지우기
+                            it.where(UserModel::class.java).findAll().deleteAllFromRealm()
+                            //첫번째 줄 지우기
+                            //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                        }
+                    }
+
 
                     val sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE)
                     val token = sharedPreferences.getString("token", null)
@@ -257,6 +318,12 @@ class SettingActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             showToast(this@SettingActivity, "회원탈퇴 되었습니다.")
                         }
+                        // 캐시 날리기
+
+                        val editor = sharedPreferences.edit()
+                        editor.clear()
+                        editor.apply()
+
                         // 최초 화면으로 이동 (MJ_main)
                         val homeIntent = Intent(this@SettingActivity, MJ_MainActivity::class.java)
                         startActivity(homeIntent)
@@ -269,7 +336,7 @@ class SettingActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     // API 요청 실패
                     withContext(Dispatchers.Main) {
-                        showToast(this@SettingActivity, "API 요청 실패: ${e.message}")
+                        showToast(this@SettingActivity, "회원 탈퇴 실패: ${e.message}")
                     }
                 }
             }
@@ -284,7 +351,7 @@ class SettingActivity : AppCompatActivity() {
 
     }
 
-    fun deletePlantPopup(){
+    fun deletePlantPopup() {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.fragment_setting_delete_plant_popup, null)
@@ -295,41 +362,58 @@ class SettingActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // 예 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes).setOnClickListener {
-            // 2. 식물 삭제
-            // TODO: 3. (정현) 식물 DB에서 식물 삭제
-            // sdhan :realm DB control : DB 초기화 or 지우기
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_yes)
+            .setOnClickListener {
+                // 2. 식물 삭제
+                // TODO: 3. (정현) 식물 DB에서 식물 삭제
+                // sdhan :realm DB control : DB 초기화 or 지우기
 
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        withContext(Dispatchers.Main) {
+                            // 다이어리 db 날리기
+                            realmDiary.executeTransaction {
+                                it.deleteAll()
+                            }
 
-            realm.executeTransaction {
-                //전부지우기
-                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
-                //첫번째 줄 지우기
-    //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                            // 식물 삭제
+                            realmPlant.executeTransaction {
+                                //전부지우기
+                                it.where(PlantModel::class.java).findAll().deleteAllFromRealm()
+                                //첫번째 줄 지우기
+                                //            it.where(PlantModel::class.java).findFirst()?.deleteFromRealm()
+                            }
+                        }
+
+                        // 식물 이미지 변경 (+)
+                        val deletePlant = R.drawable.delete_plant
+                        val bundle = Bundle()
+                        bundle.putInt("newPlantImageResId", deletePlant)
+
+                        // 화면 이동 (메인화면 이동)
+                        val mainActivityIntent =
+                            Intent(this@SettingActivity, MainActivity::class.java)
+                        mainActivityIntent.putExtras(bundle)
+                        startActivity(mainActivityIntent)
+                    } catch (e: Exception) {
+                        // API 요청 실패
+                        withContext(Dispatchers.Main) {
+                            showToast(this@SettingActivity, "식물 삭제 실패: ${e.message}")
+                        }
+                    }
+
+                }
             }
 
-            // 비동기로 처리 ? (고려중)
-
-            // 다이어리 db 삭제
-//            diaryRealmManager.deleteAll()
-
-            // 식물 이미지 변경 (+)
-            val deletePlant = R.drawable.delete_plant
-            val bundle = Bundle()
-            bundle.putInt("newPlantImageResId", deletePlant)
-
-            // 화면 이동 (메인화면 이동)
-            val mainActivityIntent = Intent(this@SettingActivity, MainActivity::class.java)
-            mainActivityIntent.putExtras(bundle)
-            startActivity(mainActivityIntent)
-        }
 
         // 아니오 버튼 클릭 시의 동작
-        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_no).setOnClickListener {
-            dialog.dismiss() // 다이얼로그를 닫습니다.
-        }
+        dialogView.findViewById<AppCompatButton>(R.id.appCompatButton_deletePlant_no)
+            .setOnClickListener {
+                dialog.dismiss() // 다이얼로그를 닫습니다.
+            }
 
         dialog.show()
+
     }
 
     fun readBitmapFromExternalStorage(file: File): Bitmap? {
@@ -341,18 +425,6 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
-
-    fun drawableResourceToBitmap(context: Context, drawableResId: Int): Bitmap? {
-        return runBlocking {
-            withContext(Dispatchers.IO) {
-                // Drawable을 가져옵니다.
-                val drawable = ContextCompat.getDrawable(context, drawableResId)
-
-                // Drawable을 Bitmap으로 변환합니다.
-                drawableToBitmap(drawable)
-            }
-        }
-    }
 
     // 변환 함수
     fun drawableToBitmap(drawable: Drawable?): Bitmap? {
@@ -374,10 +446,6 @@ class SettingActivity : AppCompatActivity() {
         drawable.draw(canvas)
 
         return bitmap
-    }
-
-    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
 }

@@ -1,0 +1,7 @@
+<!-- gradient_fill.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#D4F1D5"
+        android:endColor="#8CF1FF"
+        android:type="linear" />
+</shape>

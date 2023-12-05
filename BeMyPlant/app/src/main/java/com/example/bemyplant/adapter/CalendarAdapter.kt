@@ -1,6 +1,7 @@
 package com.example.bemyplant.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Log
@@ -9,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bemyplant.Day
 import com.example.bemyplant.R
+import com.example.bemyplant.fragment.toByteArray
 import com.example.bemyplant.model.DiaryRealmManager
 import com.example.bemyplant.module.DiaryModule
 import io.realm.Realm
@@ -65,9 +69,13 @@ class CalendarAdapter(
         // db의 bitarrary -> bitmap
         if (image != null){
             holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image!!.size))
-            Log.d("calendar", "calendar adapter.kt: db 조회 후 imageView에 그림 그리기 성공")
+            Log.d("calendar", "${holder.dayTextView.text} calendar adapter.kt: db 조회 후 imageView에 그림 그리기 성공")
         }
-        Log.d("calendar", "calendar adapter.kt: db 조회성공")
+        else{
+            Log.d("calendar", "${holder.dayTextView.text} calendar adapter.kt: db 조회성공")
+            var emptyImg : Bitmap? = ContextCompat.getDrawable(context, com.google.android.material.R.drawable.navigation_empty_icon)?.toBitmap()
+            holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(emptyImg!!.toByteArray(), 0, emptyImg!!.toByteArray().size))
+        }
 
         holder.itemView.setOnClickListener {
             // 아이템 클릭 처리
